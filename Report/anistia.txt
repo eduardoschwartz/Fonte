@@ -1,0 +1,16 @@
+SELECT     TOP (100) PERCENT dbo.debitoparcela.codreduzido, dbo.debitoparcela.anoexercicio, dbo.debitoparcela.codlancamento, 
+                      dbo.debitoparcela.seqlancamento, dbo.debitoparcela.numparcela, dbo.debitoparcela.codcomplemento, dbo.debitotributo.valortributo AS total, 
+                      dbo.debitopago.valorpagoreal, dbo.debitopago.datarecebimento
+FROM         dbo.debitoparcela INNER JOIN
+                      dbo.debitotributo ON dbo.debitoparcela.codreduzido = dbo.debitotributo.codreduzido AND 
+                      dbo.debitoparcela.anoexercicio = dbo.debitotributo.anoexercicio AND dbo.debitoparcela.codlancamento = dbo.debitotributo.codlancamento AND 
+                      dbo.debitoparcela.seqlancamento = dbo.debitotributo.seqlancamento AND dbo.debitoparcela.numparcela = dbo.debitotributo.numparcela AND 
+                      dbo.debitoparcela.codcomplemento = dbo.debitotributo.codcomplemento LEFT OUTER JOIN
+                      dbo.debitopago ON dbo.debitoparcela.codreduzido = dbo.debitopago.codreduzido AND 
+                      dbo.debitoparcela.anoexercicio = dbo.debitopago.anoexercicio AND dbo.debitoparcela.codlancamento = dbo.debitopago.codlancamento AND 
+                      dbo.debitoparcela.seqlancamento = dbo.debitopago.seqlancamento AND dbo.debitoparcela.numparcela = dbo.debitopago.numparcela AND 
+                      dbo.debitoparcela.codcomplemento = dbo.debitopago.codcomplemento
+WHERE     (dbo.debitotributo.codtributo <> 3) AND (dbo.debitoparcela.numparcela > 0) AND (dbo.debitoparcela.datainscricao IS NOT NULL) AND 
+                      (dbo.debitoparcela.statuslanc = 2 OR
+                      dbo.debitoparcela.statuslanc = 7) AND (dbo.debitoparcela.dataajuiza IS NOT NULL) AND (dbo.debitopago.datarecebimento BETWEEN 
+                      CONVERT(DATETIME, '2008-01-10 00:00:00', 102) AND CONVERT(DATETIME, '2008-12-31 00:00:00', 102))
