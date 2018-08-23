@@ -1803,6 +1803,8 @@ If (lIndex > 0) Then
         End If
     Case "mnuSql"
         Set frm = frmSql
+'    Case "mnuGravaFoto"
+'        Set frm = frmGravaFoto
     Case "mnuGeraDebito"
         Set frm = frmGeraDebito
 '    Case "mnuConversor"
@@ -2173,6 +2175,8 @@ If (lIndex > 0) Then
             BuildRelITBI
         Case "mnuCorrecaoCPF"
             Set frm = frmCorrecaoCPF
+        Case "mnuPagoTributo"
+            Set frm = frmValorPago
     End Select
     If Not frm Is Nothing Then
         frm.show
@@ -2650,7 +2654,7 @@ MsgBox "fim"
 End Sub
 
 Private Sub mnuRenovaAlvara_Click()
-frmReport.ShowReport2 "ALVARARENOVA", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "ALVARARENOVAVICE", frmMdi.hwnd, Me.hwnd
 End Sub
 
 Private Sub Sbar_PanelClick(ByVal Panel As MSComctlLib.Panel)
@@ -3141,6 +3145,7 @@ With m_cMenuTrib
     h = .AddItem("Situação dos tributos lançados", "", 1, i, , , , "mnuSituacaoTributo")
     h = .AddItem("Situação tributária de Contribuinte", "", 1, i, , , , "mnuSituacaoTributaria")
     h = .AddItem("Correção de CPF", "", 1, i, , , , "mnuCorrecaoCPF")
+    h = .AddItem("Total pago por tributo", "", 1, i, , , , "mnuPagoTributo")
     i = .AddItem("Relatórios", "", 1, , , , , "mnuRelatorioTrib")
     h = .AddItem("Carta cobrança amigável", "", 1, i, , , , "mnuCartaCobranca")
     h = .AddItem("Relatório de ajuizamentos", "", 1, i, , , , "mnuRelAjuizamento")
@@ -3203,6 +3208,7 @@ With m_cMenuOutro
     z = .AddItem("Alterar usuário", "", 1, h, , , , "mnuChangeLogin")
     z = .AddItem("Security by User", "", 1, h, , , , "mnuSecurityByUser")
     h = .AddItem("Sql Builder", "", 1, i, , , , "mnuSql")
+'    h = .AddItem("Grava Foto", "", 1, i, , , , "mnuGravaFoto")
     h = .AddItem("Geração manual de débitos", "", 1, i, , , , "mnuGeraDebito")
    ' i = .AddItem("Integração com ISS Eletrônico", "", 1, , , , , "mnuExporta")
     i = .AddItem("Integração com Sistema de Cobrança", "", 1, , , , , "mnuIntegrativa")
@@ -3410,7 +3416,7 @@ Sql = Sql & "Where (debitoparcela.CodLancamento = 36) And (debitoparcela.statusl
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        ax = FillSpace(!CODREDUZIDO, 8) & FillSpace(!nomecidadao, 42) & " " & !statuslanc & " " & Format(!DataVencimento, "dd/mm/yyyy") & " " & !NUMPROCESSO & " " & FillLeft(Format(!ValorTributo, "#0.00"), 11) & " " & SubNull(!obs)
+        ax = FillSpace(!CODREDUZIDO, 8) & FillSpace(!nomecidadao, 42) & " " & !statuslanc & " " & Format(!DataVencimento, "dd/mm/yyyy") & " " & !numprocesso & " " & FillLeft(Format(!ValorTributo, "#0.00"), 11) & " " & SubNull(!obs)
         Print #FF1, ax
        .MoveNext
     Loop

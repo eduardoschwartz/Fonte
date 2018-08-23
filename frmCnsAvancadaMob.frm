@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
@@ -26,7 +26,6 @@ Begin VB.Form frmCnsAvancadaMob
       _ExtentX        =   15584
       _ExtentY        =   1614
       _Version        =   393217
-      Enabled         =   -1  'True
       Appearance      =   0
       TextRTF         =   $"frmCnsAvancadaMob.frx":0000
    End
@@ -3011,6 +3010,7 @@ Begin VB.Form frmCnsAvancadaMob
          _ExtentX        =   19791
          _ExtentY        =   8916
          _Version        =   393217
+         Enabled         =   -1  'True
          ScrollBars      =   3
          Appearance      =   0
          AutoVerbMenu    =   -1  'True
@@ -4220,7 +4220,7 @@ If chkAtividade.value = vbUnchecked Then
     End If
     sAtividade = Chomp(sAtividade, chomp_righT, 1)
     
-'    Sql = Sql & " AND CODATIVIDADE in (" & sAtividade & ")"
+    Sql = Sql & " AND CODATIVIDADE in (" & sAtividade & ")"
 'Else
 End If
 

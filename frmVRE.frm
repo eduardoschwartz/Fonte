@@ -2287,7 +2287,7 @@ End Sub
 
 Private Sub mnuCriar_Click()
 Dim Sql As String, RdoAux As rdoResultset, nId As Long, MinCod As Long, MaxCod As Long, nCodReduz As Long, nCodCidadao As Long
-Dim nCodLogradouro As Integer, nCodBairro As Integer, nCodCidade As Integer, x As Integer, sCnae As String, bPrincipal As Boolean, bExercida As Boolean, sSil As String
+Dim nCodLogradouro As Integer, nCodBairro As Integer, nCodCidade As Integer, x As Integer, sCnae As String, bPrincipal As Boolean, bExercida As Boolean, sSil As String, sDataTmp As String
 Dim sDivisao As String, sGrupo As String, sClasse As String, sSubClasse As String, sAtividade As String, sDataEmissao As String, sDataValidade As String, sprotocolo As String
 
 nId = grdMain.CellText(grdMain.SelectedRow, 1)
@@ -2405,10 +2405,36 @@ For x = 1 To lvCnae.ListItems.Count
     On Error GoTo 0
 Next
 
+
 If sprotocolo <> "" Then
-    sSil = sprotocolo & " Dt.Emissão: " & sDataEmissao & " Área imóvel: " & lblAreaImovel.Caption & "m² Validade: " & sDataValidade
-    Sql = "insert sil(codigo,sil,protocolo,data_emissao,data_validade,area_imovel) values(" & nCodReduz & ",'" & sSil & "','" & sprotocolo & "','" & Format(sDataEmissao, "mm/dd/yyyy") & "','" & Format(sDataValidade, "mm/dd/yyyy") & "'," & Virg2Ponto(lblAreaImovel.Caption) & ")"
-    cn.Execute Sql, rdExecDirect
+    If Not IsDate(sDataEmissao) Then
+ini1:
+        sSil = InputBox("Digite manualmente o nº de protocolo SIL", "Não foi possível carregar o protocolo SIL")
+        If sSil = "" Then
+            GoTo ini1
+        End If
+ini2:
+        sDataTmp = InputBox("Digite a data da emissão", "Não foi possível carregar a data da emissão")
+        If Not IsDate(sDataTmp) Then
+            MsgBox "Data inválida!"
+            GoTo ini2
+        End If
+        sDataEmissao = sDataTmp
+ini3:
+        sDataTmp = InputBox("Digite a data da validade", "Não foi possível carregar a data da validade")
+        If Not IsDate(sDataTmp) Then
+            MsgBox "Data inválida!"
+            GoTo ini3
+        End If
+        sDataValidade = sDataTmp
+        
+    Else
+        sSil = sprotocolo & " Dt.Emissão: " & sDataEmissao & " Área imóvel: " & lblAreaImovel.Caption & "m² Validade: " & sDataValidade
+    End If
+    If sSil <> "" Then
+        Sql = "insert sil(codigo,sil,protocolo,data_emissao,data_validade,area_imovel) values(" & nCodReduz & ",'" & sSil & "','" & sprotocolo & "','" & Format(sDataEmissao, "mm/dd/yyyy") & "','" & Format(sDataValidade, "mm/dd/yyyy") & "'," & Virg2Ponto(lblAreaImovel.Caption) & ")"
+        cn.Execute Sql, rdExecDirect
+    End If
 End If
 
 Sql = "update vre_empresa set situacao='Cadastrada',codreduzido=" & nCodReduz & " where id=" & nId

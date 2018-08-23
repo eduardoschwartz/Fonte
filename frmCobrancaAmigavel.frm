@@ -576,9 +576,9 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
 '            If !CODREDUZIDO = 105086 Then MsgBox "teste"
                'Ajuizado
                 If cmbAjuizado.ListIndex = 1 Then
-                    If IsNull(!DATAAJUIZA) Then GoTo proximo
+                    If IsNull(!dataajuiza) Then GoTo proximo
                 ElseIf cmbAjuizado.ListIndex = 2 Then
-                    If Not IsNull(!DATAAJUIZA) Then GoTo proximo
+                    If Not IsNull(!dataajuiza) Then GoTo proximo
                 End If
                 If !ValorTributo = 0 Then GoTo proximo
                 If !DataVencimento > Now Then GoTo proximo
@@ -596,7 +596,8 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
                     End If
                 End If
 
-                If Year(!DataVencimento) >= Year(Now) Then GoTo proximo
+                'If Year(!DataVencimento) >= Year(Now) Then GoTo proximo
+                If !DataVencimento >= Now Then GoTo proximo
                 nAno = !AnoExercicio
                 bAchou = False
                 For x = 1 To UBound(aDebito)
@@ -993,9 +994,9 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
                 DoEvents
                 'Ajuizado
                 If cmbAjuizado.ListIndex = 1 Then
-                    If IsNull(!DATAAJUIZA) Then GoTo proximo
+                    If IsNull(!dataajuiza) Then GoTo proximo
                 ElseIf cmbAjuizado.ListIndex = 2 Then
-                    If Not IsNull(!DATAAJUIZA) Then GoTo proximo
+                    If Not IsNull(!dataajuiza) Then GoTo proximo
                 End If
                 
                 'iss
@@ -1012,7 +1013,8 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
                 End If
                 
                 
-                If Year(!DataVencimento) >= Year(Now) Then GoTo proximo
+                'If Year(!DataVencimento) >= Year(Now) Then GoTo proximo
+                If !DataVencimento >= Now Then GoTo proximo
                 nAno = !AnoExercicio
                 Sql = "SELECT CODREDUZIDO FROM COBRANCAAMIGAVEL WHERE CODREDUZIDO=" & !CODREDUZIDO
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1379,11 +1381,12 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
                 DoEvents
                 'Ajuizado
                 If cmbAjuizado.ListIndex = 1 Then
-                    If IsNull(!DATAAJUIZA) Then GoTo proximo
+                    If IsNull(!dataajuiza) Then GoTo proximo
                 ElseIf cmbAjuizado.ListIndex = 2 Then
-                    If Not IsNull(!DATAAJUIZA) Then GoTo proximo
+                    If Not IsNull(!dataajuiza) Then GoTo proximo
                 End If
-                If Year(!DataVencimento) >= Year(Now) Then GoTo proximo
+                'If Year(!DataVencimento) >= Year(Now) Then GoTo proximo
+                If !DataVencimento >= Now Then GoTo proximo
                 'iss
                 If cmbTipoISS.ListIndex > 0 Then
                     bAchou = False

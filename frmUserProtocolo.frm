@@ -1044,8 +1044,9 @@ If RdoAux.RowCount > 0 Then
     Dim adoConn As New ADODB.Connection
     
     adoConn.CursorLocation = adUseClient
-    adoConn.Open "Provider=SQLOLEDB.1;Persist Security Info=False;User ID=schwartz;Password=kobudera;Initial Catalog=Tributacao;Data Source=" & IPServer
-        
+    'adoConn.Open "Provider=SQLOLEDB.1;Persist Security Info=False;User ID=schwartz;Password=kobudera;Initial Catalog=Tributacao;Data Source=" & IPServer
+    adoConn.Open cn.Connect
+    
     rst.Open "Select * from assinatura where usuario='" & txtLogin.Text & "'", adoConn, adOpenKeyset, adLockOptimistic
         
         
@@ -1108,13 +1109,13 @@ Else
     Sql = Sql & "NOMELOGIN='" & sLogin & "'"
     cn.Execute Sql, rdExecDirect
     'apaga o centro de custos
-    Sql = "DELETE FROM USUARIOCC WHERE USERID=" & RetornaUsuarioID(NomeDeLogin)
+    Sql = "DELETE FROM USUARIOCC WHERE USERID=" & Val(lblCod.Caption)
     cn.Execute Sql, rdExecDirect
    'adiciona os centro de custos
     For j = 0 To lstSetor.ListCount - 1
         If lstSetor.Selected(j) = True Then
             Sql = "INSERT USUARIOCC (USERID,CODIGOCC) VALUES("
-            Sql = Sql & RetornaUsuarioID(NomeDeLogin) & "," & lstSetor.ItemData(j) & ")"
+            Sql = Sql & Val(lblCod.Caption) & "," & lstSetor.ItemData(j) & ")"
             cn.Execute Sql, rdExecDirect
        End If
     Next
@@ -1164,7 +1165,8 @@ If lblAss.Caption <> "" Then
     Dim adoConn As New ADODB.Connection
     
     adoConn.CursorLocation = adUseClient
-    adoConn.Open "Provider=SQLOLEDB.1;Persist Security Info=True;User ID=" & NomeDeLogin & ";Password=" & UserPwd & ";Initial Catalog=Tributacao;Data Source=" & IPServer
+    'adoConn.Open "Provider=SQLOLEDB.1;Persist Security Info=True;User ID=" & NomeDeLogin & ";Password=" & UserPwd & ";Initial Catalog=Tributacao;Data Source=" & IPServer
+    adoConn.Open cn.Connect
         
     rst.Open "Select * from assinatura where usuario='" & txtLogin.Text & "'", adoConn, adOpenKeyset, adLockOptimistic
     If rst.RecordCount > 0 Then

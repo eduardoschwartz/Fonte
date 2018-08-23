@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmGeraLivro 
@@ -438,7 +438,7 @@ End If
 For x = 0 To lstTipo.ListCount - 1
     If lstTipo.Selected(x) = True Then
         lstTipo.ListIndex = x
-        Y = x + 1
+        y = x + 1
         sTipo = sTipo & lstTipo.ItemData(lstTipo.ListIndex) & ","
     End If
 Next
@@ -549,7 +549,7 @@ End Sub
 
 Private Sub CarregaGrid()
 
-Dim sAno As String, sTipo As String, x As Integer, Y As Integer
+Dim sAno As String, sTipo As String, x As Integer, y As Integer
 
 grdTemp.Rows = 1
 
@@ -564,7 +564,7 @@ sAno = Chomp(sAno, chomp_righT, 1)
 For x = 0 To lstTipo.ListCount - 1
     If lstTipo.Selected(x) = True Then
         lstTipo.ListIndex = x
-        Y = x + 1
+        y = x + 1
         sTipo = sTipo & lstTipo.ItemData(lstTipo.ListIndex) & ","
     End If
 Next
@@ -601,7 +601,7 @@ With RdoAux
 End With
 
 If grdTemp.Rows = 1 Then
-    grdTemp.AddItem lstAno.Text & Chr(9) & Y & Chr(9) & 100 & Chr(9) & 100
+    grdTemp.AddItem lstAno.Text & Chr(9) & y & Chr(9) & 100 & Chr(9) & 100
 End If
 
 
@@ -798,7 +798,7 @@ With grdTemp
                Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!ValorTributo) & ","
                Sql = Sql & Virg2Ponto(CStr(nValorJuros)) & "," & Virg2Ponto(CStr(nValorMulta)) & "," & Virg2Ponto(CStr(nValorCorrecao)) & ",'" & sInscricao & "','"
                Sql = Sql & Mask(Left$(sProp, 40)) & "','" & Left$(Mask(sEndereco), 50) & "','" & Left$(sCompl, 35) & "','"
-               Sql = Sql & sCep & "','" & Left(sBairro, 40) & "','" & sCidade & "','" & sUF & "','" & Mask(sDescTributo) & "','" & sNumProcesso & "')"
+               Sql = Sql & sCep & "','" & Left(sBairro, 40) & "','" & Mask(sCidade) & "','" & sUF & "','" & Mask(sDescTributo) & "','" & sNumProcesso & "')"
                cn.Execute Sql, rdExecDirect
                nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorJuros
                

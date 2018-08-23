@@ -5,8 +5,8 @@ Begin VB.Form frmImportaBanco
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Importação de Arquivos Bancários"
    ClientHeight    =   8535
-   ClientLeft      =   11985
-   ClientTop       =   5325
+   ClientLeft      =   6435
+   ClientTop       =   5445
    ClientWidth     =   8325
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False

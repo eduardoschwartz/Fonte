@@ -1639,9 +1639,15 @@ If RdoAux.RowCount > 0 Then
 End If
 
 If MsgBox("Deseja criar este parcelamento com " & Val(cmbQtde.Text) & " parcelas?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
+    If Val(cmbQtde.Text) = 2 Then
+        If MsgBox("TEM CERTEZA QUE DESEJA CRIAR O PARCELAMENTO COM APENAS 2 PARCELAS ????", vbQuestion + vbYesNo + vbDefaultButton2, "Confirmação") = vbNo Then
+            Exit Sub
+        End If
+    End If
     FillDetalhe
     mnuCalculo_Click
     EmiteBoleto
+
 End If
 End Sub
 
@@ -1921,6 +1927,7 @@ ShowWait True
 
 cn.QueryTimeout = 180
 Set qd.ActiveConnection = cn
+qd.QueryTimeout = 180
 
 On Error Resume Next
 RdoAux3.Close

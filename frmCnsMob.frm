@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmCnsMob 
    BackColor       =   &H00EEEEEE&
@@ -587,7 +587,7 @@ End Sub
 Private Sub cmdPesq_Click()
 'On Error Resume Next
 Dim itmX As ListItem
-Dim Z As Long, x As Integer
+Dim z As Long, x As Integer
 
 If Val(txtCod.Text) = 0 And Trim$(txtProp.Text) = "" And Val(txtCodLogr.Text) = 0 And Val(txtNumImovel.Text) = 0 And Trim$(txtCNPJ.Text) = "" And Trim$(txtRazao.Text) = "" And Val(txtCodAtiv.Text) = 0 And Val(txtIE.Text) = 0 Then
     MsgBox "Favor selecionar ao menos um critério para busca.", vbExclamation, "Atenção"
@@ -597,7 +597,7 @@ End If
 Screen.MousePointer = vbHourglass
 Ocupado
 
-Z = SendMessage(lvEmpresa.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvEmpresa.hwnd, LVM_DELETEALLITEMS, 0, 0)
 
 bCod = False
 bInsc = False
@@ -683,7 +683,6 @@ Private Sub Form_Load()
 
 Ocupado
 CodEmpresa = ""
-
 
 Centraliza Me
 Liberado

@@ -2681,7 +2681,7 @@ Public Property Let nCodigoEmpresa(nCodigo As Long)
 End Property
 
 Private Sub chkAmbulante_Click()
-If chkAmbulante.Value = vbChecked Then
+If chkAmbulante.value = vbChecked Then
     cmbAmbulante.Enabled = True
     cmbAmbulante.BackColor = Branco
     cmbAmbulante_Click
@@ -2715,17 +2715,17 @@ End Sub
 Private Sub cmdPrint_Click()
 If txtRG.Text = "" Then txtRG.Text = " "
 
-Dim sql As String
+Dim Sql As String
 
-sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute sql, rdExecDirect
+Sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute Sql, rdExecDirect
 
-sql = "INSERT REPORTTMP(USUARIO,MEMO1) VALUES('" & NomeDeLogin & "','" & Mask(txtHist.Text) & "')"
-cn.Execute sql, rdExecDirect
+Sql = "INSERT REPORTTMP(USUARIO,MEMO1) VALUES('" & NomeDeLogin & "','" & Mask(txtHist.Text) & "')"
+cn.Execute Sql, rdExecDirect
 frmReport.ShowReport2 "DECA", frmMdi.hwnd, Me.hwnd
 
-sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute sql, rdExecDirect
+Sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute Sql, rdExecDirect
 
 End Sub
 
@@ -2753,14 +2753,14 @@ If nCodReduz > 0 Then Le
 End Sub
 
 Private Sub Le()
-Dim sql As String, RdoAux As rdoResultset
+Dim Sql As String, RdoAux As rdoResultset
 
 If nCodReduz >= 100000 And nCodReduz < 300000 Then
-    sql = "SELECT * FROM vwFULLEMPRESA3 WHERE CODIGOMOB=" & nCodReduz
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurRowVer)
+    Sql = "SELECT * FROM vwFULLEMPRESA3 WHERE CODIGOMOB=" & nCodReduz
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
     With RdoAux
         txtNome.Text = !RazaoSocial
-        txtRamo1.Text = !ATIVEXTENSO
+        txtRamo1.Text = !ativextenso
         txtCodAtiv.Text = !codatividade
         txtEnd.Text = !Logradouro & ", " & !Numero
         txtBairro.Text = SubNull(!DescBairro)
@@ -2770,9 +2770,9 @@ If nCodReduz >= 100000 And nCodReduz < 300000 Then
             txtCEP.Text = Format(!Cep, "00000-000")
         End If
         txtCidade.Text = SubNull(!descCidade) & "/" & SubNull(!SiglaUF)
-        txtFone.Text = SubNull(!FONECONTATO)
+        txtFone.Text = SubNull(!fonecontato)
         txtDataAbe.Text = Format(!DATAABERTURA, "dd/mm/yyyy")
-        txtArea.Text = FormatNumber(!AREATL, 2)
+        txtArea.Text = FormatNumber(!areatl, 2)
         txtNumemp.Text = SubNull(!QTDEEMPREGADO)
         txtMunicipio.Text = SubNull(!descCidade)
         txtOrgao.Text = SubNull(!NOMEORGAO)
@@ -2785,30 +2785,30 @@ If nCodReduz >= 100000 And nCodReduz < 300000 Then
         txtCPF.Text = SubNull(!Cnpj)
         If txtCPF.Text <> "" Then
             'txtCPF.Text = Format(txtCPF.Text, "0#\.###\.###/####-##")
-            chkT(0).Value = vbUnchecked
-            chkT(1).Value = vbChecked
+            chkT(0).value = vbUnchecked
+            chkT(1).value = vbChecked
         Else
             txtCPF.Text = SubNull(!CPF)
             If txtCPF.Text <> "" Then
                 'txtCPF.Text = Format(txtCPF.Text, "00#\.###\.###-##")
-                chkT(0).Value = vbChecked
-                chkT(1).Value = vbUnchecked
+                chkT(0).value = vbChecked
+                chkT(1).value = vbUnchecked
             End If
         End If
-        chkE(0).Value = vbUnchecked
-        chkE(1).Value = vbUnchecked
-        chkE(2).Value = vbUnchecked
-        chkE(3).Value = vbUnchecked
-        chkE(4).Value = vbUnchecked
+        chkE(0).value = vbUnchecked
+        chkE(1).value = vbUnchecked
+        chkE(2).value = vbUnchecked
+        chkE(3).value = vbUnchecked
+        chkE(4).value = vbUnchecked
         
         If Val(txtCodAtiv.Text) > 10000 And Val(txtCodAtiv.Text) < 20000 Then
-            chkE(1).Value = vbChecked
+            chkE(1).value = vbChecked
         ElseIf Val(txtCodAtiv.Text) > 20000 And Val(txtCodAtiv.Text) < 30000 Then
-            chkE(0).Value = vbChecked
+            chkE(0).value = vbChecked
         ElseIf Val(txtCodAtiv.Text) > 30000 And Val(txtCodAtiv.Text) < 40000 Then
-            chkE(2).Value = vbChecked
+            chkE(2).value = vbChecked
         Else
-            chkE(4).Value = vbChecked
+            chkE(4).value = vbChecked
         End If
         
         If Val(SubNull(!RESPCONTABIL)) > 0 Then
@@ -2816,22 +2816,22 @@ If nCodReduz >= 100000 And nCodReduz < 300000 Then
             txtFoneC.Text = SubNull(!telefone)
             txtEndC.Text = SubNull(!RUAESC)
             txtnumC.Text = SubNull(!NUMEROESC)
-            txtBairroC.Text = SubNull(!NOMEBairro)
+            txtBairroC.Text = ""
             txtCEPC.Text = SubNull(!CEPESC)
         End If
         
         .Close
     End With
-    sql = "SELECT mobiliarioproprietario.codcidadao, vwFULLCIDADAO.* "
-    sql = sql & "FROM  mobiliarioproprietario INNER JOIN vwFULLCIDADAO ON mobiliarioproprietario.codcidadao = vwFULLCIDADAO.codcidadao Where mobiliarioproprietario.codmobiliario = " & nCodReduz
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    Sql = "SELECT mobiliarioproprietario.codcidadao, vwFULLCIDADAO.* "
+    Sql = Sql & "FROM  mobiliarioproprietario INNER JOIN vwFULLCIDADAO ON mobiliarioproprietario.codcidadao = vwFULLCIDADAO.codcidadao Where mobiliarioproprietario.codmobiliario = " & nCodReduz
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         Do Until .EOF
             txtNomeP(.AbsolutePosition - 1).Text = !nomecidadao
             'txtCPFP(.AbsolutePosition - 1).Text = Format(SubNull(!CPF), "0#\.###\.###/####-##")
             txtCPFP(.AbsolutePosition - 1).Text = SubNull(!CPF)
             txtRGP(.AbsolutePosition - 1).Text = SubNull(!rg)
-            txtRuaP(.AbsolutePosition - 1).Text = SubNull(!Endereco) & ", " & SubNull(!numimovel) & ", " & RetornaCEP(Val(SubNull(!CodLogradouro)), Val(SubNull(!numimovel)))
+            txtRuaP(.AbsolutePosition - 1).Text = SubNull(!Endereco) & ", " & SubNull(!NUMIMOVEL) & ", " & RetornaCEP(Val(SubNull(!CodLogradouro)), Val(SubNull(!NUMIMOVEL)))
             txtBairroP(.AbsolutePosition - 1).Text = SubNull(!DescBairro) & ", " & SubNull(!descCidade) & " - " & SubNull(!SiglaUF)
             txtTelefone(.AbsolutePosition - 1).Text = SubNull(!telefone)
            .MoveNext
@@ -2839,17 +2839,17 @@ If nCodReduz >= 100000 And nCodReduz < 300000 Then
        .Close
     End With
 Else
-    sql = "SELECT * FROM vwFULLCIDADAO WHERE CODCIDADAO=" & nCodReduz
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurRowVer)
+    Sql = "SELECT * FROM vwFULLCIDADAO WHERE CODCIDADAO=" & nCodReduz
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
     With RdoAux
         txtNome.Text = !nomecidadao
         txtNomeP(0).Text = !nomecidadao
-        txtEnd.Text = SubNull(!Endereco) & ", " & SubNull(!numimovel)
-        txtRuaP(0).Text = SubNull(!Endereco) & ", " & SubNull(!numimovel)
+        txtEnd.Text = SubNull(!Endereco) & ", " & SubNull(!NUMIMOVEL)
+        txtRuaP(0).Text = SubNull(!Endereco) & ", " & SubNull(!NUMIMOVEL)
         
         txtBairro.Text = SubNull(!DescBairro)
         If IsNull(!Cep) Then
-            txtCEP.Text = Format(RetornaCEP(Val(SubNull(!CodLogradouro)), Val(SubNull(!numimovel))), "00000-000")
+            txtCEP.Text = Format(RetornaCEP(Val(SubNull(!CodLogradouro)), Val(SubNull(!NUMIMOVEL))), "00000-000")
         Else
             txtCEP.Text = Format(!Cep, "00000-000")
         End If
@@ -2867,15 +2867,15 @@ Else
 '            txtCPF.Text = Format(txtCPF.Text, "0#\.###\.###/####-##")
             'txtCPFP(0).Text = Format(txtCPF.Text, "0#\.###\.###/####-##")
             txtCPFP(0).Text = txtCPF.Text
-            chkT(0).Value = vbUnchecked
-            chkT(1).Value = vbChecked
+            chkT(0).value = vbUnchecked
+            chkT(1).value = vbChecked
         Else
             txtCPF.Text = SubNull(!CPF)
             If txtCPF.Text <> "" Then
                 'txtCPF.Text = Format(txtCPF.Text, "00#\.###\.###-##")
                 txtCPF.Text = txtCPF.Text
-                chkT(0).Value = vbChecked
-                chkT(1).Value = vbUnchecked
+                chkT(0).value = vbChecked
+                chkT(1).value = vbUnchecked
             End If
         End If
      End With

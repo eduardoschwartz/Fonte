@@ -7,11 +7,11 @@ Begin VB.Form frmImageImovel
    ClientTop       =   2115
    ClientWidth     =   7995
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
    MinButton       =   0   'False
    NegotiateMenus  =   0   'False
    ScaleHeight     =   4935
    ScaleWidth      =   7995
-   ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame1 
       Height          =   615
       Left            =   0
@@ -115,9 +115,79 @@ Dim nQuadra As Integer
 Dim nLote As Integer
 Dim nSeq As Integer
 
-Private Sub Form_Activate()
+Dim pbWidthPercentage As Double
+Dim pbHeightPercentage As Double
+Dim pbAspectRatio As Double
+Private mPics() As StdPicture
 
+Private Sub Form_Activate()
 On Error GoTo Erro
+
+
+
+
+If NomeDoComputador = "SKYNET" Then
+    Dim mStream As New ADODB.stream
+    Dim rst As New ADODB.Recordset
+    Dim adoConn As New ADODB.Connection
+    Dim nTotal As Integer
+    txtWait.Visible = False
+    ConectaBinary
+    Sql = "select COUNT(*)AS CONTADOR from F001 where codigo=" & Val(frmCadImob.lblCodReduz.Caption)
+    Set RdoAux = cnBinary.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'    If RdoAux.RowCount > 0 Then
+    nTotal = RdoAux!Contador
+    If nTotal = 0 Then
+        MsgBox "Não existem fotos para este imóvel."
+        Exit Sub
+    End If
+    
+        adoConn.CursorLocation = adUseClient
+        adoConn.Open cnBinary.Connect
+        
+ '       Set FmtPic = New StdFormat.StdDataFormat
+ '      FmtPic.Type = fmtPicture
+        
+        ReDim mPics(0)
+        
+        rst.Open "Select seq,foto from F001 where codigo=" & Val(frmCadImob.lblCodReduz.Caption), adoConn, adOpenKeyset, adLockOptimistic
+        If rst.EOF Then
+           MsgBox "Não existem fotos para este imóvel."
+        Else
+'            Do Until rst.EOF
+               
+
+'                Set rst.Fields![Foto].DataFormat = FmtPic
+                'img.Picture = rst![Foto].value
+                With mStream
+                    .Type = adTypeBinary
+                    .Open
+                    If Not IsNull(rst("foto")) Then
+                        .Write rst("foto")
+                        img.DataField = "foto"
+'                        ReDim Preserve mPics(UBound(mPics) + 1)
+'                        mPics(UBound(mPics)) = LoadPicture("foto")
+                        Set img.DataSource = rst
+                    End If
+                End With
+                Set mStream = Nothing
+                pbWidthPercentage = img.Width / Me.Width
+                pbHeightPercentage = img.Height / Me.Height
+                pbAspectRatio = img.Height / img.Width
+'                rst.MoveNext
+'            Loop
+        End If
+
+ '   End If
+'    RdoAux.Close
+    
+
+
+    Exit Sub
+End If
+
+
+
 
 If UCase(NomeDoComputador) = "TESLA" Then
     txtWait.Visible = False
@@ -203,7 +273,7 @@ frmZoom.Top = 500
 End Sub
 
 Private Sub Form_Load()
-
+ 
 'SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
 
 End Sub
@@ -218,6 +288,13 @@ img.Left = 0
 img.Stretch = True
 img.Refresh
 
+'    img.Width = Me.Width * pbWidthPercentage
+'    img.Height = img.Width * pbAspectRatio
+'    If img.Height > Me.Height Then
+'        img.Height = Me.Height * pbHeightPercentage
+'        img.Width = img.Height / pbAspectRatio
+'    End If
+    
 End Sub
 
 Private Sub pFoto_Click()

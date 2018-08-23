@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmITBI 
@@ -15,6 +15,18 @@ Begin VB.Form frmITBI
    MDIChild        =   -1  'True
    ScaleHeight     =   5460
    ScaleWidth      =   7590
+   Begin VB.CheckBox chkRural 
+      Alignment       =   1  'Right Justify
+      Appearance      =   0  'Flat
+      BackColor       =   &H00EEEEEE&
+      Caption         =   "Rural"
+      ForeColor       =   &H80000008&
+      Height          =   225
+      Left            =   6720
+      TabIndex        =   60
+      Top             =   420
+      Width           =   705
+   End
    Begin VB.TextBox txtImovel 
       Appearance      =   0  'Flat
       Height          =   255
@@ -691,7 +703,7 @@ Begin VB.Form frmITBI
       Left            =   1695
       TabIndex        =   14
       Top             =   435
-      Width           =   5790
+      Width           =   4680
    End
    Begin VB.Label lblRS 
       BackStyle       =   0  'Transparent
@@ -1239,7 +1251,7 @@ If lblProp.Caption = "" Then
 End If
 
 
-If Val(txtImovel.Text) = 0 Then
+If Val(txtImovel.Text) = 0 And chkRural.value = vbUnchecked Then
     MsgBox "Digite o código do imóvel.", vbExclamation, "Atenção"
     Exit Sub
 End If
@@ -1821,22 +1833,23 @@ Sql = Sql & nCodReduz & "," & nAno & ",36," & nSeq & ",1,0," & nSeqLanc & ",'" &
 cn.Execute Sql, rdExecDirect
 sFullTrib = Mask(txtDesc.Text)
         
-'GRAVA historico IMÓVEL
-Sql = "SELECT max(SEQ) as MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & Val(txtImovel.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
-    If IsNull(!maximo) Then
-        nSeqLanc = 1
-    Else
-        nSeqLanc = !maximo + 1
-    End If
-   .Close
-End With
-sHist = "Emissão de ITBI no código cidadão " & CStr(nCodReduz)
-Sql = "INSERT HISTORICO (CODREDUZIDO,SEQ,DATAHIST,DESCHIST,DATAHIST2,USERID) VALUES("
-Sql = Sql & Val(txtImovel.Text) & "," & nSeqLanc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sHist & "','" & Format(Now, "mm/dd/yyyy") & "'," & 236 & ")"
-cn.Execute Sql, rdExecDirect
-        
+If chkRural.value = vbUnchecked Then
+    'GRAVA historico IMÓVEL
+    Sql = "SELECT max(SEQ) as MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & Val(txtImovel.Text)
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If IsNull(!maximo) Then
+            nSeqLanc = 1
+        Else
+            nSeqLanc = !maximo + 1
+        End If
+       .Close
+    End With
+    sHist = "Emissão de ITBI no código cidadão " & CStr(nCodReduz)
+    Sql = "INSERT HISTORICO (CODREDUZIDO,SEQ,DATAHIST,DESCHIST,DATAHIST2,USERID) VALUES("
+    Sql = Sql & Val(txtImovel.Text) & "," & nSeqLanc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sHist & "','" & Format(Now, "mm/dd/yyyy") & "'," & 236 & ")"
+    cn.Execute Sql, rdExecDirect
+End If
         
         
 'GRAVA DEBITOTRIBUTO

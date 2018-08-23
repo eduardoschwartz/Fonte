@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{9DC93C3A-4153-440A-88A7-A10AEDA3BAAA}#3.5#0"; "vbalDTab6.ocx"
 Begin VB.Form frmChat 
@@ -272,6 +272,7 @@ Begin VB.Form frmChat
       _ExtentY        =   7276
       _Version        =   393217
       BackColor       =   -2147483633
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -615,7 +616,7 @@ End If
 On Error GoTo fim
 For x = 1 To UBound(aNomeTmp)
     If aNomeTmp(x).bLogado <> aNome(x).bLogado Then
-        Set oListItem = ListViewFindItem(aNomeTmp(x).sNomeLogin, lvMain, elvSearchText)
+        Set oListItem = ListViewFindItem(aNomeTmp(x).sNomeLogin, lvMain, 1)
         If Not oListItem Is Nothing Then
             If Not aNomeTmp(x).bLogado Then
                 If Not bOnline Then
@@ -644,7 +645,7 @@ Next
 
 For x = 1 To UBound(aNomeTmp)
     If aNomeTmp(x).bLogado <> aNome(x).bLogado Then
-        Set oListItem = ListViewFindItem(aNomeTmp(x).sNomeLogin, lvMain2, elvSearchText)
+        Set oListItem = ListViewFindItem(aNomeTmp(x).sNomeLogin, lvMain2, 1)
         If Not oListItem Is Nothing Then
             If Not aNomeTmp(x).bLogado Then
                 lvMain2.ListItems(oListItem.Index).ForeColor = &H808080

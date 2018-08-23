@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmDebitoImob 
@@ -6347,6 +6347,7 @@ Ocupado
 ZeraFiltro
 pnlInativo.Visible = False
 bFilterLoad = False
+If Not IsNumeric(txtCod.Text) Then Exit Sub
 Sql = "SELECT * FROM vwfullimovel2 WHERE CODREDUZIDO=" & txtCod.Text
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -7787,7 +7788,7 @@ With RdoAux
     End If
    .Close
 End With
-Sql = "INSERT DEBITOOBSERVACAO(CODREDUZIDO,SEQ,USUARIO,DATAOBS,OBS) VALUES(" & nCodReduz & "," & nSeq & ",'GTI','" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sObs) & "')"
+Sql = "INSERT DEBITOOBSERVACAO(CODREDUZIDO,SEQ,USERID,DATAOBS,OBS) VALUES(" & nCodReduz & "," & nSeq & ",236,'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sObs) & "')"
 cn.Execute Sql, rdExecDirect
 
 MsgBox "Removida a marcação de Serasa no GTI", vbInformation, "Atenção"

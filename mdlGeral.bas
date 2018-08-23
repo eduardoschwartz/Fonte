@@ -1,7 +1,6 @@
 Attribute VB_Name = "mdlGeral"
 Private Const WM_QUIT As Long = &H12
 
-
 Public bDBInternet As Boolean
 Public LoginDSN As String
 Public Const MAX_HOSTNAME_LEN = 132
@@ -204,8 +203,10 @@ Public cnInt As New rdoConnection
 Public cnGti As New rdoConnection
 Public enInt As rdoEnvironment
 Public cnEicon As New rdoConnection
+Public cnBinary  As New rdoConnection
 Public cnEicon2 As New rdoConnection
 Public enEicon As rdoEnvironment
+Public enBinary As rdoEnvironment
 Public enBkp As rdoEnvironment
 Public en2 As rdoEnvironment
 Public cn2 As New rdoConnection
@@ -1177,6 +1178,37 @@ Erro:
 ConectaBkp = False
 
 End Function
+
+Public Function ConectaBinary() As Boolean
+
+On Error GoTo Erro
+
+Screen.MousePointer = vbHourglass
+
+Set enBinary = rdoEngine.rdoEnvironments(0)
+enBinary.CursorDriver = rdUseOdbc
+With enBinary
+    .CursorDriver = rdUseOdbc
+    .LoginTimeout = 20
+     
+    Conn$ = "UID=" & UL & ";PWD=" & UP & ";" _
+    & "DATABASE=GTI_BINARY;" _
+    & "SERVER=" & IPServer & ";" _
+    & "DRIVER={SQL SERVER};DSN='';"
+    Set cnBinary = en.OpenConnection(dsname:="", Prompt:=rdDriverNoPrompt, Connect:=Conn$)
+
+End With
+
+ConectaBinary = True
+cnBinary.QueryTimeout = 180
+Screen.MousePointer = vbDefault
+Exit Function
+Erro:
+'MsgBox Err.Description
+ConectaBinary = False
+
+End Function
+
 
 Public Function ConectaEicon() As Boolean
 
@@ -2890,8 +2922,8 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
        'NUMERO DO PROCESSO ERRADO
-       nNumProcOld = Val(Left$(Trim$(!NUMPROCESSO), InStr(1, Trim$(!NUMPROCESSO), "/", vbBinaryCompare) - 1))
-       nAno = Val(Mid(Trim$(!NUMPROCESSO), InStr(1, Trim$(!NUMPROCESSO), "/", vbBinaryCompare) + 1, 4))
+       nNumProcOld = Val(Left$(Trim$(!numprocesso), InStr(1, Trim$(!numprocesso), "/", vbBinaryCompare) - 1))
+       nAno = Val(Mid(Trim$(!numprocesso), InStr(1, Trim$(!numprocesso), "/", vbBinaryCompare) + 1, 4))
        'PROCURA NO GENÉSIO
        Sql = "SELECT ANOPROCESS,NUMEROPROC FROM PROCESSO WHERE NUMEROPROC=" & nNumProcOld & " AND ANOPROCESS=" & nAno
        Set RdoGenesio = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2909,7 +2941,7 @@ With RdoAux
                        'REGRAVA NA TABELA PROCESSOREPARC
                         Sql = "INSERT PROCESSOREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',DATAPROCESSO,DATAREPARC,QTDEPARCELA,VALORENTRADA,PERCENTRADA,CALCULAMULTA,CALCULAJUROS,CODIGORESP,FUNCIONARIO,CANCELADO,DATACANCEL,FUNCIONARIOCANCEL,NUMprotocolo,PLANO FROM PROCESSOREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -2922,7 +2954,7 @@ With RdoAux
                        'REGRAVA NA TABELA ORIGEMREPARC
                         Sql = "INSERT ORIGEMREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM ORIGEMREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -2938,7 +2970,7 @@ With RdoAux
                        'REGRAVA NA TABELA DESTINOREPARC
                         Sql = "INSERT DESTINOREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM DESTINOREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -2951,7 +2983,7 @@ With RdoAux
                  cn.Execute Sql, rdExecDirect
                 'CORRIGE PROCESSO EM DEBITOPARCELA
                  Sql = "UPDATE DEBITOPARCELA SET NUMPROCESSO='" & sNumProcNew & "' WHERE "
-                 Sql = Sql & "NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
+                 Sql = Sql & "NUMPROCESSO='" & RdoAux!numprocesso & "'"
                  cn.Execute Sql, rdExecDirect
             End If
            .Close
@@ -4088,10 +4120,10 @@ Dim bRet As Boolean
 
 bRet = False
 
-If NomeDeLogin = "BRUNO.MASCARO" Or NomeDeLogin = "NAIARA.SOUZA" Or NomeDeLogin = "RAFAEL.CANOLI" Or NomeDeLogin = "FERNANDO.MEDALHA" Or NomeDeLogin = "RENATA" Or _
+If NomeDeLogin = "BRUNO.MASCARO" Or NomeDeLogin = "NAIARA.SOUZA" Or NomeDeLogin = "ELTON.DIAS" Or NomeDeLogin = "FERNANDO.MEDALHA" Or NomeDeLogin = "RENATA" Or _
    NomeDeLogin = "RAFAEL.OLIVEIRA" Or NomeDeLogin = "ANDRE.FRANCA" Or NomeDeLogin = "MICHELLE.POLETTI" Or NomeDeLogin = "NATALIA.FRACASSO" Or _
    NomeDeLogin = "MICHELE.OLIVEIRA" Or NomeDeLogin = "GABRIEL.MARQUES" Or NomeDeLogin = "ISRAEL" Or NomeDeLogin = "IORIO" Or NomeDeLogin = "POLYANA.TAVARES" Or _
-   NomeDeLogin = "ISRAEL.ACHE" Or NomeDeLogin = "MIRELA.ASSONI" Or NomeDeLogin = "CARLA.REMIRO" Then
+   NomeDeLogin = "TATIANE.SILVA" Or NomeDeLogin = "MIRELA.ASSONI" Or NomeDeLogin = "CARLA.REMIRO" Then
     bRet = True
 End If
 
@@ -4117,3 +4149,4 @@ Public Function BitId(nPos As Integer)
 BitId = Val(Mid(SecId, nPos, 1))
 
 End Function
+

@@ -544,22 +544,22 @@ Data2:
     Case "ISSMENSAL"
             frmReport.Caption = "ISS MENSAL"
             rpt.RecordSelectionFormula = "{ISSMENSAL.COMPUTER}='" & NomeDoUsuario & "'"
-            If frmISSMensal.OptTipo(0).value = True Then
+            If frmISSMensal.optTipo(0).value = True Then
                 sTipo = "ESTIMADO"
-            ElseIf frmISSMensal.OptTipo(1).value = True Then
+            ElseIf frmISSMensal.optTipo(1).value = True Then
                 sTipo = "VARIÁVEL"
-            ElseIf frmISSMensal.OptTipo(2).value = True Then
+            ElseIf frmISSMensal.optTipo(2).value = True Then
                 sTipo = "FIXO"
             End If
             rpt.FormulaFields(2).Text = "'" & sTipo & "'"
     Case "ISSMENSALNAOPAGO"
             frmReport.Caption = "ISS MENSAL NÃO PAGO"
-            rpt.RecordSelectionFormula = "{vwISSMENSALNAOPAGO.CODLANCAMENTO}=" & IIf(frmISSMensal.OptTipo(0).value = True, 3, 5)
-            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.OptTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
+            rpt.RecordSelectionFormula = "{vwISSMENSALNAOPAGO.CODLANCAMENTO}=" & IIf(frmISSMensal.optTipo(0).value = True, 3, 5)
+            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.optTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
     Case "ISSMENSALFORA"
             frmReport.Caption = "ISS MENSAL"
             rpt.RecordSelectionFormula = "{ISSMENSAL.COMPUTER}='" & NomeDoUsuario & "'"
-            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.OptTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
+            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.optTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
     Case "LISTARURAL"
             frmReport.Caption = "Cadastro das Propriedades Rurais"
             If NomeDeLogin = "FABIO" Or NomeDeLogin = "SCHWARTZ" Then
@@ -623,7 +623,7 @@ Data2:
                  Sql = "SELECT USUARIO FROM ASSINATURA WHERE NOME='" & frmAlvara.cmbAss.Text & "'"
                  Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                  With RdoAux
-                      rpt.RecordSelectionFormula = "{ASSINATURA.USUARIO}='" & !Usuario & "'"
+                      rpt.RecordSelectionFormula = "{ASSINATURA.USUARIO}='" & !USUARIO & "'"
                      .Close
                  End With
             Else
@@ -1225,6 +1225,36 @@ If nNumDoc > 0 And sReport <> "DAMHONORARIO" And NomeDoComputador <> "GENESIS" T
     rpt.Export (False)
 End If
 
+If UCase(sReport) = "ALVARAPROVISORIO" Or UCase(sReport) = "ALVARAPROVISORIOVICE" Then
+    Sql = "select count(seq) as maximo from documentopic where codigo=" & Val(frmAlvara.txtCodigo.Text)
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If IsNull(RdoAux!maximo) Then
+        nSeq = 1
+    Else
+        nSeq = RdoAux!maximo + 1
+    End If
+    RdoAux.Close
+    
+    Sql = "select max(seq) as maximo from documentopic"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If IsNull(RdoAux!maximo) Then
+        nSeq2 = 1
+    Else
+        nSeq2 = RdoAux!maximo + 1
+    End If
+    RdoAux.Close
+    sTexto1 = "08" & Year(Now) & Format(nSeq, "00") & Format(frmAlvara.txtCodigo.Text, "000000") & ".pdf"
+    
+    Sql = "insert documentopic(seq,codigo,documento) values(" & nSeq2 & "," & Val(frmAlvara.txtCodigo.Text) & ",'" & sTexto1 & "')"
+    cn.Execute Sql, rdExecDirect
+    
+    rpt.ExportOptions.DestinationType = crEDTDiskFile
+    rpt.ExportOptions.DiskFileName = "\\192.168.200.130\ATUALIZAGTI\Documentos\" & Year(Now) & "\" & sTexto1
+    rpt.ExportOptions.FormatType = crEFTPortableDocFormat
+    rpt.ExportOptions.PDFExportAllPages = True
+    rpt.Export (False)
+End If
+
 
 frmReport.show 1
 
@@ -1667,7 +1697,7 @@ Data4:
                     Sql = "SELECT USUARIO FROM ASSINATURA WHERE NOME='" & frmAlvara.cmbAss.Text & "'"
                     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux
-                         rpt.RecordSelectionFormula = "{ASSINATURA.USUARIO}='" & !Usuario & "'"
+                         rpt.RecordSelectionFormula = "{ASSINATURA.USUARIO}='" & !USUARIO & "'"
                         .Close
                     End With
                Else
@@ -1818,7 +1848,7 @@ Data4:
             rpt.FormulaFields(1).Text = "'" & frmSituacaoTributo.mskDataIni.Text & "'"
             rpt.FormulaFields(2).Text = "'" & frmSituacaoTributo.mskDataFim.Text & "'"
             rpt.RecordSelectionFormula = "{RELSITUACAOTRIBUTO.USUARIO}='" & NomeDeLogin & "'"
-    Case "ALVARARENOVA"
+    Case "ALVARARENOVA", "ALVARARENOVAVICE"
             z = InputBox("Digite o Código da Empresa.", "Código da Empresa")
             If z = "" Then Exit Function
             If Val(z) = 0 Then
@@ -1867,8 +1897,6 @@ Data4:
                         nSeq = RdoAux!maximo + 1
                     End If
                                 
-'                    Sql = "INSERT MOBILIARIOHIST(CODMOBILIARIO,SEQ,DATAHIST,OBS,USUARIO) VALUES("
-'                    Sql = Sql & nCodReduz & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sTexto1) & "','" & NomeDeLogin & "')"
                     Sql = "INSERT MOBILIARIOHIST(CODMOBILIARIO,SEQ,DATAHIST,OBS,USERID) VALUES("
                     Sql = Sql & nCodReduz & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sTexto1) & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
                     cn.Execute Sql, rdExecDirect
@@ -1933,7 +1961,7 @@ Data4:
     Case "REQUERIPTU"
             rpt.RecordSelectionFormula = "{REPORTTMP.USUARIO}='" & NomeDeLogin & "'"
             frmReport.Caption = "Requerimento para Isenção de IPTU"
-            If frmRequerIPTU.OptTipo(0).value = True Then
+            If frmRequerIPTU.optTipo(0).value = True Then
                 z = "isenção de IPTU"
                 rpt.FormulaFields(4).Text = "'ISENÇÃO DE IPTU'"
             Else
@@ -2315,13 +2343,39 @@ If UCase(sReport) = "NOTIFICACAO3" Or UCase(sReport) = "NOTIFICACAO4" Then
         nSeq2 = RdoAux!maximo + 1
     End If
     RdoAux.Close
-    If UCase(sReport) = "SENHAISS3" Then
-        sTexto1 = "03" & Year(Now) & Format(nSeq, "00") & Format(z, "000000") & ".pdf"
-    ElseIf UCase(sReport) = "NOTIFICACAO3" Or UCase(sReport) = "NOTIFICACAO4" Then
-        sTexto1 = "05" & frmNotificacao2.cmbAno.Text & Format(nSeq, "00") & Format(frmNotificacao2.txtCodImovel.Text, "000000") & ".pdf"
-    End If
+    sTexto1 = "05" & frmNotificacao2.cmbAno.Text & Format(nSeq, "00") & Format(frmNotificacao2.txtCodImovel.Text, "000000") & ".pdf"
     
     Sql = "insert documentopic(seq,codigo,documento) values(" & nSeq2 & "," & Val(z) & ",'" & sTexto1 & "')"
+    cn.Execute Sql, rdExecDirect
+    
+    rpt.ExportOptions.DestinationType = crEDTDiskFile
+    rpt.ExportOptions.DiskFileName = "\\192.168.200.130\ATUALIZAGTI\Documentos\" & Year(Now) & "\" & sTexto1
+    rpt.ExportOptions.FormatType = crEFTPortableDocFormat
+    rpt.ExportOptions.PDFExportAllPages = True
+    rpt.Export (False)
+End If
+
+If UCase(sReport) = "ALVARA" Or UCase(sReport) = "ALVARASEMDATA" Or UCase(sReport) = "ALVARAVICE" Or UCase(sReport) = "ALVARASEMDATAVICE" Then
+    Sql = "select count(seq) as maximo from documentopic where codigo=" & Val(frmAlvara.txtCodigo.Text)
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If IsNull(RdoAux!maximo) Then
+        nSeq = 1
+    Else
+        nSeq = RdoAux!maximo + 1
+    End If
+    RdoAux.Close
+    
+    Sql = "select max(seq) as maximo from documentopic"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If IsNull(RdoAux!maximo) Then
+        nSeq2 = 1
+    Else
+        nSeq2 = RdoAux!maximo + 1
+    End If
+    RdoAux.Close
+    sTexto1 = "08" & Year(Now) & Format(nSeq, "00") & Format(frmAlvara.txtCodigo.Text, "000000") & ".pdf"
+    
+    Sql = "insert documentopic(seq,codigo,documento) values(" & nSeq2 & "," & Val(frmAlvara.txtCodigo.Text) & ",'" & sTexto1 & "')"
     cn.Execute Sql, rdExecDirect
     
     rpt.ExportOptions.DestinationType = crEDTDiskFile

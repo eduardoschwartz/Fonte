@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{9DC93C3A-4153-440A-88A7-A10AEDA3BAAA}#3.5#0"; "vbalDTab6.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
@@ -10,8 +10,8 @@ Begin VB.Form frmCadImob
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro Imobiliário"
    ClientHeight    =   5910
-   ClientLeft      =   4800
-   ClientTop       =   2940
+   ClientLeft      =   5715
+   ClientTop       =   3630
    ClientWidth     =   10170
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form2"
@@ -903,6 +903,273 @@ Begin VB.Form frmCadImob
       BackColor       =   &H00EEEEEE&
       BorderStyle     =   0  'None
       Height          =   4390
+      Index           =   5
+      Left            =   1440
+      TabIndex        =   114
+      Top             =   1260
+      Width           =   8715
+      Begin VB.Frame Frame1 
+         BackColor       =   &H00EEEEEE&
+         ForeColor       =   &H00000080&
+         Height          =   4245
+         Left            =   90
+         TabIndex        =   115
+         Top             =   0
+         Width           =   7215
+         Begin VB.TextBox txtHist 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            Height          =   795
+            Left            =   60
+            MultiLine       =   -1  'True
+            TabIndex        =   116
+            Top             =   3015
+            Width           =   7095
+         End
+         Begin MSFlexGridLib.MSFlexGrid grdHist 
+            Height          =   2835
+            Left            =   60
+            TabIndex        =   117
+            Top             =   150
+            Width           =   7095
+            _ExtentX        =   12515
+            _ExtentY        =   5001
+            _Version        =   393216
+            Rows            =   1
+            Cols            =   4
+            FixedCols       =   0
+            BackColorSel    =   192
+            ForeColorSel    =   16777215
+            BackColorBkg    =   15658734
+            FocusRect       =   0
+            SelectionMode   =   1
+            Appearance      =   0
+            FormatString    =   "^Data                |^Seq     |<Histórico                                                            |<Usuário                   "
+         End
+         Begin prjChameleon.chameleonButton cmdEditHist 
+            Height          =   315
+            Left            =   90
+            TabIndex        =   118
+            ToolTipText     =   "Editar Histórico"
+            Top             =   3855
+            Width           =   1935
+            _ExtentX        =   3413
+            _ExtentY        =   556
+            BTYPE           =   3
+            TX              =   "&Editar Histórico"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   0
+            FCOLO           =   0
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadImob.frx":1DC7
+            PICN            =   "frmCadImob.frx":1DE3
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+      End
+   End
+   Begin VB.Frame frTab 
+      BackColor       =   &H00EEEEEE&
+      BorderStyle     =   0  'None
+      Height          =   4395
+      Index           =   1
+      Left            =   1440
+      TabIndex        =   44
+      Top             =   1230
+      Width           =   8685
+      Begin VB.Frame frLI 
+         BackColor       =   &H00EEEEEE&
+         ForeColor       =   &H00000080&
+         Height          =   3300
+         Left            =   780
+         TabIndex        =   45
+         Top             =   570
+         Width           =   6615
+         Begin VB.TextBox txtNomeLogLI 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            BorderStyle     =   0  'None
+            Height          =   285
+            Left            =   1440
+            Locked          =   -1  'True
+            TabIndex        =   52
+            Top             =   675
+            Width           =   4830
+         End
+         Begin VB.TextBox txtCodLogrLI 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            BorderStyle     =   0  'None
+            Height          =   285
+            Left            =   1440
+            Locked          =   -1  'True
+            MaxLength       =   6
+            TabIndex        =   51
+            Top             =   315
+            Width           =   855
+         End
+         Begin VB.TextBox txtNum 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   1440
+            TabIndex        =   50
+            Text            =   "0"
+            Top             =   990
+            Width           =   855
+         End
+         Begin VB.TextBox txtCompl 
+            Appearance      =   0  'Flat
+            Height          =   690
+            Left            =   1440
+            MaxLength       =   200
+            MultiLine       =   -1  'True
+            TabIndex        =   49
+            Top             =   1350
+            Width           =   4845
+         End
+         Begin VB.ComboBox cmbBairroImovel 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   1440
+            TabIndex        =   48
+            Top             =   2130
+            Width           =   2835
+         End
+         Begin VB.TextBox txtQuadras 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   1440
+            MaxLength       =   25
+            TabIndex        =   47
+            Top             =   2520
+            Width           =   2835
+         End
+         Begin VB.TextBox txtLotes 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   1440
+            MaxLength       =   25
+            TabIndex        =   46
+            Top             =   2880
+            Width           =   2835
+         End
+         Begin VB.Label lblBairroImovel 
+            Height          =   225
+            Left            =   1470
+            TabIndex        =   134
+            Top             =   2220
+            Width           =   4875
+         End
+         Begin VB.Label lblCEP 
+            BackStyle       =   0  'Transparent
+            ForeColor       =   &H00000080&
+            Height          =   165
+            Left            =   4050
+            TabIndex        =   61
+            Top             =   1050
+            Width           =   1245
+         End
+         Begin VB.Label Label2 
+            BackStyle       =   0  'Transparent
+            Caption         =   "CEP.........................:"
+            Height          =   225
+            Index           =   7
+            Left            =   2430
+            TabIndex        =   60
+            Top             =   1050
+            Width           =   1545
+         End
+         Begin VB.Label Label2 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Nome Lograd.....:"
+            Height          =   225
+            Index           =   6
+            Left            =   180
+            TabIndex        =   59
+            Top             =   690
+            Width           =   1275
+         End
+         Begin VB.Label Label2 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Cód.Logradouro.:"
+            Height          =   225
+            Index           =   5
+            Left            =   180
+            TabIndex        =   58
+            Top             =   330
+            Width           =   1275
+         End
+         Begin VB.Label Label11 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Lotes.................:"
+            Height          =   225
+            Left            =   180
+            TabIndex        =   57
+            Top             =   2940
+            Width           =   1305
+         End
+         Begin VB.Label Label10 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Quadra..............:"
+            Height          =   225
+            Left            =   180
+            TabIndex        =   56
+            Top             =   2580
+            Width           =   1305
+         End
+         Begin VB.Label Label8 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Bairro.................:"
+            Height          =   225
+            Left            =   180
+            TabIndex        =   55
+            Top             =   2205
+            Width           =   1305
+         End
+         Begin VB.Label Label7 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Complemento.....:"
+            Height          =   225
+            Left            =   180
+            TabIndex        =   54
+            Top             =   1395
+            Width           =   1305
+         End
+         Begin VB.Label Label6 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Número..............:"
+            Height          =   225
+            Left            =   180
+            TabIndex        =   53
+            Top             =   1035
+            Width           =   1305
+         End
+      End
+   End
+   Begin VB.Frame frTab 
+      BackColor       =   &H00EEEEEE&
+      BorderStyle     =   0  'None
+      Height          =   4390
       Index           =   3
       Left            =   1530
       TabIndex        =   86
@@ -1010,7 +1277,7 @@ Begin VB.Form frmCadImob
                FCOLO           =   12582912
                MCOL            =   12632256
                MPTR            =   1
-               MICON           =   "frmCadImob.frx":1DC7
+               MICON           =   "frmCadImob.frx":1F3D
                UMCOL           =   -1  'True
                SOFT            =   0   'False
                PICPOS          =   0
@@ -1049,7 +1316,7 @@ Begin VB.Form frmCadImob
                FCOLO           =   12582912
                MCOL            =   13026246
                MPTR            =   1
-               MICON           =   "frmCadImob.frx":1DE3
+               MICON           =   "frmCadImob.frx":1F59
                UMCOL           =   -1  'True
                SOFT            =   0   'False
                PICPOS          =   0
@@ -1297,8 +1564,8 @@ Begin VB.Form frmCadImob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCadImob.frx":1DFF
-            PICN            =   "frmCadImob.frx":1E1B
+            MICON           =   "frmCadImob.frx":1F75
+            PICN            =   "frmCadImob.frx":1F91
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1337,8 +1604,8 @@ Begin VB.Form frmCadImob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCadImob.frx":1F75
-            PICN            =   "frmCadImob.frx":1F91
+            MICON           =   "frmCadImob.frx":20EB
+            PICN            =   "frmCadImob.frx":2107
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1377,8 +1644,8 @@ Begin VB.Form frmCadImob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCadImob.frx":20EB
-            PICN            =   "frmCadImob.frx":2107
+            MICON           =   "frmCadImob.frx":2261
+            PICN            =   "frmCadImob.frx":227D
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1417,8 +1684,8 @@ Begin VB.Form frmCadImob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCadImob.frx":2261
-            PICN            =   "frmCadImob.frx":227D
+            MICON           =   "frmCadImob.frx":23D7
+            PICN            =   "frmCadImob.frx":23F3
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1457,7 +1724,7 @@ Begin VB.Form frmCadImob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCadImob.frx":23D7
+            MICON           =   "frmCadImob.frx":254D
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1566,9 +1833,9 @@ Begin VB.Form frmCadImob
          Begin VB.ListBox lstNomeLog 
             BackColor       =   &H00C0FFFF&
             Height          =   1620
-            ItemData        =   "frmCadImob.frx":23F3
+            ItemData        =   "frmCadImob.frx":2569
             Left            =   1740
-            List            =   "frmCadImob.frx":23F5
+            List            =   "frmCadImob.frx":256B
             TabIndex        =   65
             Top             =   585
             Visible         =   0   'False
@@ -1627,9 +1894,9 @@ Begin VB.Form frmCadImob
          End
          Begin VB.ComboBox cmbUF 
             Height          =   315
-            ItemData        =   "frmCadImob.frx":23F7
+            ItemData        =   "frmCadImob.frx":256D
             Left            =   1740
-            List            =   "frmCadImob.frx":23F9
+            List            =   "frmCadImob.frx":256F
             Sorted          =   -1  'True
             TabIndex        =   66
             Top             =   1560
@@ -1643,7 +1910,7 @@ Begin VB.Form frmCadImob
             Width           =   1260
             _ExtentX        =   2223
             _ExtentY        =   503
-            MouseIcon       =   "frmCadImob.frx":23FB
+            MouseIcon       =   "frmCadImob.frx":2571
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -1689,8 +1956,8 @@ Begin VB.Form frmCadImob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   99
-            MICON           =   "frmCadImob.frx":2417
-            PICN            =   "frmCadImob.frx":2731
+            MICON           =   "frmCadImob.frx":258D
+            PICN            =   "frmCadImob.frx":28A7
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1911,8 +2178,8 @@ Begin VB.Form frmCadImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmCadImob.frx":288B
-         PICN            =   "frmCadImob.frx":28A7
+         MICON           =   "frmCadImob.frx":2A01
+         PICN            =   "frmCadImob.frx":2A1D
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1951,8 +2218,8 @@ Begin VB.Form frmCadImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmCadImob.frx":2A01
-         PICN            =   "frmCadImob.frx":2A1D
+         MICON           =   "frmCadImob.frx":2B77
+         PICN            =   "frmCadImob.frx":2B93
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1991,8 +2258,8 @@ Begin VB.Form frmCadImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmCadImob.frx":2B77
-         PICN            =   "frmCadImob.frx":2B93
+         MICON           =   "frmCadImob.frx":2CED
+         PICN            =   "frmCadImob.frx":2D09
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2031,7 +2298,7 @@ Begin VB.Form frmCadImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmCadImob.frx":2CED
+         MICON           =   "frmCadImob.frx":2E63
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2078,273 +2345,6 @@ Begin VB.Form frmCadImob
          TabIndex        =   129
          Top             =   3210
          Width           =   345
-      End
-   End
-   Begin VB.Frame frTab 
-      BackColor       =   &H00EEEEEE&
-      BorderStyle     =   0  'None
-      Height          =   4390
-      Index           =   5
-      Left            =   1440
-      TabIndex        =   114
-      Top             =   1260
-      Width           =   8715
-      Begin VB.Frame Frame1 
-         BackColor       =   &H00EEEEEE&
-         ForeColor       =   &H00000080&
-         Height          =   4245
-         Left            =   90
-         TabIndex        =   115
-         Top             =   0
-         Width           =   7215
-         Begin VB.TextBox txtHist 
-            Appearance      =   0  'Flat
-            BackColor       =   &H00EEEEEE&
-            Height          =   795
-            Left            =   60
-            MultiLine       =   -1  'True
-            TabIndex        =   116
-            Top             =   3015
-            Width           =   7095
-         End
-         Begin MSFlexGridLib.MSFlexGrid grdHist 
-            Height          =   2835
-            Left            =   60
-            TabIndex        =   117
-            Top             =   150
-            Width           =   7095
-            _ExtentX        =   12515
-            _ExtentY        =   5001
-            _Version        =   393216
-            Rows            =   1
-            Cols            =   4
-            FixedCols       =   0
-            BackColorSel    =   192
-            ForeColorSel    =   16777215
-            BackColorBkg    =   15658734
-            FocusRect       =   0
-            SelectionMode   =   1
-            Appearance      =   0
-            FormatString    =   "^Data                |^Seq     |<Histórico                                                            |<Usuário                   "
-         End
-         Begin prjChameleon.chameleonButton cmdEditHist 
-            Height          =   315
-            Left            =   90
-            TabIndex        =   118
-            ToolTipText     =   "Editar Histórico"
-            Top             =   3855
-            Width           =   1935
-            _ExtentX        =   3413
-            _ExtentY        =   556
-            BTYPE           =   3
-            TX              =   "&Editar Histórico"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   0
-            FCOLO           =   0
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadImob.frx":2D09
-            PICN            =   "frmCadImob.frx":2D25
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-      End
-   End
-   Begin VB.Frame frTab 
-      BackColor       =   &H00EEEEEE&
-      BorderStyle     =   0  'None
-      Height          =   4395
-      Index           =   1
-      Left            =   1440
-      TabIndex        =   44
-      Top             =   1230
-      Width           =   8685
-      Begin VB.Frame frLI 
-         BackColor       =   &H00EEEEEE&
-         ForeColor       =   &H00000080&
-         Height          =   3300
-         Left            =   780
-         TabIndex        =   45
-         Top             =   570
-         Width           =   6615
-         Begin VB.TextBox txtNomeLogLI 
-            Appearance      =   0  'Flat
-            BackColor       =   &H00EEEEEE&
-            BorderStyle     =   0  'None
-            Height          =   285
-            Left            =   1440
-            Locked          =   -1  'True
-            TabIndex        =   52
-            Top             =   675
-            Width           =   4830
-         End
-         Begin VB.TextBox txtCodLogrLI 
-            Appearance      =   0  'Flat
-            BackColor       =   &H00EEEEEE&
-            BorderStyle     =   0  'None
-            Height          =   285
-            Left            =   1440
-            Locked          =   -1  'True
-            MaxLength       =   6
-            TabIndex        =   51
-            Top             =   315
-            Width           =   855
-         End
-         Begin VB.TextBox txtNum 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   1440
-            TabIndex        =   50
-            Text            =   "0"
-            Top             =   990
-            Width           =   855
-         End
-         Begin VB.TextBox txtCompl 
-            Appearance      =   0  'Flat
-            Height          =   690
-            Left            =   1440
-            MaxLength       =   200
-            MultiLine       =   -1  'True
-            TabIndex        =   49
-            Top             =   1350
-            Width           =   4845
-         End
-         Begin VB.ComboBox cmbBairroImovel 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   1440
-            TabIndex        =   48
-            Top             =   2130
-            Width           =   2835
-         End
-         Begin VB.TextBox txtQuadras 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   1440
-            MaxLength       =   25
-            TabIndex        =   47
-            Top             =   2520
-            Width           =   2835
-         End
-         Begin VB.TextBox txtLotes 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   1440
-            MaxLength       =   25
-            TabIndex        =   46
-            Top             =   2880
-            Width           =   2835
-         End
-         Begin VB.Label lblBairroImovel 
-            Height          =   225
-            Left            =   1470
-            TabIndex        =   134
-            Top             =   2220
-            Width           =   4875
-         End
-         Begin VB.Label lblCEP 
-            BackStyle       =   0  'Transparent
-            ForeColor       =   &H00000080&
-            Height          =   165
-            Left            =   4050
-            TabIndex        =   61
-            Top             =   1050
-            Width           =   1245
-         End
-         Begin VB.Label Label2 
-            BackStyle       =   0  'Transparent
-            Caption         =   "CEP.........................:"
-            Height          =   225
-            Index           =   7
-            Left            =   2430
-            TabIndex        =   60
-            Top             =   1050
-            Width           =   1545
-         End
-         Begin VB.Label Label2 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Nome Lograd.....:"
-            Height          =   225
-            Index           =   6
-            Left            =   180
-            TabIndex        =   59
-            Top             =   690
-            Width           =   1275
-         End
-         Begin VB.Label Label2 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Cód.Logradouro.:"
-            Height          =   225
-            Index           =   5
-            Left            =   180
-            TabIndex        =   58
-            Top             =   330
-            Width           =   1275
-         End
-         Begin VB.Label Label11 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Lotes.................:"
-            Height          =   225
-            Left            =   180
-            TabIndex        =   57
-            Top             =   2940
-            Width           =   1305
-         End
-         Begin VB.Label Label10 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Quadra..............:"
-            Height          =   225
-            Left            =   180
-            TabIndex        =   56
-            Top             =   2580
-            Width           =   1305
-         End
-         Begin VB.Label Label8 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Bairro.................:"
-            Height          =   225
-            Left            =   180
-            TabIndex        =   55
-            Top             =   2205
-            Width           =   1305
-         End
-         Begin VB.Label Label7 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Complemento.....:"
-            Height          =   225
-            Left            =   180
-            TabIndex        =   54
-            Top             =   1395
-            Width           =   1305
-         End
-         Begin VB.Label Label6 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Número..............:"
-            Height          =   225
-            Left            =   180
-            TabIndex        =   53
-            Top             =   1035
-            Width           =   1305
-         End
       End
    End
    Begin VB.Label lblSkin 

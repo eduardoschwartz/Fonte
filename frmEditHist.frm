@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmEditHist 
@@ -7,8 +7,8 @@ Begin VB.Form frmEditHist
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Edição de Histórico do Imóvel"
    ClientHeight    =   4515
-   ClientLeft      =   4905
-   ClientTop       =   4695
+   ClientLeft      =   13290
+   ClientTop       =   5775
    ClientWidth     =   7155
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -452,13 +452,13 @@ grdHist_Click
 End Sub
 
 Private Sub cmdGravar_Click()
-Dim X As Integer, Achou As Boolean
+Dim x As Integer, Achou As Boolean
 
 If Evento = "Novo" Then
     With grdHist
         Achou = False
-        For X = 1 To .Rows - 1
-            If Val(.TextMatrix(X, 1)) = Val(txtSeq.Text) Then
+        For x = 1 To .Rows - 1
+            If Val(.TextMatrix(x, 1)) = Val(txtSeq.Text) Then
                 Achou = True
                 Exit For
             End If
@@ -533,21 +533,21 @@ txtHist.Text = ""
 End Sub
 
 Private Sub cmdSair_Click()
-Dim X As Integer
+Dim x As Integer
 
 If MsgBox("Deseja atualizar o histórico do imóvel ?", vbQuestion + vbYesNo, "Confirmação !!!") = vbYes Then
     If NomeForm = "frmCadMob" Then
         frmCadMob.grdHist.Rows = 1
-        For X = 1 To grdHist.Rows - 1
+        For x = 1 To grdHist.Rows - 1
             With grdHist
-                frmCadMob.grdHist.AddItem .TextMatrix(X, 0) & Chr(9) & .TextMatrix(X, 1) & Chr(9) & .TextMatrix(X, 2) & Chr(9) & .TextMatrix(X, 3)
+                frmCadMob.grdHist.AddItem .TextMatrix(x, 0) & Chr(9) & .TextMatrix(x, 1) & Chr(9) & .TextMatrix(x, 2) & Chr(9) & .TextMatrix(x, 3)
             End With
         Next
 Else
         frmCadImob.grdHist.Rows = 1
-        For X = 1 To grdHist.Rows - 1
+        For x = 1 To grdHist.Rows - 1
             With grdHist
-                frmCadImob.grdHist.AddItem .TextMatrix(X, 0) & Chr(9) & .TextMatrix(X, 1) & Chr(9) & .TextMatrix(X, 2) & Chr(9) & .TextMatrix(X, 3)
+                frmCadImob.grdHist.AddItem .TextMatrix(x, 0) & Chr(9) & .TextMatrix(x, 1) & Chr(9) & .TextMatrix(x, 2) & Chr(9) & .TextMatrix(x, 3)
             End With
         Next
     End If
@@ -574,20 +574,20 @@ Le
 End Sub
 
 Private Sub CarregaGrid()
-Dim X As Integer
+Dim x As Integer
 
 grdHist.Rows = 1
 
 If NomeForm = "frmCadMob" Then
-    For X = 1 To frmCadMob.grdHist.Rows - 1
+    For x = 1 To frmCadMob.grdHist.Rows - 1
         With frmCadMob.grdHist
-            grdHist.AddItem .TextMatrix(X, 0) & Chr(9) & .TextMatrix(X, 1) & Chr(9) & .TextMatrix(X, 2) & Chr(9) & .TextMatrix(X, 3)
+            grdHist.AddItem .TextMatrix(x, 0) & Chr(9) & .TextMatrix(x, 1) & Chr(9) & .TextMatrix(x, 2) & Chr(9) & .TextMatrix(x, 3)
         End With
     Next
 Else
-    For X = 1 To frmCadImob.grdHist.Rows - 1
+    For x = 1 To frmCadImob.grdHist.Rows - 1
         With frmCadImob.grdHist
-            grdHist.AddItem .TextMatrix(X, 0) & Chr(9) & .TextMatrix(X, 1) & Chr(9) & .TextMatrix(X, 2) & Chr(9) & .TextMatrix(X, 3)
+            grdHist.AddItem .TextMatrix(x, 0) & Chr(9) & .TextMatrix(x, 1) & Chr(9) & .TextMatrix(x, 2) & Chr(9) & .TextMatrix(x, 3)
         End With
     Next
 End If

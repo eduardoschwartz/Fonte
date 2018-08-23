@@ -939,6 +939,7 @@ If NomeDeLogin = "RENATA" Or NomeDeLogin = "ROSE" Or NomeDeLogin = "SOLANGE" Or 
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuEmiteDoc")) = True '180
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuRelRefisParc")) = True '181
     frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuDocEmitido")) = True '240
+    frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuPagoTributo")) = True '240
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuCancelReparc")) = True '168
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuCancelParcelamentoAuto")) = True '172
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuMalaDiretaParc")) = True '173

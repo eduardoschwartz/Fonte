@@ -759,8 +759,8 @@ Else
     Sql = "select * from parametros where nomeparam='SEQALVARA'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        txtAlvara.Text = !valparam
-        nOldAlvara = !valparam
+        txtAlvara.Text = !VALPARAM
+        nOldAlvara = !VALPARAM
         .Close
     End With
     frN.Visible = False
@@ -770,7 +770,7 @@ End If
 End Sub
 
 Private Sub cmdPrint_Click()
-Dim z As Integer, bAchou As Boolean, bAchou2 As Boolean, Sql As String
+Dim z As Integer, bAchou As Boolean, bAchou2 As Boolean, Sql As String, sTexto1 As String, nCodReduz As Long, nSeq As Integer
 Dim qd As New rdoQuery, RdoAux As rdoResultset
 
 If chkTipoAlvara.value = vbChecked Then
@@ -815,8 +815,8 @@ If chkTipoAlvara.value = 1 Then
         nOldAlvara = nOldAlvara + 1
         Sql = "update parametros set valparam='" & CStr(nOldAlvara) & "' where nomeparam='SEQALVARA'"
         cn.Execute Sql, rdExecDirect
-        frmReport.ShowReport "ALVARAPROVISORIO", frmMdi.hwnd, Me.hwnd
-        'frmReport.ShowReport "ALVARAPROVISORIOVICE", frmMdi.hwnd, Me.hwnd
+       ' frmReport.ShowReport "ALVARAPROVISORIO", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "ALVARAPROVISORIOVICE", frmMdi.hwnd, Me.hwnd
         txtAlvara.Text = nOldAlvara
         Limpa
         txtCodigo.Text = ""
@@ -834,6 +834,25 @@ Else
         MsgBox "Selecione a data do alvará.", vbExclamation, "Atenção"
         Exit Sub
     End If
+    
+    nCodReduz = Val(txtCodigo.Text)
+    sTexto1 = "Emisão de Alvará de Funcionamento."
+    Sql = "SELECT MAX(SEQ) AS MAXIMO FROM MOBILIARIOHIST WHERE CODMOBILIARIO=" & nCodReduz
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If IsNull(RdoAux!maximo) Then
+        nSeq = 0
+    Else
+        nSeq = RdoAux!maximo + 1
+    End If
+                
+    Sql = "INSERT MOBILIARIOHIST(CODMOBILIARIO,SEQ,DATAHIST,OBS,USERID) VALUES("
+    Sql = Sql & nCodReduz & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sTexto1) & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+    cn.Execute Sql, rdExecDirect
+
+    
+    
+    
+    
     
     Set qd.ActiveConnection = cn
     On Error Resume Next
@@ -860,11 +879,11 @@ Else
     
     
     If txtData.Text = "" Then
-        frmReport.ShowReport2 "ALVARA", frmMdi.hwnd, Me.hwnd
-        'frmReport.ShowReport2 "ALVARAVICE", frmMdi.hwnd, Me.hwnd
+        'frmReport.ShowReport2 "ALVARA", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "ALVARAVICE", frmMdi.hwnd, Me.hwnd
     Else
-        frmReport.ShowReport2 "ALVARASEMDATA", frmMdi.hwnd, Me.hwnd
-        'frmReport.ShowReport2 "ALVARASEMDATAVICE", frmMdi.hwnd, Me.hwnd
+        'frmReport.ShowReport2 "ALVARASEMDATA", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "ALVARASEMDATAVICE", frmMdi.hwnd, Me.hwnd
     End If
 End If
 
@@ -959,7 +978,7 @@ With RdoAux
         lblNum.Caption = !Numero
         lblBairro.Caption = !DescBairro
         lblCidade.Caption = SubNull(!descCidade) & " - " & SubNull(!SiglaUF)
-        lblCEP.Caption = Format(!Cep, "00000-000")
+        lblCep.Caption = Format(!Cep, "00000-000")
         lblAtividade.Caption = !ativextenso
         lblPontoAgencia.Caption = SubNull(!ponto_agencia)
         lblIE.Caption = IIf(IsNull(!INSCESTADUAL), "ISENTO", !INSCESTADUAL)

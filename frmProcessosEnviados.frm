@@ -6,8 +6,8 @@ Begin VB.Form frmProcessosEnviados
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Relação de processos enviados por centro de custos"
    ClientHeight    =   1620
-   ClientLeft      =   5805
-   ClientTop       =   3690
+   ClientLeft      =   14475
+   ClientTop       =   8985
    ClientWidth     =   6450
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
@@ -239,7 +239,7 @@ With RdoAux
                 Sql = "SELECT DESCRICAO FROM CENTROCUSTO WHERE CODIGO=" & RdoAux2!CENTROCUSTO
                 Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
                 If RdoAux3.RowCount > 0 Then
-                    sRequerente = RdoAux3!Descricao
+                    sRequerente = RdoAux3!descricao
                 Else
                     GoTo cidadao
                 End If
@@ -261,7 +261,7 @@ cidadao:
         
                 
         nSeq = !Seq
-        sDesc1 = !Descricao
+        sDesc1 = !descricao
         sNome1 = SubNull(!NomeCompleto)
         Sql = "SELECT * FROM vwTRAMITACAO WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq + 1
         'Sql = "SELECT * FROM vwTRAMITACAO WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq
@@ -269,7 +269,7 @@ cidadao:
         
         With RdoAux2
             If .RowCount > 0 Then
-                sDesc2 = !Descricao
+                sDesc2 = !descricao
                 sNome2 = SubNull(!NomeCompleto)
             Else
                 Sql = "SELECT tramitacaocc.ano, tramitacaocc.numero, tramitacaocc.seq, tramitacaocc.ccusto, centrocusto.DESCRICAO "
@@ -277,10 +277,10 @@ cidadao:
                 Sql = Sql & "Where tramitacaocc.Ano = " & nAno & " And tramitacaocc.Numero = " & nNumero & " AND SEQ=" & nSeq + 1
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
                 If RdoAux2.RowCount > 0 Then
-                    sDesc2 = RdoAux2!Descricao
+                    sDesc2 = RdoAux2!descricao
                     sNome2 = ""
                 Else
-                    GoTo PROXIMO
+                    GoTo proximo
                 End If
             End If
            .Close
@@ -291,7 +291,7 @@ cidadao:
         Sql = Sql & Format(!DATAENVIO, "mm/dd/yyyy") & "','" & Left(Mask(sAssunto), 50) & "','" & Left(Mask(sRequerente), 50) & "','" & Format(!DATAHORA, "mm/dd/yyyy") & "')"
         cn.Execute Sql, rdExecDirect
         On Error GoTo 0
-PROXIMO:
+proximo:
        .MoveNext
     Loop
    .Close
@@ -318,7 +318,7 @@ Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO where ativo=1 ORDER BY DESCRICAO
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
         Do Until .EOF
-             cmbSetor.AddItem !Descricao
+             cmbSetor.AddItem !descricao
              cmbSetor.ItemData(cmbSetor.NewIndex) = !Codigo
             .MoveNext
         Loop

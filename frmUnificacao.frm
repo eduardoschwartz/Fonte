@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmUnificacao 
    BackColor       =   &H00EEEEEE&
@@ -1356,7 +1356,7 @@ With RdoAux
                 'GRAVA DEBITOTRIBUTO NOVO
                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
                 Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodNovo & "," & nAno & "," & nLanc & "," & nSeq2 & "," & nParc & "," & nCompl & "," & !CodTributo & "," & Virg2Ponto(CStr(!ValorTributo)) & ")"
-                cn.Execute Sql, rdExecDirect
+                'cn.Execute Sql, rdExecDirect
                .MoveNext
             Loop
            .Close
@@ -1419,7 +1419,7 @@ With RdoS
                 Sql = Sql & nCodNovo & "," & nAno & "," & nLanc & "," & nSeq2 & "," & nParc & "," & nCompl & "," & !statuslanc & ",'"
                 Sql = Sql & Format(!DataVencimento, "mm/dd/yyyy") & "','" & Format(!DATADEBASE, "mm/dd/yyyy") & "'," & !CODMOEDA & "," & IIf(IsNull(!numerolivro), 0, !numerolivro) & ","
                 Sql = Sql & IIf(IsNull(!paginalivro), 0, !paginalivro) & "," & IIf(IsNull(!numcertidao), 0, !numcertidao) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "','" & Format(!dataajuiza, "mm/dd/yyyy") & "',"
-                Sql = Sql & IIf(IsNull(Virg2Ponto(CStr(!ValorJuros))), 0, Virg2Ponto(CStr(!ValorJuros))) & ",'" & SubNull(!numprocesso) & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+                Sql = Sql & IIf(IsNull(!ValorJuros), 0, Virg2Ponto(CStr(SubNull(!ValorJuros)))) & ",'" & SubNull(!numprocesso) & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
                 cn.Execute Sql, rdExecDirect
                 'BUSCA DEBITOTRIBUTO ANTIGO
                 Sql = "SELECT * FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & nCodAntigo & " AND "
@@ -1431,7 +1431,7 @@ With RdoS
                         'GRAVA DEBITOTRIBUTO NOVO
                         Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
                         Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodNovo & "," & nAno & "," & nLanc & "," & nSeq2 & "," & nParc & "," & nCompl & "," & !CodTributo & "," & Virg2Ponto(CStr(!ValorTributo)) & ")"
-                        cn.Execute Sql, rdExecDirect
+                      '  cn.Execute Sql, rdExecDirect
                        .MoveNext
                     Loop
                    .Close
