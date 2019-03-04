@@ -4,14 +4,14 @@ Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmLancDoc 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Descrição de Lançamentos por Documento"
-   ClientHeight    =   4485
-   ClientLeft      =   4110
-   ClientTop       =   3915
+   ClientHeight    =   4440
+   ClientLeft      =   12285
+   ClientTop       =   3870
    ClientWidth     =   7335
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   4485
+   ScaleHeight     =   4440
    ScaleWidth      =   7335
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame1 
@@ -352,24 +352,24 @@ Attribute VB_Exposed = False
 Dim sEvento As String
 
 Private Sub cmbTipo_Click()
-Dim z As Long, nCodTipo As Integer, Sql As String, RdoAux As rdoResultset, itmX As ListItem
+Dim z As Long, nCodTipo As Integer, Sql As String, rdoAux As rdoResultset, itmX As ListItem
 Limpa
 If cmbTipo.ListIndex = -1 Then Exit Sub
 
-z = SendMessage(lvMain.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 nCodTipo = cmbTipo.ItemData(cmbTipo.ListIndex)
 
 Sql = "SELECT tipodocumentodesc.seq, tipodocumentodesc.codlanc, tipodocumentodesc.codassunto, tipodocumentodesc.descricao, tributo.desctributo, assunto.NOME "
 Sql = Sql & "FROM tipodocumentodesc INNER JOIN tributo ON tipodocumentodesc.codlanc = tributo.codtributo INNER JOIN "
 Sql = Sql & "assunto ON tipodocumentodesc.codassunto = assunto.CODIGO WHERE CODTIPO=" & nCodTipo
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
         Set itmX = lvMain.ListItems.Add(, , !descricao)
         itmX.SubItems(1) = !CODLANC
-        itmX.SubItems(2) = !DESCTRIBUTO
+        itmX.SubItems(2) = !desctributo
         itmX.SubItems(3) = !CODASSUNTO
-        itmX.SubItems(4) = !NOME
+        itmX.SubItems(4) = !Nome
        .MoveNext
     Loop
    .Close
@@ -441,13 +441,13 @@ Eventos "INCLUIR"
 End Sub
 
 Private Sub Form_Load()
-Dim Sql As String, RdoAux As rdoResultset
+Dim Sql As String, rdoAux As rdoResultset
 Centraliza Me
 Sql = "select codtributo,desctributo from tributo order by desctributo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
-        cmbLanc.AddItem !DESCTRIBUTO
+        cmbLanc.AddItem !desctributo
         cmbLanc.ItemData(cmbLanc.NewIndex) = !CodTributo
        .MoveNext
     Loop
@@ -455,10 +455,10 @@ With RdoAux
 End With
 
 Sql = "select codigo,nome from assunto where ativo=1 order by nome"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
-        cmbAssunto.AddItem !NOME
+        cmbAssunto.AddItem !Nome
         cmbAssunto.ItemData(cmbAssunto.NewIndex) = !Codigo
        .MoveNext
     Loop
@@ -466,10 +466,10 @@ With RdoAux
 End With
 
 Sql = "select codigo,nome from tipolancdoc order by codigo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
-        cmbTipo.AddItem !NOME
+        cmbTipo.AddItem !Nome
         cmbTipo.ItemData(cmbTipo.NewIndex) = !Codigo
        .MoveNext
     Loop

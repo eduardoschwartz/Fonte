@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmBaixaBancariaNovo 
    BorderStyle     =   1  'Fixed Single
@@ -287,7 +287,7 @@ Begin VB.Form frmBaixaBancariaNovo
          MousePointer    =   99
          MouseIcon       =   "frmBaixaBancariaNovo.frx":04C8
          MonthBackColor  =   16777215
-         StartOfWeek     =   90963969
+         StartOfWeek     =   125894657
          TitleBackColor  =   8421376
          TitleForeColor  =   16777215
          TrailingForeColor=   16711935

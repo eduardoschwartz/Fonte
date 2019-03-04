@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
@@ -612,10 +612,10 @@ Begin VB.Form frmCnsProcesso2
       BackStyle       =   0  'Transparent
       Caption         =   "0 processos localizados"
       Height          =   255
-      Left            =   2490
+      Left            =   2340
       TabIndex        =   26
       Top             =   5370
-      Width           =   2895
+      Width           =   1965
    End
    Begin VB.Menu mnuGrid 
       Caption         =   "Grid"
@@ -774,10 +774,11 @@ With RdoAux
     nNumRec = .RowCount
     xId = 1
     Do Until .EOF
-        If xId Mod 10 = 0 Then
+        If xId Mod 50 = 0 Then
            CallPb xId, nNumRec
+           
         End If
-        sNomeCidadao = SubNull(!nomecidadao)
+        sNomeCidadao = SubNull(!NomeCidadao)
         If sNomeCidadao = "" Then
             Sql = "select nome from cidadao_removido where codigo=" & !CodCidadao
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -794,10 +795,10 @@ With RdoAux
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     On Error Resume Next
-                    Sql = "insert cidadao(codcidadao,nomecidadao) values(" & !CodCidadao & ",'" & Mask(RdoAux2!nomecidadao) & "')"
+                    Sql = "insert cidadao(codcidadao,nomecidadao) values(" & !CodCidadao & ",'" & Mask(RdoAux2!NomeCidadao) & "')"
                     cn.Execute Sql, rdExecDirect
                     On Error GoTo 0
-                    sNomeCidadao = RdoAux2!nomecidadao
+                    sNomeCidadao = RdoAux2!NomeCidadao
                 End If
                 RdoAux2.Close
             End If

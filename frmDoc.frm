@@ -1,11 +1,11 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmDoc 
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Consulta/Reativação de Documento"
-   ClientHeight    =   5220
+   ClientHeight    =   6300
    ClientLeft      =   2805
    ClientTop       =   3645
    ClientWidth     =   10335
@@ -13,8 +13,19 @@ Begin VB.Form frmDoc
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   5220
+   ScaleHeight     =   6300
    ScaleWidth      =   10335
+   Begin VB.TextBox txtObs 
+      Appearance      =   0  'Flat
+      Height          =   1035
+      Left            =   90
+      Locked          =   -1  'True
+      MultiLine       =   -1  'True
+      ScrollBars      =   2  'Vertical
+      TabIndex        =   34
+      Top             =   5190
+      Width           =   10155
+   End
    Begin VB.Frame frTemp 
       Height          =   2685
       Left            =   480
@@ -378,16 +389,16 @@ Begin VB.Form frmDoc
    End
    Begin VB.Label lblFile 
       Height          =   285
-      Left            =   2430
+      Left            =   7020
       TabIndex        =   29
-      Top             =   5220
+      Top             =   7170
       Width           =   1365
    End
    Begin VB.Label lblPath 
       Height          =   195
-      Left            =   450
+      Left            =   5040
       TabIndex        =   28
-      Top             =   5265
+      Top             =   7215
       Width           =   1545
    End
    Begin VB.Label Label10 
@@ -635,7 +646,7 @@ Dim x As Integer, Y As Integer
 Dim nCodReduz As Long
 Dim nAnoExercicio As Integer
 Dim nCodLanc As Integer
-Dim nSeqLanc As Integer
+Dim nSeqlanc As Integer
 Dim nNumParc As Integer
 Dim nCompl As Integer
 Dim Achou As Boolean
@@ -683,11 +694,11 @@ End If
 If MsgBox("Deseja executar a restituição destes lançamentos ?", vbYesNo, "CONFIRMAÇÃO DE RESTITUIÇÃO") = vbYes Then
     With grdParc
         For x = 1 To .Rows - 1
-            If .TextMatrix(x, 12) = "" Then GoTo proximo
+            If .TextMatrix(x, 12) = "" Then GoTo Proximo
             nCodReduz = .TextMatrix(x, 1)
             nAnoExercicio = .TextMatrix(x, 0)
             nCodLanc = Val(Left$(.TextMatrix(x, 2), 3))
-            nSeqLanc = .TextMatrix(x, 3)
+            nSeqlanc = .TextMatrix(x, 3)
             nNumParc = .TextMatrix(x, 4)
             nCompl = .TextMatrix(x, 5)
             For Y = 1 To grdTemp.Rows - 1
@@ -697,22 +708,22 @@ If MsgBox("Deseja executar a restituição destes lançamentos ?", vbYesNo, "CONFIR
                   'ATUALIZA A TABELA DEBITOPAGO
                    Sql = "SELECT * FROM DEBITOPAGO "
                    Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-                   Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL"
+                   Sql = Sql & "SEQLANCAMENTO = " & nSeqlanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL"
                    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                    If RdoAux.RowCount > 1 Then
                         Sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
                         Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-                        Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND SEQPAG=" & nSeqPag
+                        Sql = Sql & "SEQLANCAMENTO = " & nSeqlanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND SEQPAG=" & nSeqPag
                    Else
                         Sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
                         Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-                        Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL"
+                        Sql = Sql & "SEQLANCAMENTO = " & nSeqlanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL"
                    End If
                    cn.Execute Sql, rdExecDirect
                    RdoAux.Close
                    Sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
                    Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-                   Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND SEQPAG=" & nSeqPag
+                   Sql = Sql & "SEQLANCAMENTO = " & nSeqlanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND SEQPAG=" & nSeqPag
                    cn.Execute Sql, rdExecDirect
                   'ATUALIZA A TABELA NUMDOCUMENTO
 '                   Sql = "UPDATE NUMDOCUMENTO SET CODBANCO=0,CODAGENCIA=0,VALORPAGO=0 "
@@ -735,7 +746,7 @@ If MsgBox("Deseja executar a restituição destes lançamentos ?", vbYesNo, "CONFIR
  '                   cn.Execute Sql, rdExecDirect
 '                End If'
 '            End With
-proximo:
+Proximo:
         Next
     End With
 Else
@@ -807,7 +818,7 @@ Dim nNumDoc As Long
 Dim nCodReduz As Long
 Dim nAnoExercicio As Integer
 Dim nCodLanc As Integer
-Dim nSeqLanc As Integer
+Dim nSeqlanc As Integer
 Dim nNumParc As Integer
 Dim nCompl As Integer
 
@@ -819,13 +830,13 @@ If KeyAscii = vbKeyReturn Then
             nCodReduz = .TextMatrix(.Row, 1)
             nAnoExercicio = .TextMatrix(.Row, 0)
             nCodLanc = Val(Left$(.TextMatrix(.Row, 2), 3))
-            nSeqLanc = .TextMatrix(.Row, 3)
+            nSeqlanc = .TextMatrix(.Row, 3)
             nNumParc = .TextMatrix(.Row, 4)
             nCompl = .TextMatrix(.Row, 5)
             Sql = "SELECT CODREDUZIDO, ANOEXERCICIO, CODLANCAMENTO, SEQLANCAMENTO, NUMPARCELA, CODCOMPLEMENTO,"
             Sql = Sql & "SEQPAG, DATAPAGAMENTO, DATARECEBIMENTO,VALORPAGO, CODBANCO, CODAGENCIA, RESTITUIDO, NumDocumento "
             Sql = Sql & "From DEBITOPAGO WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-            Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL order by anoexercicio,codlancamento,numparcela"
+            Sql = Sql & "SEQLANCAMENTO = " & nSeqlanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL order by anoexercicio,codlancamento,numparcela"
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
@@ -889,13 +900,13 @@ Inicio2:
            nCodReduz = .TextMatrix(.Row, 1)
            nAnoExercicio = .TextMatrix(.Row, 0)
            nCodLanc = Val(Left$(.TextMatrix(.Row, 2), 3))
-           nSeqLanc = .TextMatrix(.Row, 3)
+           nSeqlanc = .TextMatrix(.Row, 3)
            nNumParc = .TextMatrix(.Row, 4)
            nCompl = .TextMatrix(.Row, 5)
             
            Sql = "SELECT CODREDUZIDO,VALORPAGO,DATAPAGAMENTO,DATARECEBIMENTO,NUMDOCUMENTO,CODBANCO,SEQPAG  FROM DEBITOPAGO WHERE "
            Sql = Sql & "CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoExercicio & " AND CODLANCAMENTO=" & nCodLanc
-           Sql = Sql & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nSeqLanc & " AND CODCOMPLEMENTO=" & nCompl & " AND RESTITUIDO IS  NULL"
+           Sql = Sql & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nSeqlanc & " AND CODCOMPLEMENTO=" & nCompl & " AND RESTITUIDO IS  NULL"
            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
            With RdoAux2
                 grdDup.Rows = 1
@@ -963,6 +974,7 @@ Dim nSomaTotal As Double, nPerc As Double
 Dim nSomaPrincipal As Double, RdoTmp As rdoResultset
 Dim bDupl As Boolean, qd As New rdoQuery
 Dim x As Integer, nSomaL As Double, nSomaJ As Double, nSomaM As Double, nSomaC As Double, bAchou As Boolean
+Dim nCodReduz As Long, nAno As Integer, nLanc As Integer, nSeqlanc As Integer, nParc As Integer, nCompl As Integer
 
 On Error GoTo Erro
 If txtNumDoc.Text = "" Then Exit Sub
@@ -1017,6 +1029,12 @@ Sql = Sql & "usuario ON numdocumento.userid = usuario.Id Where PARCELADOCUMENTO.
        If .RowCount = 0 Then
           MsgBox "Lançamentos não encontrados para este documento.", vbExclamation, "Atenção"
        Else
+       nCodReduz = !CODREDUZIDO
+       nAno = !AnoExercicio
+       nLanc = !CodLancamento
+       nSeqlanc = !SeqLancamento
+       nParc = !NumParcela
+       nCompl = !CODCOMPLEMENTO
        nStatus = !statuslanc
        sStatus = !DescSituacao
        lblBanco.Caption = SubNull(!CodBanco)
@@ -1134,6 +1152,21 @@ Sql = Sql & "usuario ON numdocumento.userid = usuario.Id Where PARCELADOCUMENTO.
       
    End With
 End With
+
+txtObs.Text = ""
+Sql = "SELECT obsparcela.*, usuario.nomelogin FROM obsparcela INNER JOIN usuario ON obsparcela.userid = usuario.Id WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno
+Sql = Sql & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeqlanc & " AND NUMPARCELA=" & nParc
+Sql = Sql & " AND CODCOMPLEMENTO=" & nCompl
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        txtObs.Text = txtObs.Text & !obs & vbCrLf
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
 
 fim:
 lblWait.Visible = False

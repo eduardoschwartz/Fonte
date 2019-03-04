@@ -558,9 +558,9 @@ If Opt(0).value = False And Opt(1).value = False Then
 End If
 
 If sTipo = "IMUN" Then
-   grdTemp.AddItem txtAno.Text & Chr(9) & sTipo & Chr(9) & sPeriodo & Chr(9) & chkFil.value & Chr(9) & 100 & Chr(9) & Mask(txtNumProc.Text) & Chr(9) & mskDataProc.Text & Chr(9) & Mask(txtMotivo.Text)
+   grdTemp.AddItem txtAno.Text & Chr(9) & sTipo & Chr(9) & sPeriodo & Chr(9) & chkFil.value & Chr(9) & 100 & Chr(9) & Mask(txtNumProc.Text) & Chr(9) & mskDataProc.Text & Chr(9) & Mask(txtMotivo.Text) & Chr(9) & NomeDeLogin & Chr(9) & Format(Now, "dd/mm/yyyy")
 Else
-   grdTemp.AddItem txtAno.Text & Chr(9) & sTipo & Chr(9) & sPeriodo & Chr(9) & chkFil.value & Chr(9) & txtPerc.Text & Chr(9) & Mask(txtNumProc.Text) & Chr(9) & mskDataProc.Text & Chr(9) & Mask(txtMotivo.Text)
+   grdTemp.AddItem txtAno.Text & Chr(9) & sTipo & Chr(9) & sPeriodo & Chr(9) & chkFil.value & Chr(9) & txtPerc.Text & Chr(9) & Mask(txtNumProc.Text) & Chr(9) & mskDataProc.Text & Chr(9) & Mask(txtMotivo.Text) & Chr(9) & NomeDeLogin & Chr(9) & Format(Now, "dd/mm/yyyy")
 End If
 
 txtAno.Text = ""
@@ -633,14 +633,14 @@ Do Until .EOF
     Sql = "SELECT codreduzido, anoisencao, codisencao, numprocesso, dataprocesso, percisencao, filantropico, periodo, motivo From isencao "
     Sql = Sql & "WHERE (anoisencao = 2009) AND (numprocesso = '" & !Numero & "/2008')"
     Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
-    If RdoAux3.RowCount = 0 Then GoTo proximo
+    If RdoAux3.RowCount = 0 Then GoTo Proximo
     
     
     Sql = "SELECT * FROM vwFULLCIDADAO WHERE CODCIDADAO=" & !CodCidadao
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         sCodInscricao = !CodCidadao
-        sContribuinte = !nomecidadao
+        sContribuinte = !NomeCidadao
         sEndEntrega = !Endereco & ", " & !NUMIMOVEL
         sComplEntrega = !Complemento
         If !CodLogradouro > 0 Then
@@ -660,7 +660,7 @@ Do Until .EOF
     Sql = Sql & sEndEntrega & " " & sComplEntrega & "','" & sCepEntrega & "   " & sBairroEntrega & "','" & sCidEntrega & "   " & sUFEntrega & "')"
     cn.Execute Sql, rdExecDirect
     xId = xId + 1
-proximo:
+Proximo:
    .MoveNext
     Loop
    .Close
@@ -710,7 +710,7 @@ With grdTemp
         Sql = "INSERT ISENCAO (CODREDUZIDO,ANOISENCAO,CODISENCAO,NUMPROCESSO,PERCISENCAO,FILANTROPICO,PERIODO,MOTIVO,ANOPROC,NUMPROC,USERID,DATAALTERA) VALUES("
         Sql = Sql & Val(txtCod.Text) & "," & Val(.TextMatrix(x, 0)) & "," & nCodIsencao & ",'" & .TextMatrix(x, 5) & "',"
         Sql = Sql & Virg2Ponto(.TextMatrix(x, 4)) & "," & Val(.TextMatrix(x, 3)) & "," & nCodPeriodo & ",'" & .TextMatrix(x, 7) & "'," & nAnoproc & "," & nNumproc & ","
-        Sql = Sql & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+        Sql = Sql & RetornaUsuarioID(.TextMatrix(x, 8)) & ",'" & Format(.TextMatrix(x, 9), "mm/dd/yyyy") & "')"
         cn.Execute Sql, rdExecDirect
     Next
 End With
@@ -783,14 +783,14 @@ End Sub
 
 Private Sub txtCod_KeyPress(KeyAscii As Integer)
 
-If cmdGravar.Enabled = True Then
-    If MsgBox("Salvar as alterações ?", vbQuestion + vbYesNo, "Atenção") = vbYes Then
-        KeyAscii = 0
-        cmdGravar_Click
-    Else
-        cmdGravar.Enabled = False
-    End If
-End If
+'If cmdGravar.Enabled = True Then
+'    If MsgBox("Salvar as alterações ?", vbQuestion + vbYesNo, "Atenção") = vbYes Then
+'        KeyAscii = 0
+'        cmdGravar_Click
+'    Else
+'        cmdGravar.Enabled = False
+'    End If
+'End If
 
 If KeyAscii = vbKeyReturn Then
     KeyAscii = 0

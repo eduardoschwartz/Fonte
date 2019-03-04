@@ -376,11 +376,11 @@ If txtSeq.Text = "" Then
    Exit Sub
 End If
 
-If UCase(NomeDeLogin) = "EDUARDO" Or NomeDeLogin = "RITA" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "SCHWARTZ" Or UCase(NomeDeLogin) = "FACTORE" Or UCase(NomeDeLogin) = "CARLOS.SANTOS" Or UCase(NomeDeLogin) = "GLEISE" Or UCase(NomeDeLogin) = "JOAOF" Or UCase(NomeDeLogin) = "TICYANNE.OKIMASU" Or UCase(NomeDeLogin) = "MARIELA.CUSTODIO" Or UCase(NomeDeLogin) = "HELOISA" Then
+If UCase(NomeDeLogin) = "NOELI" Or NomeDeLogin = "RITA" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "SCHWARTZ" Or UCase(NomeDeLogin) = "FACTORE" Or UCase(NomeDeLogin) = "CARLOS.SANTOS" Or UCase(NomeDeLogin) = "GLEISE" Or UCase(NomeDeLogin) = "JOAOF" Or UCase(NomeDeLogin) = "TICYANNE.OKIMASU" Or UCase(NomeDeLogin) = "MARIELA.CUSTODIO" Or UCase(NomeDeLogin) = "HELOISA" Then
     If grdHist.TextMatrix(grdHist.Row, 3) <> "GTI" Then
        GoTo fim
     Else
-        If UCase(NomeDeLogin) <> "FACTORE" And UCase(NomeDeLogin) <> "HELOISA" And UCase(NomeDeLogin) <> "CARLOS.SANTOS" And UCase(NomeDeLogin) <> "GLEISE" And UCase(NomeDeLogin) <> "EDUARDO" And UCase(NomeDeLogin) <> "TICYANNE.OKIMASU" And UCase(NomeDeLogin) <> "MARIELA.CUSTODIO" Then
+        If UCase(NomeDeLogin) <> "FACTORE" And UCase(NomeDeLogin) <> "HELOISA" And UCase(NomeDeLogin) <> "CARLOS.SANTOS" And UCase(NomeDeLogin) <> "GLEISE" And UCase(NomeDeLogin) <> "NOELI" And UCase(NomeDeLogin) <> "TICYANNE.OKIMASU" And UCase(NomeDeLogin) <> "MARIELA.CUSTODIO" Then
             MsgBox "Histórico gerado pelo sistema não pode ser alterado.", vbCritical, "Erro de Acesso"
             Exit Sub
         Else
@@ -389,7 +389,7 @@ If UCase(NomeDeLogin) = "EDUARDO" Or NomeDeLogin = "RITA" Or NomeDeLogin = "LUIZ
     End If
 End If
 
-If grdHist.TextMatrix(grdHist.Row, 3) = "GTI/Iss.C.Civil" And (NomeDeLogin = "EDUARDO" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "PAULA" Or NomeDeLogin = "MARILIA") Then
+If grdHist.TextMatrix(grdHist.Row, 3) = "GTI/Iss.C.Civil" And (NomeDeLogin = "NOELI" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "PAULA" Or NomeDeLogin = "MARILIA") Then
     GoTo Fim2
 'Else
 '    MsgBox "Histórico de ISS construção civil somente pode ser alterado pelos fiscais.", vbCritical, "Erro de Acesso"
@@ -402,7 +402,7 @@ End If
 
 fim:
 
-If grdHist.TextMatrix(grdHist.Row, 3) = "GTI/Iss.C.Civil" And NomeDeLogin <> "EDUARDO" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "ROSANGELA" And NomeDeLogin <> "PAULA" And NomeDeLogin <> "MARILIA" Then
+If grdHist.TextMatrix(grdHist.Row, 3) = "GTI/Iss.C.Civil" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "ROSANGELA" And NomeDeLogin <> "PAULA" And NomeDeLogin <> "MARILIA" Then
     MsgBox "Histórico de ISS construção civil somente pode ser alterado pelos fiscais.", vbCritical, "Erro de Acesso"
     Exit Sub
 End If
@@ -431,7 +431,7 @@ If grdHist.TextMatrix(grdHist.Row, 3) = "GTI" And NomeDeLogin <> "SCHWARTZ" Then
     Exit Sub
 End If
 
-If NomeDeLogin = "EDUARDO" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "RITA" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "FACTORE" Or NomeDeLogin = "HELOISA" Or NomeDeLogin = "MARIELA" Or NomeDeLogin = "REGINA" Or NomeDeLogin = "JOAOF" Or NomeDeLogin = "TICYANNE.OKIMASU" Or NomeDeLogin = "MARIELA.CUSTODIO" Or NomeDeLogin = "GLEISE" Then
+If NomeDeLogin = "NOELI" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "RITA" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "FACTORE" Or NomeDeLogin = "HELOISA" Or NomeDeLogin = "MARIELA" Or NomeDeLogin = "REGINA" Or NomeDeLogin = "JOAOF" Or NomeDeLogin = "TICYANNE.OKIMASU" Or NomeDeLogin = "MARIELA.CUSTODIO" Or NomeDeLogin = "GLEISE" Then
    GoTo fim
 End If
 

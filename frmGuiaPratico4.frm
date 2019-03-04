@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmGuiaPratico4 
    BackColor       =   &H00EEEEEE&
@@ -454,7 +454,7 @@ Sql = "INSERT REPORTTMP(USUARIO,MEMO1,MEMO2,MEMO3) VALUES('" & NomeDeLogin & "',
 Sql = Sql & Mask(txtDados.Text) & "','" & Mask(txtObs.Text) & "')"
 cn.Execute Sql, rdExecDirect
 
-frmReport.ShowReport2 "GUIAPRATICO4", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "GUIAPRATICO4", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect

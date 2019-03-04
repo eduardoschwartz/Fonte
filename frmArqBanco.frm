@@ -564,7 +564,7 @@ If DA Then
               aFebrabanB(nCountB).CodigoRegistro = RegistroB.CodigoRegistro
               aFebrabanB(nCountB).CODREDUZIDO = RegistroB.CODREDUZIDO
               If Left(RegistroB.CODREDUZIDO, 2) <> "00" Then
-                GoTo proximo
+                GoTo Proximo
               End If
               
               'aFebrabanB(nCountB).Distrito = RegistroB.Distrito
@@ -627,7 +627,7 @@ If DA Then
               ReDim Preserve aFebrabanB(nCountB)
          End If
          
-proximo:
+Proximo:
         Posicao = Posicao + Len(RegistroB) + 2
     Loop
     Close #1
