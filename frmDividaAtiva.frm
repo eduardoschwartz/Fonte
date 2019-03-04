@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmDividaAtiva 
@@ -31,7 +31,7 @@ Begin VB.Form frmDividaAtiva
       Height          =   315
       ItemData        =   "frmDividaAtiva.frx":0004
       Left            =   1980
-      List            =   "frmDividaAtiva.frx":0062
+      List            =   "frmDividaAtiva.frx":0065
       Style           =   2  'Dropdown List
       TabIndex        =   1
       Top             =   180
@@ -45,7 +45,7 @@ Begin VB.Form frmDividaAtiva
       Width           =   1095
       _ExtentX        =   1931
       _ExtentY        =   503
-      MouseIcon       =   "frmDividaAtiva.frx":011A
+      MouseIcon       =   "frmDividaAtiva.frx":0123
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -91,8 +91,8 @@ Begin VB.Form frmDividaAtiva
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmDividaAtiva.frx":0136
-      PICN            =   "frmDividaAtiva.frx":0152
+      MICON           =   "frmDividaAtiva.frx":013F
+      PICN            =   "frmDividaAtiva.frx":015B
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -131,8 +131,8 @@ Begin VB.Form frmDividaAtiva
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmDividaAtiva.frx":02AC
-      PICN            =   "frmDividaAtiva.frx":02C8
+      MICON           =   "frmDividaAtiva.frx":02B5
+      PICN            =   "frmDividaAtiva.frx":02D1
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -172,8 +172,8 @@ Begin VB.Form frmDividaAtiva
       FCOLO           =   0
       MCOL            =   65280
       MPTR            =   1
-      MICON           =   "frmDividaAtiva.frx":0336
-      PICN            =   "frmDividaAtiva.frx":0352
+      MICON           =   "frmDividaAtiva.frx":033F
+      PICN            =   "frmDividaAtiva.frx":035B
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
@@ -337,7 +337,7 @@ End Type
 
 Private Sub chk1_Click()
 
-If chk1.Value = 1 Then
+If chk1.value = 1 Then
     cmbBanco.Enabled = False
 Else
     cmbBanco.Enabled = True
@@ -371,7 +371,7 @@ Ocupado
 'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 'MsgBox "A Soma total das analises = " & FormatNumber(RdoAux!Total, 2), vbInformation, "Soma das análises"
 
-frmReport.ShowReport "Analise", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "Analise", frmMdi.HWND, Me.HWND
 'frmReport.ShowReport "AnaliseSD", frmMdi.hwnd, Me.hwnd
 Sql = "DELETE FROM ANALISERECEITA WHERE COMPUTER='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
@@ -394,11 +394,11 @@ nSomaPago = 0: nSomaTotal = 0
 
 cDataIni = CDate(mskDataIni.Text): cDataFim = CDate(mskDataFim.Text)
 cn.QueryTimeout = 0
-Pb.Value = 0
+Pb.value = 0
 Sql = "DELETE FROM ANALISERECEITA WHERE COMPUTER='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
-If chk1.Value = 1 Then
+If chk1.value = 1 Then
    Open sPathBin & "\REC" & Format(Day(Now), "00") & Format(Month(Now), "00") For Output Shared As #1
 '   Open sPathBin & "\REC" & Format(Day(Now), "00") & Format(Month(Now), "00") & "SD" For Output Shared As #2
 Else
@@ -411,7 +411,7 @@ For cData = cDataIni To cDataFim
     lblMsg.Refresh
     If cGetInputState() <> 0 Then DoEvents
     
-    If chk1.Value = 1 Then
+    If chk1.value = 1 Then
         Sql = "SELECT DISTINCT CODBANCO FROM DEBITOPAGO "
         Sql = Sql & "WHERE DATARECEBIMENTO = '" & Format(cData, "mm/dd/yyyy") & "' AND RESTITUIDO IS NULL AND CODBANCO<>91 AND CODBANCO<>92 AND CODBANCO<>93 AND CODBANCO<>94 AND CODBANCO<>95 AND CODBANCO<>96 AND CODBANCO<>97 AND CODBANCO<>98 AND CODBANCO<>99"
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -454,7 +454,7 @@ For cData = cDataIni To cDataFim
     
     For nContador = 1 To nContaBanco
         ReDim Matrix(0)
-        If chk1.Value = 1 Then
+        If chk1.value = 1 Then
         Else
             ReDim aBanco(1)
             aBanco(1) = cmbBanco.ItemData(cmbBanco.ListIndex)
@@ -465,7 +465,7 @@ For cData = cDataIni To cDataFim
         Sql = Sql & "DEBITOPARCELA.NUMPARCELA = DEBITOPAGO.NUMPARCELA AND DEBITOPARCELA.CODCOMPLEMENTO = DEBITOPAGO.CODCOMPLEMENTO "
         'Sql = Sql & "WHERE VALORPAGOREAL>0 AND RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(cData, "mm/dd/yyyy") & "' AND (CODBANCO=" & aBanco(nContador)
         Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(cData, "mm/dd/yyyy") & "' and "
-        If chkSimples.Value = vbChecked Then
+        If chkSimples.value = vbChecked Then
             Sql = Sql & " (CODBANCO=91 OR CODBANCO=92 OR CODBANCO=93 OR CODBANCO=94 OR CODBANCO=95 OR CODBANCO=96 OR CODBANCO=97 OR CODBANCO=98) "
         Else
             Sql = Sql & "CodBanco = " & aBanco(nContador)
@@ -486,7 +486,7 @@ For cData = cDataIni To cDataFim
         Sql = Sql & "DEBITOPARCELA.AnoExercicio = DEBITOPAGO.AnoExercicio AND DEBITOPARCELA.CodLancamento = DEBITOPAGO.CodLancamento AND DEBITOPARCELA.SeqLancamento = DEBITOPAGO.SeqLancamento AND "
         Sql = Sql & "DEBITOPARCELA.NUMPARCELA = DEBITOPAGO.NUMPARCELA AND DEBITOPARCELA.CODCOMPLEMENTO = DEBITOPAGO.CODCOMPLEMENTO "
         Sql = Sql & "WHERE VALORPAGOREAL>0 AND RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(cData, "mm/dd/yyyy") & "' AND "
-        If chkSimples.Value = vbChecked Then
+        If chkSimples.value = vbChecked Then
             Sql = Sql & " (CODBANCO=91 OR CODBANCO=92 OR CODBANCO=93 OR CODBANCO=94 OR CODBANCO=95 OR CODBANCO=96 OR CODBANCO=97 OR CODBANCO=98) "
         Else
             Sql = Sql & "(CodBanco = " & aBanco(nContador) & ")"
@@ -514,9 +514,9 @@ For cData = cDataIni To cDataFim
                     With RdoAux2
                         If .RowCount = 0 Then
                             bDA = True: bAj = True
-                            GoTo CONTINUA
+                            GoTo continua
                         End If
-                        sNumProc = !NUMPROCESSO
+                        sNumProc = !numprocesso
                        .Close
                     End With
                     
@@ -533,7 +533,7 @@ For cData = cDataIni To cDataFim
                             Else
                                bDA = False
                             End If
-                            If Not IsNull(!DATAAJUIZA) Then
+                            If Not IsNull(!dataajuiza) Then
                                bAj = True
                             Else
                                bAj = False
@@ -549,14 +549,14 @@ For cData = cDataIni To cDataFim
                     Else
                        bDA = False
                     End If
-                    If Not IsNull(!DATAAJUIZA) Then
+                    If Not IsNull(!dataajuiza) Then
                        bAj = True
                     Else
                        bAj = False
                     End If
                 End If
                 
-CONTINUA:
+continua:
                 
                 Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND "
                 Sql = Sql & "SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO
@@ -596,7 +596,7 @@ CONTINUA:
                     Do Until .EOF
                         'If !CodTributo = 1 Then MsgBox "TESTE"
                     
-                        If nSomaTributo = 0 Then GoTo Proximo
+                        If nSomaTributo = 0 Then GoTo proximo
                         nPerc = !ValorTributo / nSomaTributo 'PRINCIPAL / SOMA DOS TRIBUTOS
                         nValorJMC = nDif * nPerc 'DIFERENCA * PERCENTUAL (JUROS,MULTA E CORRECAO)
                         If Not bAj Then
@@ -708,7 +708,7 @@ CONTINUA:
                     Loop
                    .Close
                 End With
-Proximo:
+proximo:
                 DoEvents
                 xId = xId + 1
                .MoveNext
@@ -936,7 +936,7 @@ End With
 
 Close #1
 'Close #2
-Pb.Value = 100
+Pb.value = 100
 lblMsg.Caption = "Analise concluida..."
 lblMsg.Refresh
 If cGetInputState() <> 0 Then DoEvents
@@ -947,7 +947,7 @@ Private Sub cmdGerar_Click()
 
 GeraAnalise2
 Ocupado
-frmReport.ShowReport "Analise", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "Analise", frmMdi.HWND, Me.HWND
 Sql = "DELETE FROM ANALISERECEITA WHERE COMPUTER='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 Liberado
@@ -982,11 +982,11 @@ On Error GoTo Erro
 If cGetInputState() <> 0 Then DoEvents
 
 If ((nPosF * 100) / nTotal) <= 100 Then
-   Pb.Value = (nPosF * 100) / nTotal
+   Pb.value = (nPosF * 100) / nTotal
 Else
-   Pb.Value = 100
+   Pb.value = 100
 End If
-lblPB.Caption = Int(Pb.Value) & " %"
+lblPB.Caption = Int(Pb.value) & " %"
 
 Me.Refresh
 If cGetInputState() <> 0 Then DoEvents
@@ -1019,11 +1019,11 @@ Dim nSomaDC As Double, nSomaRC As Double, nTotalMatriz As Double, sNatureza As S
 nSomaPago = 0: nSomaTotal = 0
 cData = CDate(mskDataIni.Text)
 cn.QueryTimeout = 0
-Pb.Value = 0
+Pb.value = 0
 Sql = "DELETE FROM ANALISERECEITA WHERE COMPUTER='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
-If chk1.Value = 1 Then
+If chk1.value = 1 Then
    Open sPathBin & "\REC" & Format(Day(Now), "00") & Format(Month(Now), "00") For Output Shared As #1
    Open sPathBin & "\REC" & Format(Day(Now), "00") & Format(Month(Now), "00") & "SD" For Output Shared As #2
 Else
@@ -1035,7 +1035,7 @@ lblMsg.Caption = "Gerando analise do dia.: " & cData
 lblMsg.Refresh
 If cGetInputState() <> 0 Then DoEvents
 
-If chk1.Value = 1 Then
+If chk1.value = 1 Then
     Sql = "SELECT DISTINCT CODBANCO FROM DEBITOPAGO WHERE DATARECEBIMENTO = '" & Format(cData, "mm/dd/yyyy") & "' AND RESTITUIDO IS NULL AND "
     Sql = Sql & "CODBANCO<>91 AND CODBANCO<>92 AND CODBANCO<>93 AND CODBANCO<>94 AND CODBANCO<>95 AND CODBANCO<>96 AND CODBANCO<>97 AND CODBANCO<>98 AND CODBANCO<>99"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1078,7 +1078,7 @@ End If
 
 For nContador = 1 To nContaBanco
     ReDim Matrix(0): ReDim Matrix2(0)
-    If chk1.Value = 1 Then
+    If chk1.value = 1 Then
     Else
         ReDim aBanco(1)
         aBanco(1) = cmbBanco.ItemData(cmbBanco.ListIndex)
@@ -1140,9 +1140,9 @@ For nContador = 1 To nContaBanco
                 With RdoAux2
                     If .RowCount = 0 Then
                         bDA = True: bAj = True
-                        GoTo CONTINUA
+                        GoTo continua
                     End If
-                    sNumProc = !NUMPROCESSO
+                    sNumProc = !numprocesso
                    .Close
                 End With
                 
@@ -1159,7 +1159,7 @@ For nContador = 1 To nContaBanco
                         Else
                            bDA = False
                         End If
-                        If Not IsNull(!DATAAJUIZA) Then
+                        If Not IsNull(!dataajuiza) Then
                            bAj = True
                         Else
                            bAj = False
@@ -1175,14 +1175,14 @@ For nContador = 1 To nContaBanco
                 Else
                    bDA = False
                 End If
-                If Not IsNull(!DATAAJUIZA) Then
+                If Not IsNull(!dataajuiza) Then
                    bAj = True
                 Else
                    bAj = False
                 End If
             End If
             
-CONTINUA:
+continua:
             
             Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND "
             Sql = Sql & "SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO
@@ -1209,7 +1209,7 @@ CONTINUA:
             With RdoAux2
                 nCodFicha = 0: nCodFichaJM = 0: nCodFichaC = 0
                 Do Until .EOF
-                    If nSomaTributo = 0 Then GoTo Proximo
+                    If nSomaTributo = 0 Then GoTo proximo
                     nPerc = !ValorTributo / nSomaTributo 'PRINCIPAL / SOMA DOS TRIBUTOS
                     If nPerc < 0 Then MsgBox "aqui"
                     nValorJMC = nDif * nPerc 'DIFERENCA * PERCENTUAL (JUROS,MULTA E CORRECAO)
@@ -1315,7 +1315,7 @@ CONTINUA:
                 Loop
                .Close
             End With
-Proximo:
+proximo:
             xId = xId + 1
            .MoveNext
         Loop
@@ -1531,7 +1531,7 @@ Next
 
 Close #1
 Close #2
-Pb.Value = 100
+Pb.value = 100
 lblMsg.Caption = "Analise concluida..."
 lblMsg.Refresh
 If cGetInputState() <> 0 Then DoEvents

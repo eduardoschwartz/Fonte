@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmProdutividadeControle 
    BorderStyle     =   1  'Fixed Single
@@ -488,9 +488,9 @@ Begin VB.Form frmProdutividadeControle
          _ExtentX        =   2302
          _ExtentY        =   556
          _Version        =   393216
-         Format          =   99680257
+         Format          =   172621825
          CurrentDate     =   40968
-         MaxDate         =   43465
+         MaxDate         =   43830
          MinDate         =   40544
       End
       Begin VB.Label Label1 
@@ -1090,7 +1090,7 @@ With RdoAux
    .Close
 End With
 
-If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "EDUARDO" Then
+If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "NOELI" Then
     If Not ProdIsBossLogin() Then
         cmbFiscal.Text = RetornaUsuarioFullName()
         cmbFiscal_Click

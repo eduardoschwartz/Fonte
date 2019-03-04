@@ -219,9 +219,9 @@ cn.Execute Sql, rdExecDirect
 nCCusto = cmbSetor.ItemData(cmbSetor.ListIndex)
 Ocupado
 If chkSemDataEnvio.value = vbChecked Then
-    Sql = "SELECT * From vwTRAMITACAO WHERE datahora between '" & Format(mskData.Text, "mm/dd/yyyy") & "' and '" & Format(mskData2.Text, "mm/dd/yyyy") & "' AND ccusto = " & nCCusto & " ORDER BY ANO,NUMERO"
+    Sql = "SELECT * From vwTRAMITACAO2 WHERE datahora between '" & Format(mskData.Text, "mm/dd/yyyy") & "' and '" & Format(mskData2.Text, "mm/dd/yyyy") & "' AND ccusto = " & nCCusto & " ORDER BY ANO,NUMERO"
 Else
-    Sql = "SELECT * From vwTRAMITACAO WHERE dataenvio between '" & Format(mskData.Text, "mm/dd/yyyy") & "' and '" & Format(mskData2.Text, "mm/dd/yyyy") & "' AND ccusto = " & nCCusto
+    Sql = "SELECT * From vwTRAMITACAO2 WHERE dataenvio between '" & Format(mskData.Text, "mm/dd/yyyy") & "' and '" & Format(mskData2.Text, "mm/dd/yyyy") & "' AND ccusto = " & nCCusto
 End If
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
@@ -252,7 +252,7 @@ cidadao:
             Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & RdoAux2!CodCidadao
             Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
             If RdoAux3.RowCount > 0 Then
-                sRequerente = RdoAux3!nomecidadao
+                sRequerente = RdoAux3!NomeCidadao
             Else
                 sRequerente = ""
             End If
@@ -263,8 +263,8 @@ cidadao:
         nSeq = !Seq
         sDesc1 = !descricao
         sNome1 = SubNull(!NomeCompleto)
-        Sql = "SELECT * FROM vwTRAMITACAO WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq + 1
-        'Sql = "SELECT * FROM vwTRAMITACAO WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq
+        Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq + 1
+        'Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
         
         With RdoAux2
@@ -298,9 +298,9 @@ proximo:
 End With
 Liberado
 If chkSemDataEnvio.value = vbChecked Then
-    frmReport.ShowReport2 "PROCESSOENVIADO2", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport2 "PROCESSOENVIADO2", frmMdi.HWND, Me.HWND
 Else
-    frmReport.ShowReport "PROCESSOENVIADO", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "PROCESSOENVIADO", frmMdi.HWND, Me.HWND
 End If
 
 Sql = "DELETE FROM PROCESSOENVIO WHERE COMPUTER='" & NomeDeLogin & "'"

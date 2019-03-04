@@ -6,8 +6,8 @@ Begin VB.Form frmBairro
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Bairros"
    ClientHeight    =   4590
-   ClientLeft      =   4110
-   ClientTop       =   3210
+   ClientLeft      =   19485
+   ClientTop       =   3990
    ClientWidth     =   6120
    Icon            =   "frmBairro.frx":0000
    KeyPreview      =   -1  'True
@@ -480,7 +480,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim sOldDesc As String
-Dim Rdoaux As rdoResultset
+Dim RdoAux As rdoResultset
 Dim Sql As String, bExec As Boolean
 Dim Evento As String, sFormCall As String
 Dim sRet As String, sUF As String, nCodCidade As Integer
@@ -505,7 +505,7 @@ If Not bExec Then Exit Sub
 Limpa
 Ocupado
 CarregaLista
-Le
+le
 'If cmbCidade.Text = "JABOTICABAL" Then
 If cmbCidade.Text = "JABOTICABAL" And Not bEsp Then
     cmdNovo.Enabled = False: cmdAlterar.Enabled = False: cmdExcluir.Enabled = False
@@ -522,8 +522,8 @@ Private Sub cmbUF_Click()
 If Not bExec Then Exit Sub
 cmbCidade.Clear
 Sql = "Select CODCIDADE,DESCCIDADE From CIDADE WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' ORDER BY DESCCIDADE"
-Set Rdoaux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With Rdoaux
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
        cmbCidade.AddItem !descCidade
        cmbCidade.ItemData(cmbCidade.NewIndex) = !CodCidade
@@ -551,7 +551,7 @@ Private Sub cmdAlterar_Click()
 End Sub
 
 Private Sub cmdCancel_Click()
-    Le
+    le
     Eventos "INICIAR"
     Evento = ""
 End Sub
@@ -570,13 +570,13 @@ On Error GoTo Erro
        Log Form, Me.Caption, Exclusão, "Excluído registro " & Format(txtCod.Text, "000") & "-" & txtDesc.Text & " na UF " & Left$(cmbUF.Text, 2) & " e cidade " & cmbCidade.Text
        Limpa
        CarregaLista
-       Le
+       le
     End If
     
 Exit Sub
 Erro:
-For X = 0 To rdoErrors.Count - 1
-    MsgBox rdoErrors(X).Description
+For x = 0 To rdoErrors.Count - 1
+    MsgBox rdoErrors(x).Description
 Next
     
 End Sub
@@ -594,7 +594,7 @@ Private Sub cmdGravar_Click()
 End Sub
 
 Private Sub cmdGravarQuadra_Click()
-Dim Sql As String, Rdoaux As rdoResultset
+Dim Sql As String, RdoAux As rdoResultset
 
 If cmbQuadras.ListIndex = -1 Then
     MsgBox "Selecione uma quadra", vbCritical, "erro"
@@ -607,7 +607,7 @@ Sql = "UPDATE CADIMOB SET LI_QUADRAS='" & txtQuadra.Text & "' WHERE LI_CODBAIRRO
 cn.Execute Sql, rdExecDirect
 
 txtQuadra.Text = ""
-Le
+le
 End Sub
 
 Private Sub cmdNovo_Click()
@@ -627,8 +627,8 @@ Private Sub cmdRefresh_Click()
 
 cmbCidade.Clear
 Sql = "Select CODCIDADE,DESCCIDADE From CIDADE WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' ORDER BY DESCCIDADE"
-Set Rdoaux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With Rdoaux
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
        cmbCidade.AddItem !descCidade
        cmbCidade.ItemData(cmbCidade.NewIndex) = !CodCidade
@@ -650,19 +650,19 @@ Private Sub cmdSair_Click()
 End Sub
 
 Private Sub Form_Activate()
-Dim X As Integer
+Dim x As Integer
 
 If sUF <> "" Then
-    For X = 0 To cmbUF.ListCount
-        If cmbUF.List(X) = sUF Then
-            cmbUF.ListIndex = X
+    For x = 0 To cmbUF.ListCount
+        If cmbUF.List(x) = sUF Then
+            cmbUF.ListIndex = x
             Exit For
         End If
     Next
     
-    For X = 0 To cmbCidade.ListCount
-        If cmbCidade.ItemData(X) = nCodCidade Then
-            cmbCidade.ListIndex = X
+    For x = 0 To cmbCidade.ListCount
+        If cmbCidade.ItemData(x) = nCodCidade Then
+            cmbCidade.ListIndex = x
             Exit For
         End If
     Next
@@ -690,8 +690,8 @@ Eventos "INICIAR"
 
 bExec = False
 Sql = "Select SIGLAUF,DESCUF From UF ORDER BY DESCUF"
-Set Rdoaux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With Rdoaux
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
        cmbUF.AddItem !SiglaUF & "-" & !DESCUF
       .MoveNext
@@ -706,7 +706,7 @@ End If
 
 lstBairro.Clear
 CarregaLista
-Le
+le
 Liberado
 
 End Sub
@@ -763,8 +763,8 @@ FormHagana
 
 End Sub
 
-Private Sub Le()
-Dim Sql As String, Rdoaux As rdoResultset
+Private Sub le()
+Dim Sql As String, RdoAux As rdoResultset
 
 If lstBairro.ListIndex = -1 Then Exit Sub
 txtCod.Text = lstBairro.ItemData(lstBairro.ListIndex)
@@ -773,8 +773,8 @@ txtDesc.Text = lstBairro.Text
 
 cmbQuadras.Clear
 Sql = "SELECT DISTINCT LI_QUADRAS FROM CADIMOB WHERE li_codbairro=" & txtCod.Text
-Set Rdoaux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With Rdoaux
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         cmbQuadras.AddItem SubNull(!Li_Quadras)
        .MoveNext
@@ -796,9 +796,9 @@ lstBairro.Clear
 If cmbCidade.ListIndex = -1 Then Exit Sub
 
 Sql = "Select CODBAIRRO,DESCBAIRRO From BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex) & " AND CODBAIRRO<>999 ORDER BY DESCBAIRRO"
-Set Rdoaux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 
-With Rdoaux
+With RdoAux
     Do Until .EOF
        lstBairro.AddItem !DescBairro
        lstBairro.ItemData(lstBairro.NewIndex) = !CodBairro
@@ -810,11 +810,11 @@ End With
 End Sub
 
 Private Sub lstbairro_Click()
-Le
+le
 End Sub
 
 Private Sub Grava()
-Dim MaxCod As Integer, X As Integer
+Dim MaxCod As Integer, x As Integer
 Dim OldCidade As String, OldBairro As String
 
 OldCidade = cmbCidade.Text
@@ -826,13 +826,13 @@ If cmbCidade.ItemData(cmbCidade.ListIndex) = 413 And NomeDeLogin <> "FACTORE" An
 End If
 
 Sql = "SELECT MAX(CODBAIRRO) AS MAXIMO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND  CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex) & "  AND CODBAIRRO<>999"
-Set Rdoaux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-If IsNull(Rdoaux!maximo) Then
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If IsNull(RdoAux!maximo) Then
     MaxCod = 1
 Else
-    MaxCod = Rdoaux!maximo + 1
+    MaxCod = RdoAux!maximo + 1
 End If
-Rdoaux.Close
+RdoAux.Close
 
 If Evento = "Novo" Then
     Sql = "INSERT BAIRRO (SIGLAUF,CODCIDADE,CODBAIRRO,DESCBAIRRO) VALUES('"
@@ -856,30 +856,30 @@ End If
 cmbCidade.Text = OldCidade
 cmbCidade_Click
 lstBairro.Text = OldBairro
-Le
+le
 
 If sUF <> "" Then
     If sFormCall = "frmCadImob" Then
         frmCadImob.cmbCidade_Click
-        For X = 0 To frmCadImob.cmbBairro.ListCount
-            If UCase(frmCadImob.cmbBairro.List(X)) = UCase(txtDesc.Text) Then
-                frmCadImob.cmbBairro.ListIndex = X
+        For x = 0 To frmCadImob.cmbBairro.ListCount
+            If UCase(frmCadImob.cmbBairro.List(x)) = UCase(txtDesc.Text) Then
+                frmCadImob.cmbBairro.ListIndex = x
                 Exit For
             End If
         Next
     ElseIf sFormCall = "frmCidadaoR" Then
         frmCidadao.cmbCidade_Click
-        For X = 0 To frmCidadao.cmbBairro.ListCount
-            If UCase(frmCidadao.cmbBairro.List(X)) = UCase(txtDesc.Text) Then
-                frmCidadao.cmbBairro.ListIndex = X
+        For x = 0 To frmCidadao.cmbBairro.ListCount
+            If UCase(frmCidadao.cmbBairro.List(x)) = UCase(txtDesc.Text) Then
+                frmCidadao.cmbBairro.ListIndex = x
                 Exit For
             End If
         Next
     ElseIf sFormCall = "frmCidadaoC" Then
         frmCidadao.cmbCidade2_Click
-        For X = 0 To frmCidadao.cmbBairro2.ListCount
-            If UCase(frmCidadao.cmbBairro2.List(X)) = UCase(txtDesc.Text) Then
-                frmCidadao.cmbBairro2.ListIndex = X
+        For x = 0 To frmCidadao.cmbBairro2.ListCount
+            If UCase(frmCidadao.cmbBairro2.List(x)) = UCase(txtDesc.Text) Then
+                frmCidadao.cmbBairro2.ListIndex = x
                 Exit For
             End If
         Next

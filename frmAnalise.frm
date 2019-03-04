@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmAnalise 
    BorderStyle     =   1  'Fixed Single
@@ -85,7 +85,7 @@ Begin VB.Form frmAnalise
          _ExtentX        =   2302
          _ExtentY        =   556
          _Version        =   393216
-         Format          =   103219201
+         Format          =   117374977
          CurrentDate     =   42026
       End
       Begin prjChameleon.chameleonButton cmdGerar 
@@ -492,7 +492,7 @@ cmdGerar.Enabled = False
 CarregaTributo
 ReDim aFichaDetalhe(0)
 
-z = SendMessage(lvMain.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 Set qd.ActiveConnection = cn
 qd.QueryTimeout = 0
 xId = 1
@@ -528,7 +528,7 @@ End If
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 If IsNull(RdoAux!soma) Then
     lblTotalDia.Caption = Format(0, "#0.00")
-    GoTo fim
+    GoTo FIM
 Else
     lblTotalDia.Caption = Format(RdoAux!soma, "#0.00")
     nValorTotalPago = RdoAux!soma
@@ -721,12 +721,21 @@ Ficha:
     If aReg(x).nValorTrib > 0 Then
         If Not bDA And Not bAj Then
             aReg(x).F1 = aFicha(z).F1 'Principal
-'            If (aReg(x).nCodTrib = 1 Or aReg(x).nCodTrib = 2) And aReg(x).nAno = 2018 And Year(dDataReceita) = 2017 Then
-'                aReg(x).F1 = 50503
-'                FichaDetalhe dDataReceita, nCodBanco, 50503, aReg(x).nValorTrib
-'            Else
+            If (aReg(x).nCodTrib = 1 Or aReg(x).nCodTrib = 2) And aReg(x).nAno = 2019 And Year(dDataReceita) = 2018 Then
+                aReg(x).F1 = 50507 'iptu
+                FichaDetalhe dDataReceita, nCodBanco, 50507, aReg(x).nValorTrib
+            ElseIf (aReg(x).nCodTrib = 14) And aReg(x).nAno = 2019 And Year(dDataReceita) = 2018 Then
+                aReg(x).F1 = 50508 'tx lic
+                FichaDetalhe dDataReceita, nCodBanco, 50508, aReg(x).nValorTrib
+            ElseIf (aReg(x).nCodTrib = 11) And aReg(x).nAno = 2019 And Year(dDataReceita) = 2018 Then
+                aReg(x).F1 = 50510 'iss
+                FichaDetalhe dDataReceita, nCodBanco, 50510, aReg(x).nValorTrib
+            ElseIf (aReg(x).nCodTrib = 25) And aReg(x).nAno = 2019 And Year(dDataReceita) = 2018 Then
+                aReg(x).F1 = 50509 'vig
+                FichaDetalhe dDataReceita, nCodBanco, 50509, aReg(x).nValorTrib
+            Else
                 FichaDetalhe dDataReceita, nCodBanco, aFicha(z).F1, aReg(x).nValorTrib
-'            End If
+            End If
         ElseIf bDA And Not bAj Then
             aReg(x).F1 = aFicha(z).F3 'Principal DA
             FichaDetalhe dDataReceita, nCodBanco, aFicha(z).F3, aReg(x).nValorTrib
@@ -809,15 +818,15 @@ For x = 1 To UBound(aFichaDetalhe)
 Next
 Close #1
 
-fim:
+FIM:
 Liberado
 If UBound(aReg) = 0 Then
     MsgBox "Não existem baixas neste período para este(s) banco(s).", vbInformation, "Atenção"
 Else
     If frmMdi.frTeste.Visible = True Then
-        frmReport.ShowReport "Analise2_tmp", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "Analise2_tmp", frmMdi.HWND, Me.HWND
     Else
-        frmReport.ShowReport "Analise2", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "Analise2", frmMdi.HWND, Me.HWND
     End If
     Sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
     cn.Execute Sql, rdExecDirect
@@ -855,7 +864,7 @@ cmdGerar.Enabled = False
 CarregaTributo
 ReDim aFichaDetalhe(0)
 
-z = SendMessage(lvMain.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 Set qd.ActiveConnection = cn
 qd.QueryTimeout = 0
 xId = 1
@@ -883,7 +892,7 @@ End If
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 If IsNull(RdoAux!soma) Then
     lblTotalDia.Caption = Format(0, "#0.00")
-    GoTo fim
+    GoTo FIM
 Else
     lblTotalDia.Caption = Format(RdoAux!soma, "#0.00")
     nValorTotalPago = RdoAux!soma
@@ -1140,15 +1149,15 @@ For x = 1 To UBound(aFichaDetalhe)
 Next
 Close #1
 
-fim:
+FIM:
 Liberado
 If lvMain.ListItems.Count = 0 Then
     MsgBox "Não existem baixas neste período para este(s) banco(s).", vbInformation, "Atenção"
 Else
     If frmMdi.frTeste.Visible = True Then
-        frmReport.ShowReport "Analise2_tmp", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "Analise2_tmp", frmMdi.HWND, Me.HWND
     Else
-        frmReport.ShowReport "Analise2", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "Analise2", frmMdi.HWND, Me.HWND
     End If
     Sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
     cn.Execute Sql, rdExecDirect

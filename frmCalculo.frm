@@ -4,8 +4,8 @@ Begin VB.Form frmCalculo
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cálculo geral de IPTU"
    ClientHeight    =   3570
-   ClientLeft      =   4350
-   ClientTop       =   3330
+   ClientLeft      =   13725
+   ClientTop       =   3405
    ClientWidth     =   7485
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
@@ -606,8 +606,8 @@ Open sPathBin & "\NUMDOCUMENTO.TXT" For Output As #4
 nLastDoc = 15787960
 nValorExp = 0
 
-Sql = "select codreduzido from cadimob where inativo=0 order by codreduzido"
-'Sql = "select codreduzido from cadimob where codreduzido<2000"
+'Sql = "select codreduzido from cadimob where inativo=0 order by codreduzido"
+Sql = "select codreduzido from cadimob where codreduzido=89"
 'Sql = "select codigo as codreduzido from table1 order by codigo"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -768,7 +768,7 @@ With RdoAux
             ax = nCodReduz & "," & nAno & "," & 1 & "," & 0 & "," & 0 & "," & 91 & "," & nLastDoc & "," & "0" & "," & "0"
             Print #3, ax
             '******************************
-            '****** COMPLEM. 91 ***********
+            '****** COMPLEM. 92 ***********
             '******************************
             'GRAVA NA TABELA DEBITOPARCELA
             ax = nCodReduz & "," & nAno & "," & 1 & "," & 0 & "," & 0 & "," & 92 & ","
@@ -834,7 +834,7 @@ Sql = "SELECT ANO,QTDEPARCELA,PARCELAUNICA,DESCONTOUNICA,VENCUNICA,VENCUNICA2,VE
 Sql = Sql & "VENC06,VENC07,VENC08,VENC09,VENC10,VENC11,VENC12 FROM PARAMPARCELA WHERE CODTIPO=1 AND ANO=" & Val(cmbAno.Text)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-     If .RowCount = 0 Then GoTo fim
+     If .RowCount = 0 Then GoTo FIM
      ReDim aParc(!qtdeparcela)
      Do Until .EOF
         If Not IsNull(!vencunica) Then aParc(0) = Format(!vencunica, "dd/mm/yyyy")
@@ -857,7 +857,7 @@ With RdoAux
      Loop
     .Close
 End With
-fim:
+FIM:
 End Sub
 
 Private Sub CallPb(nVal As Long, nTot As Long)

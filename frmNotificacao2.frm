@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmNotificacao2 
    BorderStyle     =   1  'Fixed Single
@@ -40,7 +40,7 @@ Begin VB.Form frmNotificacao2
       _ExtentX        =   2408
       _ExtentY        =   582
       _Version        =   393216
-      Format          =   104726529
+      Format          =   77201409
       CurrentDate     =   40750
    End
    Begin VB.ComboBox cmbAno 
@@ -411,6 +411,8 @@ Else
     If nUso = UsoConstrucao.residencial Then
         If nCateg = Categoria.Baixo Then
             nCodTributo = 179
+        ElseIf nCateg = Categoria.Popular Then
+            nCodTributo = 691
         ElseIf nCateg = Categoria.Médio Then
             nCodTributo = 180
         ElseIf nCateg = Categoria.Alto Then
@@ -425,6 +427,10 @@ Else
     ElseIf nUso = UsoConstrucao.Comercial Then
         If nCateg = Categoria.Baixo Then
             nCodTributo = 182
+        ElseIf nCateg = Categoria.Barracao Then
+            nCodTributo = 689
+        ElseIf nCateg = Categoria.Popular Then
+            nCodTributo = 690
         ElseIf nCateg = Categoria.Médio Then
             nCodTributo = 183
         ElseIf nCateg = Categoria.Alto Then
@@ -569,7 +575,7 @@ cn.Execute Sql, rdExecDirect
 Sql = "select * from vwfullimovel2 where codreduzido=" & Val(txtCodImovel.Text)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-    sNome = !nomecidadao
+    sNome = !NomeCidadao
     nCodReduz = Val(txtCodImovel.Text)
     nCodCidadao = Val(txtCodCidadao.Text)
     sProcesso = txtNumProc.Text
@@ -596,7 +602,7 @@ With RdoAux
             
     Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & nCodCidadao
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    sNome = RdoAux2!nomecidadao
+    sNome = RdoAux2!NomeCidadao
     RdoAux2.Close
                 
     Sql = "delete from notificacaoiss where seq=" & Val(txtNot.Text) & " and ano=" & nAno
@@ -671,9 +677,9 @@ End With
 
 Liberado
 If chkHabitese.value = 0 Then
-    frmReport.ShowReport2 "NOTIFICACAO3", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport2 "NOTIFICACAO3", frmMdi.HWND, Me.HWND
 Else
-    frmReport.ShowReport2 "NOTIFICACAO4", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport2 "NOTIFICACAO4", frmMdi.HWND, Me.HWND
 End If
 
 txtArea.Text = ""

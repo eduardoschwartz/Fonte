@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmCancelDebito 
@@ -348,7 +348,7 @@ End If
 evDel = 4: evSus = 17
 If InStr(1, sRet, Format(evDel, "000"), vbBinaryCompare) > 0 Then bDel = True
 bSupervisor = bDel
-    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "EDUARDO" And NomeDeLogin <> "ANA" And NomeDeLogin <> "NOELI" Then
+    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "NOELI" Then
         If cmbTipo.ListIndex = 3 Or cmbTipo.ListIndex = 5 Then
             If InStr(1, sRet, Format(evSus, "000"), vbBinaryCompare) = 0 Then
                 MsgBox "O Usuário " & NomeDeLogin & " não possue permissão para suspender este(s) lancamento(s).", vbCritical, "Alerta de Segurança"
@@ -378,7 +378,7 @@ If cmbTipo.ListIndex = 0 Then
         ButtonText(0) = "Supervisor"
         ButtonText(1) = "Cancelar"
         'Set up the CBT hook
-        hInst = GetWindowLong(Me.hwnd, GWL_HINSTANCE)
+        hInst = GetWindowLong(Me.HWND, GWL_HINSTANCE)
         Thread = GetCurrentThreadId()
         hHook = SetWindowsHookEx(WH_CBT, AddressOf Manipulate, hInst, Thread)
         retval = MsgBox("O Usuário " & sNomeUser & " não possue permissão para cancelar parcelas vencidas." & vbCrLf & "Solicite um Supervisor ou cancele a operação", vbInformation + vbYesNo, "Alerta de Segurança")
@@ -401,7 +401,7 @@ If cmbTipo.ListIndex = 0 Then
             ButtonText(0) = "Supervisor"
             ButtonText(1) = "Cancelar"
             'Set up the CBT hook
-            hInst = GetWindowLong(Me.hwnd, GWL_HINSTANCE)
+            hInst = GetWindowLong(Me.HWND, GWL_HINSTANCE)
             Thread = GetCurrentThreadId()
             hHook = SetWindowsHookEx(WH_CBT, AddressOf Manipulate, hInst, Thread)
             retval = MsgBox("O Usuário " & sNomeUser & "  não possue permissão para cancelar parcelas com Data Base antiga." & vbCrLf & "Solicite um Supervisor ou cancele a operação", vbInformation + vbYesNo, "Alerta de Segurança")
@@ -643,7 +643,12 @@ If sValidaProc <> "OK" Then
     MsgBox sValidaProc, vbCritical, "Atenção"
 End If
 LimpaMascara mskDataProc
-mskDataProc.Text = Format(RetornaDataProcesso(ExtraiNumeroProcesso(txtProc.Text), ExtraiAnoProcesso(txtProc.Text)), "dd/mm/yyyy")
+If ExtraiNumeroProcesso(txtProc.Text) <> "" Then
+    mskDataProc.Text = Format(RetornaDataProcesso(ExtraiNumeroProcesso(txtProc.Text), ExtraiAnoProcesso(txtProc.Text)), "dd/mm/yyyy")
+Else
+    
+    LimpaMascara mskDataProc
+End If
 'mskDataProc.Text = Format(RetornaDataProcesso(Val(Left$(txtProc.Text, Len(txtProc.Text) - 5)), Val(Right$(txtProc.Text, 4))), "dd/mm/yyyy")
 If mskDataProc.Text = "01/01/1899" Then
      LimpaMascara mskDataProc

@@ -7,8 +7,8 @@ Begin VB.Form frmCnaeNovo
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Lista CNAE"
    ClientHeight    =   7065
-   ClientLeft      =   3270
-   ClientTop       =   2025
+   ClientLeft      =   10020
+   ClientTop       =   2895
    ClientWidth     =   9120
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -404,13 +404,17 @@ With grdTmp
     
     sCnae = RetornaNumero(mskCnae.Text)
    .AddItem .Rows & Chr(9) & cmbCriterio.ItemData(cmbCriterio.ListIndex) & Chr(9) & cmbCriterio.Text & Chr(9) & FormatNumber(txtValor.Text, 2)
-    Sql = "DELETE FROM CNAECRITERIO WHERE cnae='" & sCnae & "'"
+'    Sql = "DELETE FROM CNAECRITERIO WHERE cnae='" & sCnae & "'"
+'    cn.Execute Sql, rdExecDirect
+    Sql = "DELETE FROM cnae_criterio WHERE cnae='" & sCnae & "'"
     cn.Execute Sql, rdExecDirect
+    
     
     With grdTmp
         For x = 1 To grdTmp.Rows - 1
-            Sql = "INSERT CNAECRITERIO(CNAE,SEQ,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 0) & ","
-            Sql = Sql & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
+'            Sql = "INSERT CNAECRITERIO(CNAE,SEQ,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 0) & ","
+'            Sql = Sql & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
+            Sql = "INSERT cnae_criterio(CNAE,CRITERIO) VALUES('" & sCnae & "'," & .TextMatrix(x, 1) & ")"
             cn.Execute Sql, rdExecDirect
         Next
     End With
@@ -431,14 +435,18 @@ With grdTmp
 End With
  
  sCnae = RetornaNumero(mskCnae.Text)
- Sql = "DELETE FROM CNAECRITERIO WHERE cnae='" & sCnae & "'"
- cn.Execute Sql, rdExecDirect
+' Sql = "DELETE FROM CNAECRITERIO WHERE cnae='" & sCnae & "'"
+' cn.Execute Sql, rdExecDirect
+    Sql = "DELETE FROM cnae_criterio_valor WHERE cnae='" & sCnae & "'"
+    cn.Execute Sql, rdExecDirect
  
  With grdTmp
      For x = 1 To grdTmp.Rows - 1
-         Sql = "INSERT CNAECRITERIO(CNAE,SEQ,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 0) & ","
-         Sql = Sql & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
-         cn.Execute Sql, rdExecDirect
+'         Sql = "INSERT CNAECRITERIO(CNAE,SEQ,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 0) & ","
+'         Sql = Sql & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
+          Sql = "INSERT cnae_criterio_valor(CNAE,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
+          cn.Execute Sql, rdExecDirect
+          cn.Execute Sql, rdExecDirect
      Next
  End With
 
@@ -448,7 +456,7 @@ Private Sub cmdGravar_Click()
 Dim bAchou As Boolean, x As Integer, sCnae As String, Sql As String
 
 
-If NomeDeLogin <> "RITA" And NomeDeLogin <> "LEONARDODINIZ" And NOMEDLEOGIN <> "LEANDRO" And NomeDeLogin <> "PAULA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "LUIZH" And NomeDeLogin <> "SCHWARTZ" Then
+If NomeDeLogin <> "RITA" And NOMEDLEOGIN <> "LEANDRO" And NomeDeLogin <> "PAULA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "LUIZH" And NomeDeLogin <> "SCHWARTZ" Then
     MsgBox "Permissão negada", vbCritical, "Atenção"
     Exit Sub
 End If
@@ -546,7 +554,7 @@ End Sub
 Private Sub CarregaLista()
 Dim Sql As String, RdoAux As rdoResultset
 Dim itmX As ListItem, z As Long
-z = SendMessage(lvCnae.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvCnae.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 Ocupado
 Sql = "select * from cnae where 1=1 "
@@ -561,7 +569,7 @@ Sql = Sql & " order by cnae"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        Set itmX = lvCnae.ListItems.Add(, , !CNAE)
+        Set itmX = lvCnae.ListItems.Add(, , !Cnae)
         itmX.SubItems(1) = !descricao
        .MoveNext
     Loop
@@ -576,7 +584,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
         cmbCriterio.AddItem !descricao
-        cmbCriterio.ItemData(cmbCriterio.NewIndex) = !CRITERIO
+        cmbCriterio.ItemData(cmbCriterio.NewIndex) = !criterio
        .MoveNext
     Loop
    .Close
@@ -629,12 +637,17 @@ Dim x As Integer, sCnae
 sCnae = RetornaNumero(mskCnae.Text)
 
 grdTmp.Rows = 1
-Sql = "SELECT cnaecriterio.cnae, cnaecriterio.seq,cnaecriterio.criterio,cnaecriteriodesc.descricao , cnaecriterio.valor FROM cnaecriterio INNER JOIN cnaecriteriodesc ON cnaecriterio.criterio = cnaecriteriodesc.criterio "
-Sql = Sql & "WHERE CNAE='" & sCnae & "'"
+'Sql = "SELECT cnaecriterio.cnae, cnaecriterio.seq,cnaecriterio.criterio,cnaecriteriodesc.descricao , cnaecriterio.valor FROM cnaecriterio INNER JOIN cnaecriteriodesc ON cnaecriterio.criterio = cnaecriteriodesc.criterio "
+'Sql = Sql & "WHERE CNAE='" & sCnae & "'"
+Sql = "SELECT cnae_criterio.cnae, cnae_criterio.criterio, cnaecriteriodesc.descricao, cnaecriteriodesc.valor "
+Sql = Sql & "FROM cnae_criterio INNER JOIN cnaecriteriodesc ON cnae_criterio.criterio = cnaecriteriodesc.criterio "
+Sql = Sql & "WHERE cnae_criterio.cnae = '" & sCnae & "'"
+
+
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
-        grdTmp.AddItem !Seq & Chr(9) & !CRITERIO & Chr(9) & !descricao & Chr(9) & FormatNumber(!Valor, 4)
+        grdTmp.AddItem 0 & Chr(9) & RdoAux!criterio & Chr(9) & RdoAux!descricao & Chr(9) & FormatNumber(RdoAux!Valor, 4)
        .MoveNext
     Loop
    .Close

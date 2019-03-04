@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmSenhaStatus 
    BorderStyle     =   1  'Fixed Single
@@ -56,7 +56,7 @@ Begin VB.Form frmSenhaStatus
          GridLinesFixed  =   0
          BorderStyle     =   0
          Appearance      =   0
-         FormatString    =   "                 |^Pref.      |^2ª Via    |^Prefer.    |^Pat        |^REFIS   |^Tr.Univ. |^Total         "
+         FormatString    =   "                 |^Pref.      |^2ª Via    |^Prefer.    |^Pat        |^REFIS   |^Pr.Refis |^Total         "
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   9.75
@@ -117,7 +117,7 @@ Begin VB.Form frmSenhaStatus
       _ExtentX        =   2328
       _ExtentY        =   582
       _Version        =   393216
-      Format          =   79298561
+      Format          =   161677313
       CurrentDate     =   40414
    End
    Begin prjChameleon.chameleonButton cmdAnterior 

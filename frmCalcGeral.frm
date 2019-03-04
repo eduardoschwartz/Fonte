@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmCalcGeral 
@@ -1979,7 +1979,7 @@ With RdoAux
         nValorExpDocUnica = FormatNumber(!ValorUnica, 2)
      Else
         MsgBox "Taxa de Expediente não cadastrada.", vbCritical, "Atenção"
-        GoTo fim
+        GoTo FIM
      End If
     .Close
 End With
@@ -2351,7 +2351,7 @@ proximo:
     Loop
 End With
 
-fim:
+FIM:
 Close #4
 Close #3
 Close #2
@@ -2696,7 +2696,7 @@ proximo:
     Loop
 End With
 
-fim:
+FIM:
 
 End Sub
 
@@ -3637,7 +3637,7 @@ With RdoAux
      End If
       .Close
 End With
-fim:
+FIM:
 'LoadMatrix
 
 Liberado
@@ -3751,9 +3751,9 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aFatorC(UBound(aFatorC) + 1)
-        aFatorC(UBound(aFatorC)).Uso = !coduso
+        aFatorC(UBound(aFatorC)).Uso = !CODUSO
         aFatorC(UBound(aFatorC)).Tipo = !CodTipo
-        aFatorC(UBound(aFatorC)).Categoria = !codcateg
+        aFatorC(UBound(aFatorC)).Categoria = !CODCATEG
         aFatorC(UBound(aFatorC)).Fator = !FATORCATEG
        .MoveNext
      Loop
@@ -3798,7 +3798,7 @@ Tweak txtAnoCalculo, KeyAscii, IntegerPositive
 End Sub
 
 Private Sub txtAnoCalculo_LostFocus()
-If Val(txtAnoCalculo.Text) >= 2004 And Val(txtAnoCalculo.Text) <= 2018 Then
+If Val(txtAnoCalculo.Text) >= 2004 And Val(txtAnoCalculo.Text) <= 2019 Then
     lblAno.Caption = "Cálculo " & txtAnoCalculo.Text
    CarregaTela
 Else
@@ -3837,7 +3837,7 @@ Sql = "SELECT ANO,QTDEPARCELA,PARCELAUNICA,DESCONTOUNICA,DESCONTOUNICA2,DESCONTO
 Sql = Sql & "VENC06,VENC07,VENC08,VENC09,VENC10,VENC11,VENC12 FROM PARAMPARCELA WHERE CODTIPO=1 AND ANO=" & nAnoCalculo
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-     If .RowCount = 0 Then GoTo fim
+     If .RowCount = 0 Then GoTo FIM
      txtNumParc.Text = !qtdeparcela
      lblTemUnica.Caption = IIf(!PARCELAUNICA = "S", "Sim", "Não")
      lblPercUnica.Caption = FormatNumber(!DESCONTOUNICA, 2)
@@ -3865,7 +3865,7 @@ With RdoAux
      Loop
     .Close
 End With
-fim:
+FIM:
 End Sub
 
 Private Sub cmdRel_Click()
@@ -3919,7 +3919,7 @@ With RdoAux
             aLaser(1).nFace = !Seq
             aLaser(1).nUnidade = !Unidade
             aLaser(1).nSubUnidade = !SubUnidade
-            aLaser(1).sProprietario = !nomecidadao
+            aLaser(1).sProprietario = !NomeCidadao
             aLaser(1).nCodLogradouro = !CodLogr
             aLaser(1).sEndereco = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & SubNull(!NomeLogradouro)
             aLaser(1).nNumero = !Li_Num

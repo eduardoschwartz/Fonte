@@ -979,6 +979,8 @@ ElseIf txtAno.ListIndex = 9 Then
     txtPerc.Text = "8,4764"
 ElseIf txtAno.ListIndex = 10 Then
     txtPerc.Text = "2,5377"
+ElseIf txtAno.ListIndex = 11 Then
+    txtPerc.Text = "4,53"
 End If
 
 End Sub

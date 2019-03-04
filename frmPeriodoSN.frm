@@ -528,11 +528,11 @@ Private Sub CarregaLista()
 Dim RdoAux As rdoResultset, Sql As String
 grdMain.Rows = 1
 Limpa
-Sql = "SELECT * FROM PERIODOSN WHERE CODIGO=" & Val(frmCadMob.txtCodEmpresa.Text)
+Sql = "SELECT * FROM optante_simples WHERE CODIGO=" & Val(frmCadMob.txtCodEmpresa.Text)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        grdMain.AddItem Format(!dataini, "dd/mm/yyyy") & Chr(9) & IIf(IsNull(!datafim), "", Format(!datafim, "dd/mm/yyyy")) & Chr(9) & SubNull(!USUARIO)
+        grdMain.AddItem Format(!Data_Inicio, "dd/mm/yyyy") & Chr(9) & IIf(IsNull(!Data_Final), "", Format(!Data_Final, "dd/mm/yyyy"))
        .MoveNext
     Loop
    .Close

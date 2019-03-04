@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmCancelParcelamento 
    BackColor       =   &H00EEEEEE&
@@ -664,13 +664,13 @@ With grdOrigem
 '                Sql = Sql & "STATUSLANC,DATAVENCIMENTO,DATADEBASE,CODMOEDA,NUMEROLIVRO,PAGINALIVRO,NUMCERTIDAO,DATAINSCRICAO,"
 '                Sql = Sql & "DATAAJUIZA,VALORJUROS,NUMPROCESSO,USUARIO) VALUES(" & Val(txtCod.Text) & "," & !AnoExercicio & "," & !CodLancamento & ","
 '                Sql = Sql & !SeqLancamento & "," & !NumParcela & "," & Val(grdOrigem.TextMatrix(x, 4)) & "," & Val(Left$(grdOrigem.TextMatrix(x, 8), 2)) & ",'" & Format(grdOrigem.TextMatrix(nLinhaOriginal, 5), "mm/dd/yyyy") & "','" & Format(!DATADEBASE, "mm/dd/yyyy") & "',"
-                Sql = Sql & Val(SubNull(!CODMOEDA)) & "," & Val(SubNull(!numerolivro)) & "," & Val(SubNull(!paginalivro)) & "," & Val(SubNull(!numcertidao)) & "," & IIf(IsNull(!datainscricao), "Null", "'" & Format(!datainscricao, "mm/dd/yyyy") & "'") & "," & IIf(IsNull(!dataajuiza), "Null", "'" & Format(!dataajuiza, "mm/dd/yyyy") & "'") & "," & !ValorJuros & ",'"
+                Sql = Sql & Val(SubNull(!CODMOEDA)) & "," & Val(SubNull(!numerolivro)) & "," & Val(SubNull(!paginalivro)) & "," & Val(SubNull(!numcertidao)) & "," & IIf(IsNull(!datainscricao), "Null", "'" & Format(!datainscricao, "mm/dd/yyyy") & "'") & "," & IIf(IsNull(!dataajuiza), "Null", "'" & Format(!dataajuiza, "mm/dd/yyyy") & "'") & "," & IIf(IsNull(!ValorJuros), 0, !ValorJuros) & ",'"
 '                Sql = Sql & txtNumProc.Text & "','" & Left$(NomeDeLogin, 25) & "')"
                 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,"
                 Sql = Sql & "STATUSLANC,DATAVENCIMENTO,DATADEBASE,CODMOEDA,NUMEROLIVRO,PAGINALIVRO,NUMCERTIDAO,DATAINSCRICAO,"
                 Sql = Sql & "DATAAJUIZA,VALORJUROS,NUMPROCESSO,USERID) VALUES(" & Val(txtCod.Text) & "," & !AnoExercicio & "," & !CodLancamento & ","
                 Sql = Sql & !SeqLancamento & "," & !NumParcela & "," & Val(grdOrigem.TextMatrix(x, 4)) & "," & Val(Left$(grdOrigem.TextMatrix(x, 8), 2)) & ",'" & Format(grdOrigem.TextMatrix(nLinhaOriginal, 5), "mm/dd/yyyy") & "','" & Format(!DATADEBASE, "mm/dd/yyyy") & "',"
-                Sql = Sql & Val(SubNull(!CODMOEDA)) & "," & Val(SubNull(!numerolivro)) & "," & Val(SubNull(!paginalivro)) & "," & Val(SubNull(!numcertidao)) & "," & IIf(IsNull(!datainscricao), "Null", "'" & Format(!datainscricao, "mm/dd/yyyy") & "'") & "," & IIf(IsNull(!dataajuiza), "Null", "'" & Format(!dataajuiza, "mm/dd/yyyy") & "'") & "," & !ValorJuros & ",'"
+                Sql = Sql & Val(SubNull(!CODMOEDA)) & "," & Val(SubNull(!numerolivro)) & "," & Val(SubNull(!paginalivro)) & "," & Val(SubNull(!numcertidao)) & "," & IIf(IsNull(!datainscricao), "Null", "'" & Format(!datainscricao, "mm/dd/yyyy") & "'") & "," & IIf(IsNull(!dataajuiza), "Null", "'" & Format(!dataajuiza, "mm/dd/yyyy") & "'") & "," & IIf(IsNull(!ValorJuros), 0, !ValorJuros) & ",'"
                 Sql = Sql & txtNumProc.Text & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
                 cn.Execute Sql, rdExecDirect
             
@@ -833,7 +833,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If RdoAux.RowCount > 0 Then
          If sTipoCod = "I" Or sTipoCod = "C" Then
-            lblNome.Caption = !nomecidadao
+            lblNome.Caption = !NomeCidadao
          ElseIf sTipoCod = "M" Then
             lblNome.Caption = !RazaoSocial
          End If

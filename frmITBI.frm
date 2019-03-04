@@ -225,7 +225,7 @@ Begin VB.Form frmITBI
       Left            =   45
       TabIndex        =   29
       Top             =   720
-      Width           =   7530
+      Width           =   7500
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
          Caption         =   "Endereço...................:"
@@ -805,7 +805,7 @@ With RdoAuxCli
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             sInsc = !Inscricao
-            sNome = !nomecidadao
+            sNome = !NomeCidadao
             sDoc = SubNull(!CPF)
             If sDoc = "" Then
                 sDoc = SubNull(!Cnpj)
@@ -912,7 +912,7 @@ End With
 
 'Exit Sub
 
-frmReport.ShowReport2 "BOLETODAM_V42", frmMdi.hwnd, Me.hwnd, nSid, nSid
+frmReport.ShowReport2 "BOLETODAM_V42", frmMdi.HWND, Me.HWND, nSid, nSid
 
 Sql = "delete from boleto where sid=" & nSid
 cn.Execute Sql, rdExecDirect
@@ -1051,7 +1051,7 @@ With RdoAux
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
                      If .RowCount > 0 Then
-                          lblProp.Caption = !nomecidadao
+                          lblProp.Caption = !NomeCidadao
                           
                           
                           If Val(SubNull(!FCodLogradouro)) > 0 Then
@@ -1189,7 +1189,7 @@ With xImovel
     End If
 End With
 
-fim:
+FIM:
 Liberado
 
 End Sub
@@ -1256,6 +1256,11 @@ If Val(txtImovel.Text) = 0 And chkRural.value = vbUnchecked Then
     Exit Sub
 End If
 
+If Val(lblCep.Caption) = 0 Then
+    MsgBox "CEP obrigatório.", vbExclamation, "Atenção"
+    Exit Sub
+End If
+
 
 If lblNumInsc.Caption = "" Then
     MsgBox "Contribuinte deve ter um CPF/CNPJ válido.", vbExclamation, "Atenção"
@@ -1295,7 +1300,8 @@ If Opt(1).value = True And txtFunc.Text = "" Then
 End If
 
 'GravaCarneTmp
-EmiteBoleto
+'EmiteBoleto
+EmiteBoletoRegistrado
 If bGerado Then Limpa
 End Sub
 
@@ -1601,7 +1607,7 @@ If Opt(0).value = True Then
         cn.Execute Sql, rdExecDirect
     End If
     
-    frmReport.ShowReport "DAM", frmMdi.hwnd, Me.hwnd, nSid
+    frmReport.ShowReport "DAM", frmMdi.HWND, Me.HWND, nSid
 Else
     Sql = "INSERT ITBI (CODREDUZIDO,NOME,CPF,DATAVENCTO,DESCRICAO,VALORTOTAL,ARTIGO,TIPO,FUNCIONARIO,TIPODOC) VALUES("
     Sql = Sql & nCodReduz & ",'" & lblProp.Caption & "','" & sCPF & "','" & Format(mskVencto.Text, "mm/dd/yyyy") & "','"
@@ -1609,7 +1615,7 @@ Else
     Sql = Sql & txtFunc.Text & "'," & IIf(Opt(0).value, 0, 1) & ")"
     cn.Execute Sql, rdExecDirect
     
-    frmReport.ShowReport "ITBI", frmMdi.hwnd, Me.hwnd, nLastCod + 1
+    frmReport.ShowReport "ITBI", frmMdi.HWND, Me.HWND, nLastCod + 1
 End If
 
 On Error Resume Next
@@ -1675,7 +1681,7 @@ Select Case nCodReduz
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             sInsc = !Inscricao
-            sNome = !nomecidadao
+            sNome = !NomeCidadao
             sDoc = SubNull(!CPF)
             If sDoc = "" Then
                 sDoc = SubNull(!Cnpj)
@@ -1722,7 +1728,7 @@ Select Case nCodReduz
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             If .RowCount > 0 Then
-                sNome = !nomecidadao
+                sNome = !NomeCidadao
                 If SubNull(!Cnpj) <> "" Then
 '                    If Val(!Cnpj) > 0 Then
                         sDoc = Format(!Cnpj, "0#\.###\.###/####-##")
@@ -1959,9 +1965,9 @@ End If
 
 nNumGuia = nNumDoc
 If bBoleto Then
-    frmReport.ShowReport2 "BOLETODAM", frmMdi.hwnd, Me.hwnd, nSid, nNumGuia
+    frmReport.ShowReport2 "BOLETODAM", frmMdi.HWND, Me.HWND, nSid, nNumGuia
 Else
-    frmReport.ShowReport2 "BOLETODAM_V4", frmMdi.hwnd, Me.hwnd, nSid, nNumGuia
+    frmReport.ShowReport2 "BOLETODAM_V4", frmMdi.HWND, Me.HWND, nSid, nNumGuia
 End If
 
 Sql = "delete from boleto where sid=" & nSid
@@ -1969,4 +1975,104 @@ cn.Execute Sql, rdExecDirect
 Limpa
 
 End Sub
+
+Private Sub EmiteBoletoRegistrado()
+Dim v1 As String, v2 As String, v3 As String, v4 As String, v5 As String, v6 As String, v7 As String, v8 As String, v9 As String, V10 As String
+Dim RdoAux As rdoResultset, Sql As String, nNumDoc As Long, nSeq As Integer, nCodReduz As Long, nLanc As Integer, nParc As Integer, nAno As Integer
+Dim sDataBase As String, sDataVencto As String, nSeqObs As Integer, bAbateu As Boolean
+Dim sNome As String, sEnd As String, nNum As Integer, nValorDoc As Double, sCompl As String, sBairro As String, sCidade As String, sUF As String, sDoc As String
+
+nCodReduz = Val(txtCod.Text)
+sDataBase = Right$(frmMdi.Sbar.Panels(6).Text, 10)
+sDataVencto = mskVencto.Text
+nLanc = 36
+nParc = 1
+nAno = Year(Now)
+
+Sql = "SELECT MAX(NUMDOCUMENTO) AS MAXIMO FROM NUMDOCUMENTO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+nNumDoc = RdoAux!maximo + 1
+RdoAux.Close
+
+Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,CODBANCO,CODAGENCIA,VALORPAGO,ISENTOMJ,PERCISENCAO,TIPODOC,emissor,registrado) VALUES("
+Sql = Sql & nNumDoc & ",'" & Format(Now, sDataFormat) & "'," & 0 & "," & 0 & "," & 0 & "," & 0 & "," & 0 & ",3,'" & NomeDeLogin & "',1)"
+cn.Execute Sql, rdExecDirect
+
+Sql = "SELECT MAX(SEQLANCAMENTO) AS SEQMAXIMA FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND CODLANCAMENTO=" & nLanc & " AND ANOEXERCICIO=" & nAno & " AND NUMPARCELA=" & nParc
+Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If IsNull(RdoAux2!SEQMAXIMA) Then
+   nSeq = 0
+Else
+   nSeq = RdoAux2!SEQMAXIMA + 1
+End If
+
+Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES(" & nCodReduz & ","
+Sql = Sql & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & "," & nNumDoc & ")"
+cn.Execute Sql, rdExecDirect
+
+Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,USERID) VALUES("
+Sql = Sql & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','"
+Sql = Sql & Format(sDataBase, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+cn.Execute Sql, rdExecDirect
+
+Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+Sql = Sql & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & ","
+Sql = Sql & 84 & "," & Virg2Ponto(txtValor.Text) & ")"
+cn.Execute Sql, rdExecDirect
+
+If Trim(txtDesc.Text) <> "" Then
+    Sql = "SELECT MAX(SEQ) AS MAXIMO FROM OBSPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=0"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If IsNull(!maximo) Then
+            nSeqObs = 1
+        Else
+            nSeqObs = !maximo + 1
+        End If
+       .Close
+    End With
+    Sql = "INSERT OBSPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES(" & nCodReduz & ","
+    Sql = Sql & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & "," & nSeqObs & ",'" & Mask(Trim(txtDesc.Text)) & "',"
+    Sql = Sql & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(sDataBase, "mm/dd/yyyy") & "')"
+    cn.Execute Sql, rdExecDirect
+End If
+
+If chkRural.value = vbUnchecked Then
+    'GRAVA historico IMÓVEL
+    Sql = "SELECT max(SEQ) as MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & Val(txtImovel.Text)
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If IsNull(!maximo) Then
+            nSeqLanc = 1
+        Else
+            nSeqLanc = !maximo + 1
+        End If
+       .Close
+    End With
+    sHist = "Emissão de ITBI no código cidadão " & CStr(nCodReduz)
+    Sql = "INSERT HISTORICO (CODREDUZIDO,SEQ,DATAHIST,DESCHIST,DATAHIST2,USERID) VALUES("
+    Sql = Sql & Val(txtImovel.Text) & "," & nSeqLanc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sHist & "','" & Format(Now, "mm/dd/yyyy") & "'," & 236 & ")"
+    cn.Execute Sql, rdExecDirect
+End If
+
+
+v1 = lblProp.Caption
+v2 = Left(lblRua.Caption & ", " & lblNum.Caption & IIf(lblCompl.Caption <> "", " " & lblCompl.Caption, "") & " - " & lblBairro.Caption, 60)
+v3 = mskVencto.Text
+v4 = RetornaNumero(lblNumInsc.Caption)
+v5 = "287353200" & Format(nNumDoc, "00000000")
+v6 = RetornaNumero(txtValor.Text)
+v7 = Left("JABOTICABAL", 18)
+v8 = "SP"
+v9 = lblCep.Caption
+V10 = NomeDeLogin
+If Trim(lblCep.Caption) = "" Or Trim(lblCep.Caption) = "-" Then
+    v9 = "14870-000"
+End If
+ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+
+Limpa
+
+End Sub
+
 

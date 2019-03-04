@@ -342,7 +342,7 @@ Begin VB.Form frmSenhaPre
       _ExtentX        =   5424
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "TRANSP.UNIV."
+      TX              =   "PREF. REFIS"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -705,7 +705,7 @@ cmdSenha(1).Caption = "2ª VIA IPTU (0)"
 cmdSenha(2).Caption = "PREFERENCIAL (0)"
 cmdSenha(3).Caption = "SENHA PAT (0)"
 cmdSenha(4).Caption = "REFIS (0)"
-cmdSenha(5).Caption = "TRANSP.UNIV. (0)"
+cmdSenha(5).Caption = "PREF. REFIS (0)"
 
 Sql = "SELECT * FROM SSPAC WHERE YEAR(DATAENTRADA)=" & Year(dData) & " AND MONTH(DATAENTRADA)=" & Month(dData) & " AND "
 Sql = Sql & "DAY(DATAENTRADA)=" & Day(dData) & " AND DATACHAMADA IS NULL"
@@ -726,7 +726,7 @@ With RdoAux
             Case 4
                 cmdSenha(!BANDA - 1).Caption = "REFIS (" & aCount(!BANDA - 1) & ")"
             Case 5
-                cmdSenha(!BANDA - 1).Caption = "TRANSP.UNIV. (" & aCount(!BANDA - 1) & ")"
+                cmdSenha(!BANDA - 1).Caption = "PREF. REFIS (" & aCount(!BANDA - 1) & ")"
         End Select
         .MoveNext
     Loop
