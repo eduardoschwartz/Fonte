@@ -1191,6 +1191,7 @@ Begin VB.MDIForm frmMdi
       End
       Begin VB.Menu mnuRenovaAlvara 
          Caption         =   "Renovação de Alvará"
+         Visible         =   0   'False
       End
    End
 End
@@ -1253,8 +1254,10 @@ Select Case Index
         End If
     Case 3
         If m_cMenuAtende.Enabled(m_cMenuAtende.IndexForKey("mnu2ViaLaser")) Then
-            frm2ViaLaser.show
-            frm2ViaLaser.ZOrder 0
+'            frm2ViaLaser.show
+'            frm2ViaLaser.ZOrder 0
+            frmEmissaoGuia.show
+            frmEmissaoGuia.ZOrder 0
         Else
             MsgBox "Você não possui permissão para acessar este módulo!!!", vbCritical, "Segurança do GTI"
         End If
@@ -1288,8 +1291,13 @@ Select Case Index
         End If
     Case 8
         If m_cMenuMob.Enabled(m_cMenuMob.IndexForKey("mnuAlvara")) Then
-            frmAlvara.show
-            frmAlvara.ZOrder (0)
+'            If NomeDeLogin = "SCHWARTZ" Then
+                frmAlvaraNovo.show
+                frmAlvaraNovo.ZOrder (0)
+'            Else
+'                frmAlvara.show
+ '               frmAlvara.ZOrder (0)
+'            End If
         Else
             MsgBox "Você não possui permissão para acessar este módulo!!!", vbCritical, "Segurança do GTI"
         End If
@@ -1324,8 +1332,9 @@ Select Case Index
             MsgBox "Em construção"
             Exit Sub
         End If
-        frmAgenda.show
-        frmAgenda.ZOrder (0)
+        'frmAgenda.show
+        'frmAgenda.ZOrder (0)
+        frmRTF.show
 End Select
 End Sub
 
@@ -1389,7 +1398,7 @@ SENHA:
             Set frm = frmFundoDespesa
         Case "mnuDepositoCRI"
             Set frm = Nothing
-            frmReport.ShowReport "DEPOSITOCRI", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "DEPOSITOCRI", frmMdi.HWND, Me.HWND
         Case "mnuDeclaraIsentoIPTU"
             Set frm = frmDeclaraIsento
             
@@ -1429,13 +1438,13 @@ SENHA:
             Set frm = frmConfissaoDivida
         Case "mnuCobrancaJudicial"
             Set frm = Nothing
-            frmReport.ShowReport "COMUNICADOJUDICIAL", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "COMUNICADOJUDICIAL", frmMdi.HWND, Me.HWND
         Case "mnuEmiteDoc"
             Set frm = Nothing
-            frmReport.ShowReport2 "DOCEMITIDO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport2 "DOCEMITIDO", frmMdi.HWND, Me.HWND
         Case "mnuRelRefis"
             Set frm = Nothing
-            frmReport.ShowReport2 "REFIS", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport2 "REFIS", frmMdi.HWND, Me.HWND
 '            Set frm = Nothing
 '            Ocupado
  '           GeraRefisDAM (Year(Now))
@@ -1444,13 +1453,13 @@ SENHA:
             Set frm = frmRefisDetalhe
         Case "mnuRelRefisParc"
             Set frm = Nothing
-            frmReport.ShowReport2 "REFISPARC", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport2 "REFISPARC", frmMdi.HWND, Me.HWND
         Case "mnuRenovaAlvara"
             Set frm = Nothing
-            frmReport.ShowReport2 "ALVARARENOVA", frmMdi.hwnd, Me.hwnd
+'            frmReport.ShowReport2 "ALVARARENOVA", frmMdi.HWND, Me.HWND
         Case "mnuSenhaISS"
             Set frm = Nothing
-            frmReport.ShowReport2 "SENHAISS3", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport2 "SENHAISS3", frmMdi.HWND, Me.HWND
         Case "mnuConsultaAte"
             Set frm = Nothing
         Case "mnuCnsNumDoc"
@@ -1535,7 +1544,7 @@ If (lIndex > 0) Then
         Set frm = frmRolImovel
     Case "mnuDevedorIPTU"
         Set frm = Nothing
-        frmReport.ShowReport "DEVEDORIPTUANUAL", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "DEVEDORIPTUANUAL", frmMdi.HWND, Me.HWND
     Case "mnuCadRural"
         Set frm = frmCadastroRural
     Case "mnuProdutoRural"
@@ -1544,25 +1553,25 @@ If (lIndex > 0) Then
         Set frm = frmEstradaRural
     Case "mnuRelCadRural"
         Set frm = Nothing
-        frmReport.ShowReport "LISTARURAL", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "LISTARURAL", frmMdi.HWND, Me.HWND
     Case "mnuRelCadRuralFull"
         Set frm = Nothing
-        frmReport.ShowReport "LISTARURALFULL", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "LISTARURALFULL", frmMdi.HWND, Me.HWND
     Case "mnuRelCadRuralFaixa"
         Set frm = Nothing
-        frmReport.ShowReport "LISTARURAL2", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "LISTARURAL2", frmMdi.HWND, Me.HWND
     Case "mnuRelProdRural"
         Set frm = Nothing
-        frmReport.ShowReport "RURALPRODUTO", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "RURALPRODUTO", frmMdi.HWND, Me.HWND
     Case "mnuSimulaRural"
         Set frm = Nothing
-        frmReport.ShowReport "LISTARURAL3", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "LISTARURAL3", frmMdi.HWND, Me.HWND
     Case "mnuEventoRural"
         Set frm = Nothing
-        frmReport.ShowReport "EVENTORURAL", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "EVENTORURAL", frmMdi.HWND, Me.HWND
     Case "mnuLancRocada"
         Set frm = Nothing
-        frmReport.ShowReport2 "PAGAMENTOROCADA", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "PAGAMENTOROCADA", frmMdi.HWND, Me.HWND
     Case "mnuMalaDiretaRocada"
         Set frm = Nothing
         z = InputBox("Digite a Data de emissão.", "Entre com os dados", Format(Now, "dd/mm/yyyy"))
@@ -1570,7 +1579,7 @@ If (lIndex > 0) Then
             MsgBox "Data inválida.", vbExclamation, "Atenção"
         Else
             MalaDiretaRoçada (CDate(z))
-            frmReport.ShowReport "ETIQUETAGTI", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ETIQUETAGTI", frmMdi.HWND, Me.HWND
             cn.Execute "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'", rdExecDirect
         End If
     Case "mnuMalaDiretaISSCCivil"
@@ -1584,14 +1593,14 @@ If (lIndex > 0) Then
                 MsgBox "Data inválida.", vbExclamation, "Atenção"
             Else
                 MalaDiretaISSCCivil CDate(z), CDate(z2)
-                frmReport.ShowReport "ETIQUETAGTI", frmMdi.hwnd, Me.hwnd
+                frmReport.ShowReport "ETIQUETAGTI", frmMdi.HWND, Me.HWND
                 cn.Execute "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'", rdExecDirect
             End If
         End If
     Case "mnuMalaDiretaRural"
         Set frm = Nothing
         MalaDiretaRural
-        frmReport.ShowReport "ETIQUETACONSIST", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
         cn.Execute "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'", rdExecDirect
     Case "mnuSisObraPref"
         Set frm = frmSisObras
@@ -1660,13 +1669,6 @@ If (lIndex > 0) Then
                 Exit Sub
              End If
              Set frm = frmNumeracaoDoc
-        Case "mnuLancDoc"
-             If NomeDeLogin <> "SCHWARTZ" Then
-                Liberado
-                MsgBox "Acesso Negado!", vbCritical, "GTI"
-                Exit Sub
-             End If
-             Set frm = frmLancDoc
         Case "mnuRelatorioMob1"
             Set frm = Nothing
             BuildReportMob1
@@ -1675,30 +1677,30 @@ If (lIndex > 0) Then
         Case "mnuSalaEmp"
              Set frm = frmSalaEmpreendedor
         Case "mnuAlvara"
-            Set frm = frmAlvara
+            Set frm = frmAlvaraNovo
         Case "mnuSituacaoAlvara"
             Set frm = frmSituacaoAlvara
         Case "mnuDevIssVar"
             Set frm = Nothing
-            frmReport.ShowReport "ISSVARIAVELNAOPAGO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ISSVARIAVELNAOPAGO", frmMdi.HWND, Me.HWND
         Case "mnuDevIssEst"
             Set frm = Nothing
-            frmReport.ShowReport "ISSESTIMADONAOPAGO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ISSESTIMADONAOPAGO", frmMdi.HWND, Me.HWND
         Case "mnuRelDevTaxaLic"
             Set frm = Nothing
-            frmReport.ShowReport "TAXALICENCANPAGA", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "TAXALICENCANPAGA", frmMdi.HWND, Me.HWND
         Case "mnuRelDevTaxaLicAuto"
             Set frm = Nothing
-            frmReport.ShowReport "TAXALICENCANPAGAAUTONOMO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "TAXALICENCANPAGAAUTONOMO", frmMdi.HWND, Me.HWND
         Case "mnuRelDevTaxaLicAlvara"
             Set frm = Nothing
-            frmReport.ShowReport "TAXALICENCANPAGA2", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "TAXALICENCANPAGA2", frmMdi.HWND, Me.HWND
         Case "mnuRelDevVigSanit"
             Set frm = Nothing
-            frmReport.ShowReport "VIGILANCIANPAGA", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "VIGILANCIANPAGA", frmMdi.HWND, Me.HWND
         Case "mnuRelDevedorGeral"
             Set frm = Nothing
-            frmReport.ShowReport "DEVEDORISSGERAL", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "DEVEDORISSGERAL", frmMdi.HWND, Me.HWND
 '        Case "mnuRelDevISSEletro"
 '            Set frm = frmReportMob1
         Case "mnuListaSN"
@@ -1708,63 +1710,63 @@ If (lIndex > 0) Then
         Case "mnuListaTL"
             Set frm = Nothing
             If MsgBox("Deseja exibir apenas o resumo?", vbYesNo + vbQuestion, "Tipo de Relatório") = vbYes Then
-                frmReport.ShowReport2 "ATIVIDADETLA", frmMdi.hwnd, Me.hwnd
+                frmReport.ShowReport2 "ATIVIDADETLA", frmMdi.HWND, Me.HWND
             Else
-                frmReport.ShowReport2 "ATIVIDADETL", frmMdi.hwnd, Me.hwnd
+                frmReport.ShowReport2 "ATIVIDADETL", frmMdi.HWND, Me.HWND
             End If
         Case "mnuListaCnae"
             Set frm = Nothing
-            frmReport.ShowReport2 "EmpresaCnae", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport2 "EmpresaCnae", frmMdi.HWND, Me.HWND
         Case "mnuListaTL3"
             Set frm = Nothing
-            frmReport.ShowReport "ATIVIDADETL3", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ATIVIDADETL3", frmMdi.HWND, Me.HWND
         Case "mnuListaIssVE"
             Set frm = Nothing
-            frmReport.ShowReport "ATIVIDADEISS", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ATIVIDADEISS", frmMdi.HWND, Me.HWND
         Case "mnuListaIssFixo"
             Set frm = Nothing
-            frmReport.ShowReport "ATIVIDADEISSFIXO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ATIVIDADEISSFIXO", frmMdi.HWND, Me.HWND
         Case "mnuListaVS"
             Set frm = Nothing
-            frmReport.ShowReport "ATIVIDADEVS", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ATIVIDADEVS", frmMdi.HWND, Me.HWND
         Case "mnuRepParcNPIPTU"
             Set frm = Nothing
-            frmReport.ShowReport "ReparcNaoPagoIPTU", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ReparcNaoPagoIPTU", frmMdi.HWND, Me.HWND
         Case "mnuRepParcNPISS"
             Set frm = Nothing
-            frmReport.ShowReport "ReparcNaoPagoISS", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ReparcNaoPagoISS", frmMdi.HWND, Me.HWND
         Case "mnuMalaDireta"
             Set frm = Nothing
             frmMalaDiretaISS.show: frmMalaDiretaISS.ZOrder (0)
         Case "mnuEmpresaRua"
             Set frm = Nothing
-            frmReport.ShowReport "EMPRESAORDEMRUA", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "EMPRESAORDEMRUA", frmMdi.HWND, Me.HWND
         Case "mnuEmpresaCNPJ"
             Set frm = Nothing
-            frmReport.ShowReport "EMPRESAPORCNPJ", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "EMPRESAPORCNPJ", frmMdi.HWND, Me.HWND
         Case "mnuEmpresaAtividade"
             Set frm = Nothing
-            frmReport.ShowReport "EMPRESAATIVIDADE", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "EMPRESAATIVIDADE", frmMdi.HWND, Me.HWND
         Case "mnuEmpresaContador"
             Set frm = Nothing
-            frmReport.ShowReport "MOBILIARIOESCCONTABIL", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "MOBILIARIOESCCONTABIL", frmMdi.HWND, Me.HWND
         Case "mnuEmpresaSocio"
             Set frm = Nothing
-            frmReport.ShowReport "EMPRESASOCIO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "EMPRESASOCIO", frmMdi.HWND, Me.HWND
         Case "mnuRelEstimado"
             Set frm = Nothing
-            frmReport.ShowReport "EMPRESAESTIMADO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "EMPRESAESTIMADO", frmMdi.HWND, Me.HWND
         Case "mnuRelMEI"
             Set frm = Nothing
-            frmReport.ShowReport "EMPRESAMEI", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "EMPRESAMEI", frmMdi.HWND, Me.HWND
         Case "mnuIssPagoAtividade"
             Set frm = frmIssPagoAtividade
         Case "mnuResumoIssCCivil"
             Set frm = Nothing
-            frmReport.ShowReport "ISSCONSTRUCAOCIVIL", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ISSCONSTRUCAOCIVIL", frmMdi.HWND, Me.HWND
         Case "mnuNFEmitida"
             Set frm = Nothing
-            frmReport.ShowReport3 "NF_EMITIDA", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport3 "NF_EMITIDA", frmMdi.HWND, Me.HWND
         Case "mnuRelGiss"
             Set frm = frmResumoIss
         Case "mnuISSMensal"
@@ -1821,12 +1823,18 @@ If (lIndex > 0) Then
     Case "mnuConectaDB"
         Set frm = Nothing
         ConectaDBTeste
+    Case "mnuAnexos"
+'        If NomeDeLogin = "SCHWARTZ" Then
+            Set frm = frmAnexos
+ '       Else
+  '          Exit Sub
+   '     End If
     Case "mnuConectaBKP"
         Set frm = Nothing
-        ConectaDBBKP
+'        ConectaDBBKP
     Case "mnuRegEndereco"
         Set frm = Nothing
-        frmReport.ShowReport3 "REGATENDIMENTO_ENDERECO", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport3 "REGATENDIMENTO_ENDERECO", frmMdi.HWND, Me.HWND
     Case "mnuTabelaEquipe"
         Set frm = New frmParamObra
         frm.sSigla = "EQ"
@@ -1885,53 +1893,7 @@ If (lIndex > 0) Then
         Case "mnuTipoLog"
             Set frm = frmTipoLogradouro
         Case "mnuTabSistemaBenf"
-'            sParamForm = "BENF"
-'            Set frm = frmParam1
-'        Case "mnuTabSistemaCatC"
- '           sParamForm = "CATC"
- '           Set frm = frmParam1
- '       Case "mnuTabSistemaCatP"
- '           sParamForm = "CATP"
- '           Set frm = frmParam1
- '       Case "mnuTabSistemaTipC"
- '           sParamForm = "TIPC"
- '           Set frm = frmParam1
- '       Case "mnuTabSistemaUsoC"
- '           sParamForm = "USOC"
- '           Set frm = frmParam1
- ''       Case "mnuTabSistemaUsoT"
-'            sParamForm = "USOT"
- '           Set frm = frmParam1
- '       Case "mnuTabSistemaUfir"
- '           sParamForm = "UFIR"
- '           Set frm = frmParam1
- '       Case "mnuTabSistemaFPED"
- '           sParamForm = "PEDO"
-  '          Set frm = frmParam2
-  '      Case "mnuTabSistemaFSIT"
-  '          sParamForm = "SITU"
-  '          Set frm = frmParam2
-  '      Case "mnuTabSistemaFTOP"
-  '          sParamForm = "TOPO"
-   '         Set frm = frmParam2
-   '     Case "mnuTabSistemaFDIS"
- '           sParamForm = "DIST"
- '           Set frm = frmParam2
- '       Case "mnuTabSistemaFPRO"
- '           sParamForm = "FPRO"
- '           Set frm = frmParam2
- '       Case "mnuTabSistemaFGEN"
- '           sParamForm = "PGEN"
- '           Set frm = frmParam2
- '       Case "mnuTabSistemaFGLE"
- '           sParamForm = "FGLE"
- '           Set frm = frmParam2
- '       Case "mnuTabSistemaFBEN"
- '           sParamForm = "FBEN"
- '           Set frm = frmParam2
- '       Case "mnuTabSistemaFCAT"
-  '          sParamForm = "FCAT"
-  '          Set frm = frmParam2
+
         Case "mnuTabSistemaPPARC"
             Set frm = frmParamParcela
         Case "mnuTabSistemaTLAN"
@@ -2032,18 +1994,20 @@ If (lIndex > 0) Then
         Set frm = frmProcessoCCusto
     Case "mnuTramiteAberto"
         Set frm = Nothing
-        frmReport.ShowReport "TRAMITEABERTOLOCAL2", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "TRAMITEABERTOLOCAL2", frmMdi.HWND, Me.HWND
+    Case "mnuTramiteAtraso"
+        Set frm = frmTramiteAtraso
     Case "mnuTramiteEnviado"
         Set frm = frmProcessosEnviados
     Case "mnuProcessoAssunto"
         Set frm = Nothing
-        frmReport.ShowReport "PROCESSOASSUNTO", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "PROCESSOASSUNTO", frmMdi.HWND, Me.HWND
     Case "mnuProcessoAno"
         Set frm = Nothing
-        frmReport.ShowReport2 "QTDEPROCESSOSANO", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "QTDEPROCESSOSANO", frmMdi.HWND, Me.HWND
     Case "mnuAssuntoDoc"
         Set frm = Nothing
-        frmReport.ShowReport2 "ASSUNTO_DOC", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "ASSUNTO_DOC", frmMdi.HWND, Me.HWND
     End Select
     If Not frm Is Nothing Then
         frm.show
@@ -2078,10 +2042,10 @@ If (lIndex > 0) Then
             Set frm = frmCobranca
         Case "mnuOptanteDARel"
             Set frm = Nothing
-            frmReport.ShowReport "optantes", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "optantes", frmMdi.HWND, Me.HWND
         Case "mnuAmostraCalculo"
             Set frm = Nothing
-            frmReport.ShowReport2 "calculoiptu", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport2 "calculoiptu", frmMdi.HWND, Me.HWND
         Case "mnuImportaArq"
             Set frm = frmArqBanco
         Case "mnuBuscaArq"
@@ -2110,7 +2074,7 @@ If (lIndex > 0) Then
             Set frm = frmImportaBanco
         Case "mnuArrecadaSN"
             Set frm = Nothing
-            frmReport.ShowReport "ARRECADACAOSNDAF", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ARRECADACAOSNDAF", frmMdi.HWND, Me.HWND
         Case "mnuArrecadaSNDAF"
             Set frm = frmAnaliseReceita
         Case "mnuBaixaSN"
@@ -2121,12 +2085,13 @@ If (lIndex > 0) Then
             Set frm = frmPagamentoDuplicidade
         Case "mnuResumoISSCivil"
             Set frm = Nothing
-            frmReport.ShowReport3 "ISSCCIVIL", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport3 "ISSCCIVIL", frmMdi.HWND, Me.HWND
         Case "mnuSimulaSN"
             Set frm = frmSimulaSimples
         Case "mnuImportarSN"
-            Set frm = Nothing
-            ImportarSN
+            Set frm = frmOptanteSimples
+        Case "mnuDecodificaMEI"
+            Set frm = frmDecodificarMEI
         Case "mnuBuscaSN"
              Set frm = frmBuscaSN
         Case "mnuSNCnpj"
@@ -2160,16 +2125,20 @@ If (lIndex > 0) Then
             Set frm = frmAvisoDebito
         Case "mnuDebitoAjPago"
             Set frm = Nothing
-            frmReport.ShowReport "DEBITOAJPAGO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "DEBITOAJPAGO", frmMdi.HWND, Me.HWND
+        Case "mnuPagamentoCC"
+            Set frm = Nothing
+            frmReport.ShowReport3 "PAGAMENTOCARTACOBRANCA", frmMdi.HWND, Me.HWND
+        
         Case "mnuDocEmitido"
             Set frm = Nothing
-            frmReport.ShowReport2 "DOCUMENTOSEMITIDOS", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport2 "DOCUMENTOSEMITIDOS", frmMdi.HWND, Me.HWND
         Case "mnuComplementoPagto"
             Set frm = Nothing
-            frmReport.ShowReport "COMPLEMENTOPAGTO", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "COMPLEMENTOPAGTO", frmMdi.HWND, Me.HWND
         Case "mnuITBIObs"
             Set frm = Nothing
-            frmReport.ShowReport "ITBIOBS", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ITBIOBS", frmMdi.HWND, Me.HWND
         Case "mnuITBIRel"
             Set frm = Nothing
             BuildRelITBI
@@ -2177,6 +2146,9 @@ If (lIndex > 0) Then
             Set frm = frmCorrecaoCPF
         Case "mnuPagoTributo"
             Set frm = frmValorPago
+        Case "mnuGeraLote"
+            Set frm = frmFichaCompensacaoLote
+
     End Select
     If Not frm Is Nothing Then
         frm.show
@@ -2255,7 +2227,7 @@ Unload frmCnsParcela
 End Sub
 
 Private Sub MDIForm_Activate()
-Dim x As Integer, RdoAux As rdoResultset, Sql As String
+Dim X As Integer, RdoAux As rdoResultset, Sql As String
 lngTimer = 0
 
 
@@ -2284,6 +2256,8 @@ Else
     mnuCertidaoValorVenal.Enabled = False
     mnuCertidaoIsencaoITBI.Enabled = False
 End If
+
+
 
 MDIForm_Resize
 End Sub
@@ -2363,12 +2337,12 @@ frmGuiaPratico4.show: frmGuiaPratico4.ZOrder 0
 End Sub
 
 Private Sub mnuCloseAll_Click()
-Dim x As Integer
+Dim X As Integer
 Inicio:
 bCloseChat = True
-For x = 0 To Forms.Count - 1
-    If Forms(x).Name <> "frmMdi" And Forms(x).Name <> "frmHist" Then
-       Unload Forms(x)
+For X = 0 To Forms.Count - 1
+    If Forms(X).Name <> "frmMdi" And Forms(X).Name <> "frmHist" Then
+       Unload Forms(X)
        GoTo Inicio:
     End If
 Next
@@ -2377,7 +2351,7 @@ End Sub
 
 Private Sub mnuCertidaoDebito_Click()
 Dim z As Variant, sNumProc As String, nCodReduz As Long, qd As New rdoQuery, RdoAux As rdoResultset, aCodigo() As String
-Dim XPos, YPos, x As Integer
+Dim XPos, YPos, X As Integer
 XPos = Screen.Width / 2 - 3000
 YPos = Screen.Height / 2 - 1000
 
@@ -2419,15 +2393,15 @@ Else
 '    nCodReduz = z
 End If
     
-For x = 0 To UBound(aCodigo)
+For X = 0 To UBound(aCodigo)
     'CodCidadao = nCodReduz
-    CodCidadao = Val(aCodigo(x))
+    CodCidadao = Val(aCodigo(X))
     If CodCidadao > 500000 Then
         MsgBox "Não é possível emitir certidão de débito para código cidadão.", vbCritical, "Atenção"
         Exit Sub
     End If
     NumeroProcesso = sNumProc
-        
+    sNumProc = Replace(sNumProc, "-", "")
     Set qd.ActiveConnection = cn
     On Error Resume Next
     RdoAux.Close
@@ -2444,33 +2418,33 @@ For x = 0 To UBound(aCodigo)
         Else
             If CodCidadao < 100000 Then
                 If .rdoColumns(0).value = 3 Then
-                    frmReport.ShowReport "CDBNEGIM", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBNEGIM", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 4 Then
-                    frmReport.ShowReport "CDBPOSIM", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPOSIM", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 5 Then
-                    frmReport.ShowReport "CDBPSNIM", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPSNIM", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 6 Then
-                    frmReport.ShowReport "CDBPNSIM", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPNSIM", frmMdi.HWND, Me.HWND
                 End If
             ElseIf CodCidadao >= 100000 And CodCidadao < 500000 Then
                 If .rdoColumns(0).value = 3 Then
-                    frmReport.ShowReport "CDBNEGEM", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBNEGEM", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 4 Then
-                    frmReport.ShowReport "CDBPOSEM", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPOSEM", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 5 Then
-                    frmReport.ShowReport "CDBPSNEM", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPSNEM", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 6 Then
-                    frmReport.ShowReport "CDBPNSEM", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPNSEM", frmMdi.HWND, Me.HWND
                 End If
             ElseIf CodCidadao > 500000 Then
                 If .rdoColumns(0).value = 3 Then
-                    frmReport.ShowReport "CDBNEGCD", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBNEGCD", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 4 Then
-                    frmReport.ShowReport "CDBPOSCD", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPOSCD", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 5 Then
-                    frmReport.ShowReport "CDBPSNCD", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPSNCD", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 6 Then
-                    frmReport.ShowReport "CDBPNSCD", frmMdi.hwnd, Me.hwnd
+                    frmReport.ShowReport "CDBPNSCD", frmMdi.HWND, Me.HWND
                 End If
             End If
         End If
@@ -2654,7 +2628,8 @@ MsgBox "fim"
 End Sub
 
 Private Sub mnuRenovaAlvara_Click()
-frmReport.ShowReport2 "ALVARARENOVAVICE", frmMdi.hwnd, Me.hwnd
+'frmReport.ShowReport2 "ALVARARENOVAVICE", frmMdi.HWND, Me.HWND
+'frmReport.ShowReport2 "ALVARARENOVA", frmMdi.HWND, Me.HWND
 End Sub
 
 Private Sub Sbar_PanelClick(ByVal Panel As MSComctlLib.Panel)
@@ -2876,7 +2851,7 @@ Private Sub MontaMenu()
 
 Set m_cMenuPrincipal = New cPopupMenu
 With m_cMenuPrincipal
-    .hwndOwner = Me.hwnd
+    .hwndOwner = Me.HWND
     .GradientHighlight = True
     .ActiveMenuBackgroundColor = &HFFFF80
     .ButtonHighlight = True
@@ -2895,7 +2870,7 @@ End With
    
 Set m_cMenuParam = New cPopupMenu
 With m_cMenuParam
-    .hwndOwner = Me.hwnd
+    .hwndOwner = Me.HWND
     .GradientHighlight = True
     .ActiveMenuBackgroundColor = &HFFFF80
     .ButtonHighlight = True
@@ -2921,7 +2896,7 @@ End With
    
 Set m_cMenuImob = New cPopupMenu
 With m_cMenuImob
-    .hwndOwner = Me.hwnd
+    .hwndOwner = Me.HWND
     .GradientHighlight = True
     .ActiveMenuBackgroundColor = &HFFFF80
     .ButtonHighlight = True
@@ -2972,7 +2947,7 @@ End With
 
 Set m_cMenuMob = New cPopupMenu
 With m_cMenuMob
-    .hwndOwner = Me.hwnd
+    .hwndOwner = Me.HWND
     .GradientHighlight = True
     .ActiveMenuBackgroundColor = &HFFFF80
     .ButtonHighlight = True
@@ -3046,7 +3021,7 @@ End With
 
 Set m_cMenuAtende = New cPopupMenu
 With m_cMenuAtende
-    .hwndOwner = Me.hwnd
+    .hwndOwner = Me.HWND
     .GradientHighlight = True
     .ActiveMenuBackgroundColor = &HFFFF80
     .ButtonHighlight = True
@@ -3084,7 +3059,7 @@ With m_cMenuAtende
     h = .AddItem("Emissão de 2ª Via Especial", "", 1, i, , , , "mnu2ViaEspecial")
     h = .AddItem("Termo de confissão de divida", "", 1, i, , , , "mnuTermConf")
     h = .AddItem("Comunicado de cobrança judicial", "", 1, i, , , , "mnuCobrancaJudicial")
-    h = .AddItem("Renovação de Alvará", "", 1, i, , , , "mnuRenovaAlvara")
+    'h = .AddItem("Renovação de Alvará", "", 1, i, , , , "mnuRenovaAlvara")
     h = .AddItem("Documentos emitidos por usuário", "", 1, i, , , , "mnuEmiteDoc")
     h = .AddItem("Relatório do REFIS DAM", "", 1, i, , , , "mnuRelRefis")
     'h = .AddItem("Relatório do REFIS DAM por tributo", "", 1, i, , , False, "mnuRelRefisTributo")
@@ -3098,7 +3073,7 @@ End With
 
 Set m_cMenuTrib = New cPopupMenu
 With m_cMenuTrib
-    .hwndOwner = Me.hwnd
+    .hwndOwner = Me.HWND
     .GradientHighlight = True
     .ActiveMenuBackgroundColor = &HFFFF80
     .ButtonHighlight = True
@@ -3114,6 +3089,7 @@ With m_cMenuTrib
     i = .AddItem("Atividades bancárias", "", 1, , , , , "mnuAtivBanco")
     h = .AddItem("Optantes por débito automático", "", 1, i, , , , "mnuOptanteDA")
     h = .AddItem("Geração de arquivo de cobrança BB", "", 1, i, , , , "mnuCobranca")
+    h = .AddItem("Geração de arquivos para registro bancário", "", 1, i, , , , "mnuGeraLote")
     h = .AddItem("Relatório de Optantes", "", 1, i, , , , "mnuOptanteDARel")
     h = .AddItem("Importação de arquivos bancários", "", 1, i, , , , "mnuImportaArq")
     h = .AddItem("Busca em arquivos bancários", "", 1, i, , , , "mnuBuscaArq")
@@ -3129,6 +3105,7 @@ With m_cMenuTrib
     h = .AddItem("Tabela Selic", "", 1, i, , , , "mnuTabelaSelic")
     h = .AddItem("Simulação de cálculo", "", 1, i, , , , "mnuSimulaSN")
     h = .AddItem("Importação de Períodos", "", 1, i, , , , "mnuImportarSN")
+    h = .AddItem("Decodificar arquivos do MEI", "", 1, i, , , , "mnuDecodificaMEI")
     h = .AddItem("Resumo dos arquivos bancários", "", 1, i, , , , "mnuBuscaSN")
     h = .AddItem("CNPJ não cadastrados", "", 1, i, , , , "mnuSNCnpj")
     h = .AddItem("Exportar CNPJ para Rec.Federal", "", 1, i, , , , "mnuSNCnpjReceita")
@@ -3139,6 +3116,7 @@ With m_cMenuTrib
     h = .AddItem("Encerramento dos livros", "", 1, i, , , , "mnuDividaAtiva")
     h = .AddItem("Emissão dos livros DA", "", 1, i, , , , "mnuEmiteLivro")
     h = .AddItem("Ajuizamento automático", "", 1, i, , , , "mnuAjuizaAuto")
+    h = .AddItem("Resumo do pagamento das cartas de cobrança", "", 1, i, , , , "mnuPagamentoCC")
     i = .AddItem("Outros", "", 1, , , , , "mnuOutrosT")
     h = .AddItem("Autoriza complementos", "", 1, i, , , , "mnuDebitoCompl")
     h = .AddItem("Emissão de Guias p/Ambulantes", "", 1, i, , , , "mnuGuiaAmbulante")
@@ -3158,7 +3136,7 @@ With m_cMenuTrib
     h = .AddItem("ITBI emitidos e não pagos", "", 1, i, , , , "mnuITBIObs")
     h = .AddItem("Relação de ITBI's emitidos", "", 1, i, , , , "mnuITBIRel")
     h = .AddItem("Documentos emitidos", "", 1, i, , , , "mnuDocEmitido")
-    h = .AddItem("2ª via de Notificação de ISS", "", 1, i, , , , "mnu2vianotificacao")
+   ' h = .AddItem("2ª via de Notificação de ISS", "", 1, i, , , , "mnu2vianotificacao")
     h = .AddItem("Pagamento em Duplicidade", "", 1, i, , , , "mnuPagamentoDuplicidade")
     h = .AddItem("Resumo ISS Construção Civil", "", 1, i, , , , "mnuResumoISSCivil")
     
@@ -3166,7 +3144,7 @@ End With
 
 Set m_cMenuProt = New cPopupMenu
 With m_cMenuProt
-    .hwndOwner = Me.hwnd
+    .hwndOwner = Me.HWND
     .GradientHighlight = True
     .ActiveMenuBackgroundColor = &HFFFF80
     .ButtonHighlight = True
@@ -3185,6 +3163,7 @@ With m_cMenuProt
     i = .AddItem("Resumo diário  dos processos", "", 1, , , , , "mnuResumoDiario")
     i = .AddItem("Publicação dos processos", "", 1, , , , , "mnuPublicacao")
     i = .AddItem("Processos com trâmite em aberto por c.custo", "", 1, , , , , "mnuTramiteAberto")
+    i = .AddItem("Processos com trâmite em atraso", "", 1, , , , , "mnuTramiteAtraso")
     i = .AddItem("Processos enviados por c.custo", "", 1, , , , , "mnuTramiteEnviado")
     i = .AddItem("Processos por Assunto", "", 1, , , , , "mnuProcessoAssunto")
     i = .AddItem("Processos que estão em um C.Custo", "", 1, , , , , "mnuProcessoCC")
@@ -3194,7 +3173,7 @@ End With
 
 Set m_cMenuOutro = New cPopupMenu
 With m_cMenuOutro
-    .hwndOwner = Me.hwnd
+    .hwndOwner = Me.HWND
     .GradientHighlight = True
     .ActiveMenuBackgroundColor = &HFFFF80
     .ButtonHighlight = True
@@ -3224,6 +3203,7 @@ With m_cMenuOutro
     z = .AddItem("Tabela de Tipo de Atendimento", "", 1, h, , , , "mnutabelaTipoAtendimento")
     h = .AddItem("Registro de Atendimento", "", 1, i, , , , "mnuRegistroAtendimento")
     h = .AddItem("Reincidência de OS por endereço", "", 1, i, , , , "mnuRegEndereco")
+    i = .AddItem("Controle de anexos", "", 1, , , , , "mnuAnexos")
 End With
 
 End Sub
@@ -3450,61 +3430,25 @@ If KeyAscii = vbKeyReturn Then
 End If
 End Sub
 
-Private Sub ConectaDBBKP()
-Dim DataSourceName As String
-Dim DatabaseName As String
-Dim Description As String
-Dim DriverPath As String
-Dim DriverName As String
-Dim LastUser As String
-Dim Regional As String
-Dim Server As String
+Private Sub DevedoresTaxaLicenca()
+Dim Sql As String, RdoAux As rdoResultset, nCodReduz As Long, nAno As Integer, sNome As String, bFind As Boolean
 
-Dim lResult As Long
-Dim hKeyHandle As Long
+Sql = "SELECT debitoparcela.codreduzido, mobiliario.razaosocial, debitoparcela.anoexercicio FROM debitoparcela INNER JOIN mobiliario ON debitoparcela.codreduzido = mobiliario.codigomob "
+Sql = Sql & "WHERE (debitoparcela.codreduzido BETWEEN 100000 AND 200000) AND (debitoparcela.codlancamento = 6) AND (debitoparcela.numparcela = 1) AND (debitoparcela.statuslanc = 3) AND (mobiliario.dataencerramento IS NULL) "
+Sql = Sql & "ORDER BY debitoparcela.codreduzido, debitoparcela.anoexercicio"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        nCodReduz = !CODREDUZIDO
+        sNome = !razaosocial
+        nAno = !AnoExercicio
+        
+        
+        
+       .MoveNext
+    Loop
+   .Close
+End With
 
-DataSourceName = "odbcTribLocal"
-DatabaseName = "TributacaoBKP"
-Description = "Base de Backup do GTI"
-DriverPath = "<path to your SQL Server driver>"
-LastUser = ""
-Server = IPServer
-DriverName = "SQL Server"
-
-'Create the new DSN key.
-
-lResult = RegCreateKey(HKEY_LOCAL_MACHINE, "SOFTWARE\ODBC\ODBC.INI\" & _
-     DataSourceName, hKeyHandle)
-
-'Set the values of the new DSN key.
-
-lResult = RegSetValueEx(hKeyHandle, "Database", 0&, REG_SZ, _
-   ByVal DatabaseName, Len(DatabaseName))
-lResult = RegSetValueEx(hKeyHandle, "Description", 0&, REG_SZ, _
-   ByVal Description, Len(Description))
-lResult = RegSetValueEx(hKeyHandle, "Driver", 0&, REG_SZ, _
-   ByVal DriverPath, Len(DriverPath))
-lResult = RegSetValueEx(hKeyHandle, "LastUser", 0&, REG_SZ, _
-   ByVal LastUser, Len(LastUser))
-lResult = RegSetValueEx(hKeyHandle, "Server", 0&, REG_SZ, _
-   ByVal Server, Len(Server))
-
-'Close the new DSN key.
-
-lResult = RegCloseKey(hKeyHandle)
-
-'Open ODBC Data Sources key to list the new DSN in the ODBC Manager.
-'Specify the new value.
-'Close the key.
-
-lResult = RegCreateKey(HKEY_LOCAL_MACHINE, _
-   "SOFTWARE\ODBC\ODBC.INI\ODBC Data Sources", hKeyHandle)
-lResult = RegSetValueEx(hKeyHandle, DataSourceName, 0&, REG_SZ, _
-   ByVal DriverName, Len(DriverName))
-lResult = RegCloseKey(hKeyHandle)
 
 End Sub
-
-
-
-

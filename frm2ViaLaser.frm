@@ -1,20 +1,20 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frm2ViaLaser 
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Emissão de guias"
-   ClientHeight    =   6195
-   ClientLeft      =   2625
-   ClientTop       =   2085
+   ClientHeight    =   6255
+   ClientLeft      =   1755
+   ClientTop       =   3495
    ClientWidth     =   11850
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   6195
+   ScaleHeight     =   6255
    ScaleWidth      =   11850
    Begin VB.ComboBox cmbEnd 
       Height          =   315
@@ -26,144 +26,6 @@ Begin VB.Form frm2ViaLaser
       Top             =   5805
       Visible         =   0   'False
       Width           =   1410
-   End
-   Begin VB.Frame pnlObs 
-      BackColor       =   &H00000080&
-      Caption         =   "Observação da Parcela"
-      ForeColor       =   &H00FFFFFF&
-      Height          =   2235
-      Left            =   2430
-      TabIndex        =   18
-      Top             =   2160
-      Visible         =   0   'False
-      Width           =   6645
-      Begin VB.TextBox txtObs 
-         Height          =   1545
-         Left            =   90
-         MaxLength       =   450
-         MultiLine       =   -1  'True
-         TabIndex        =   19
-         Top             =   240
-         Width           =   6435
-      End
-      Begin prjChameleon.chameleonButton cmdSairObs 
-         Height          =   300
-         Left            =   5580
-         TabIndex        =   20
-         ToolTipText     =   "Sair da Tela"
-         Top             =   1845
-         Width           =   915
-         _ExtentX        =   1614
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "&Sair"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frm2ViaLaser.frx":0026
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-   End
-   Begin Tributacao.jcFrames pnlData 
-      Height          =   4785
-      Left            =   4815
-      Top             =   630
-      Visible         =   0   'False
-      Width           =   2655
-      _ExtentX        =   4683
-      _ExtentY        =   8440
-      FillColor       =   14745599
-      Style           =   4
-      RoundedCornerTxtBox=   -1  'True
-      Caption         =   "Vencimentos"
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Arial"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   -1  'True
-         Strikethrough   =   0   'False
-      EndProperty
-      ColorFrom       =   0
-      ColorTo         =   0
-      Begin MSFlexGridLib.MSFlexGrid grdData 
-         Height          =   3795
-         Left            =   90
-         TabIndex        =   16
-         Top             =   480
-         Width           =   2475
-         _ExtentX        =   4366
-         _ExtentY        =   6694
-         _Version        =   393216
-         RowHeightMin    =   280
-         BackColor       =   16777215
-         BackColorBkg    =   12648447
-         Appearance      =   0
-         FormatString    =   "Parcela       |^Data               "
-      End
-      Begin prjChameleon.chameleonButton cmdSairData 
-         Height          =   345
-         Left            =   660
-         TabIndex        =   17
-         ToolTipText     =   "Sair da Tela"
-         Top             =   4320
-         Width           =   1350
-         _ExtentX        =   2381
-         _ExtentY        =   609
-         BTYPE           =   3
-         TX              =   "&Sair"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frm2ViaLaser.frx":0042
-         PICN            =   "frm2ViaLaser.frx":005E
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
    End
    Begin prjChameleon.chameleonButton cmdZoomP 
       Height          =   240
@@ -194,7 +56,7 @@ Begin VB.Form frm2ViaLaser
       FCOLO           =   12582912
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frm2ViaLaser.frx":00CC
+      MICON           =   "frm2ViaLaser.frx":0026
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -233,7 +95,7 @@ Begin VB.Form frm2ViaLaser
       FCOLO           =   12582912
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frm2ViaLaser.frx":00E8
+      MICON           =   "frm2ViaLaser.frx":0042
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -360,7 +222,7 @@ Begin VB.Form frm2ViaLaser
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frm2ViaLaser.frx":0104
+         MICON           =   "frm2ViaLaser.frx":005E
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -515,7 +377,7 @@ Begin VB.Form frm2ViaLaser
          _ExtentX        =   1931
          _ExtentY        =   503
          BackColor       =   15658734
-         MouseIcon       =   "frm2ViaLaser.frx":0120
+         MouseIcon       =   "frm2ViaLaser.frx":007A
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -562,7 +424,7 @@ Begin VB.Form frm2ViaLaser
          FCOLO           =   12582912
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frm2ViaLaser.frx":013C
+         MICON           =   "frm2ViaLaser.frx":0096
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -581,7 +443,7 @@ Begin VB.Form frm2ViaLaser
          _ExtentX        =   1931
          _ExtentY        =   503
          BackColor       =   16777215
-         MouseIcon       =   "frm2ViaLaser.frx":0158
+         MouseIcon       =   "frm2ViaLaser.frx":00B2
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -919,7 +781,7 @@ Begin VB.Form frm2ViaLaser
          Left            =   1710
          TabIndex        =   52
          Top             =   195
-         Width           =   5790
+         Width           =   5700
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
@@ -986,8 +848,8 @@ Begin VB.Form frm2ViaLaser
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frm2ViaLaser.frx":0174
-         PICN            =   "frm2ViaLaser.frx":0190
+         MICON           =   "frm2ViaLaser.frx":00CE
+         PICN            =   "frm2ViaLaser.frx":00EA
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1051,9 +913,9 @@ Begin VB.Form frm2ViaLaser
    End
    Begin VB.ComboBox cmbAnoTabela 
       Height          =   315
-      ItemData        =   "frm2ViaLaser.frx":02EA
+      ItemData        =   "frm2ViaLaser.frx":0244
       Left            =   855
-      List            =   "frm2ViaLaser.frx":0306
+      List            =   "frm2ViaLaser.frx":0263
       Style           =   2  'Dropdown List
       TabIndex        =   40
       Top             =   5805
@@ -1265,8 +1127,8 @@ Begin VB.Form frm2ViaLaser
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frm2ViaLaser.frx":033A
-      PICN            =   "frm2ViaLaser.frx":0356
+      MICON           =   "frm2ViaLaser.frx":029D
+      PICN            =   "frm2ViaLaser.frx":02B9
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1305,8 +1167,8 @@ Begin VB.Form frm2ViaLaser
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frm2ViaLaser.frx":03C4
-      PICN            =   "frm2ViaLaser.frx":03E0
+      MICON           =   "frm2ViaLaser.frx":0327
+      PICN            =   "frm2ViaLaser.frx":0343
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1334,6 +1196,144 @@ Begin VB.Form frm2ViaLaser
       AllowUserResizing=   1
       Appearance      =   0
       FormatString    =   "^Código     |^Ano     |^Lanc. |^Seq  |^Parc. |^Compl. |^Vencimento      |>Vl.Lançado  |<Num.Documento      "
+   End
+   Begin VB.Frame pnlObs 
+      BackColor       =   &H00000080&
+      Caption         =   "Observação da Parcela"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   2235
+      Left            =   2430
+      TabIndex        =   18
+      Top             =   2160
+      Visible         =   0   'False
+      Width           =   6645
+      Begin VB.TextBox txtObs 
+         Height          =   1545
+         Left            =   90
+         MaxLength       =   450
+         MultiLine       =   -1  'True
+         TabIndex        =   19
+         Top             =   240
+         Width           =   6435
+      End
+      Begin prjChameleon.chameleonButton cmdSairObs 
+         Height          =   300
+         Left            =   5580
+         TabIndex        =   20
+         ToolTipText     =   "Sair da Tela"
+         Top             =   1845
+         Width           =   915
+         _ExtentX        =   1614
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "&Sair"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frm2ViaLaser.frx":049D
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+   End
+   Begin Tributacao.jcFrames pnlData 
+      Height          =   4785
+      Left            =   4815
+      Top             =   630
+      Visible         =   0   'False
+      Width           =   2655
+      _ExtentX        =   4683
+      _ExtentY        =   8440
+      FillColor       =   14745599
+      Style           =   4
+      RoundedCornerTxtBox=   -1  'True
+      Caption         =   "Vencimentos"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      ColorFrom       =   0
+      ColorTo         =   0
+      Begin MSFlexGridLib.MSFlexGrid grdData 
+         Height          =   3795
+         Left            =   90
+         TabIndex        =   16
+         Top             =   480
+         Width           =   2475
+         _ExtentX        =   4366
+         _ExtentY        =   6694
+         _Version        =   393216
+         RowHeightMin    =   280
+         BackColor       =   16777215
+         BackColorBkg    =   12648447
+         Appearance      =   0
+         FormatString    =   "Parcela       |^Data               "
+      End
+      Begin prjChameleon.chameleonButton cmdSairData 
+         Height          =   345
+         Left            =   660
+         TabIndex        =   17
+         ToolTipText     =   "Sair da Tela"
+         Top             =   4320
+         Width           =   1350
+         _ExtentX        =   2381
+         _ExtentY        =   609
+         BTYPE           =   3
+         TX              =   "&Sair"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frm2ViaLaser.frx":04B9
+         PICN            =   "frm2ViaLaser.frx":04D5
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
    End
    Begin VB.Label lblEnd 
       BackStyle       =   0  'Transparent
@@ -1493,7 +1493,7 @@ With RdoAux
          lblCompl.Caption = SubNull(!fcomplemento)
          lblBairro.Caption = sBairro
          lblCidadeEntrega.Caption = sCidade
-         lblCep.Caption = sCep
+         lblCEP.Caption = sCep
          lblUF.Caption = sUF
          
     
@@ -1501,7 +1501,7 @@ With RdoAux
         lblNumEntrega.Caption = lblNumImovel.Caption
         lblComplentrega.Caption = lblCompl.Caption
         lblBairroEntrega.Caption = lblBairro.Caption
-        lblCepEntrega.Caption = lblCep.Caption
+        lblCepEntrega.Caption = lblCEP.Caption
          cmbLanc.SetFocus
     Else
         MsgBox "Código não cadastrado.", vbCritical, "Atenção"
@@ -1532,8 +1532,8 @@ Else
 End If
 txtAbate.Text = "0,00"
 
-z = SendMessage(lvTrib.hwnd, LVM_DELETEALLITEMS, 0, 0)
-z = SendMessage(lvISS.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvTrib.HWND, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvISS.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 bExec = False
 If Val(txtCod.Text) = 0 Then
@@ -1550,7 +1550,7 @@ If lblProp.Caption = "" Then
     Exit Sub
 End If
 
-If lblNum.Caption = "Insc.Cadastral" Then bIPTU = True Else bIPTU = False
+If Val(txtCod.Text) < 40000 Then bIPTU = True Else bIPTU = False
 nCodLanc = cmbLanc.ItemData(cmbLanc.ListIndex)
 
 If bIPTU And (nCodLanc = 2 Or nCodLanc = 3 Or nCodLanc = 5) Then
@@ -1708,6 +1708,7 @@ End If
 ''End If
 
 pnlData.Visible = True
+pnlData.ZOrder 0
 cmdSair.Enabled = False
 cmdBaixa.Enabled = False
 
@@ -1818,6 +1819,25 @@ If Val(txtAno.Text) < 1995 And Val(txtAno.Text) > Year(Now) Then
     Exit Sub
 End If
 
+If (lblNum.Caption = "") Then
+    MsgBox "CPF/CNPJ obrigatório para emissão de guias.", vbCritical, "Erro"
+    Exit Sub
+End If
+
+If (lblRua.Caption = "") Then
+    MsgBox "Endereço obrigatório para emissão de guias.", vbCritical, "Erro"
+    Exit Sub
+End If
+
+If (lblBairro.Caption = "") Then
+    MsgBox "Bairro obrigatório para emissão de guias.", vbCritical, "Erro"
+    Exit Sub
+End If
+
+If (lblCEP.Caption = "") Then
+    MsgBox "Cep obrigatório para emissão de guias.", vbCritical, "Erro"
+    Exit Sub
+End If
 
 
 NumeroProcesso = ""
@@ -1873,6 +1893,7 @@ If cmbLanc.ItemData(cmbLanc.ListIndex) = 1 Then
 End If
 
 pnlObs.Visible = True
+pnlObs.ZOrder 0
 txtObs.SetFocus
 cmdBaixa.Enabled = False
 cmdSair.Enabled = False
@@ -1940,7 +1961,7 @@ End Sub
 Private Sub cmdSairObs_Click()
 Dim x As Integer, bFind As Boolean, sTributo As String
 Dim Sql As String, RdoAux As rdoResultset, nSeq As Integer
-
+sObsIss = ""
 pnlObs.Visible = False
 cmdBaixa.Enabled = True
 cmdSair.Enabled = True
@@ -1966,20 +1987,39 @@ Inicio:
     End If
     RdoAux.Close
     If Not bFind Then GoTo Inicio
-'    sTributo = Left(sTributo, Len(sTributo) - 2)
     sObsIss = "Emitido guia de ISS construção civil do tipo -> " & sTributo & " com área de: " & Format(nAreaIss, "#0.00") & " m² para o imóvel:" & nCodigoImovel & " Lançado por " & NomeDeLogin & " no código cidadão:" & txtCod.Text
+    
+'    Sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & nCodigoImovel
+'    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'    With RdoAux
+'        If IsNull(!maximo) Then
+'            nSeq = 1
+'        Else
+'            nSeq = !maximo + 1
+'        End If
+'        .Close
+'    End With
+'
+'    Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
+'    Sql = Sql & nCodigoImovel & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObsIss & "',236,'" & Format(Now, "mm/dd/yyyy") & "')"
+'    cn.Execute Sql, rdExecDirect
+
+    
 End If
 
-If optGuia(0).value = True Then
-    GravaCarneTmp
+If Val(txtNumParc.Text) = 1 Then
+'    If NomeDeLogin = "SCHWARTZ" Then
+        EmiteBoletoRegistrado
+'    Else
+'        EmiteBoleto
+'    End If
 Else
     EmiteBoleto
-'    Limpa
 End If
 
 If bRocada Then
     GravaMulta
-    frmReport.ShowReport "MULTAINF", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "MULTAINF", frmMdi.HWND, Me.HWND
 End If
 
 If bGerado Then Limpa
@@ -2054,7 +2094,7 @@ txtAbate.Locked = True
 txtAbate.BackColor = Kde
 cmbAnoTabela.Text = Year(Now)
 If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "RITA" Or _
-    NomeDeLogin = "LEANDRO" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "LEONARDODINIZ" Or NomeDeLogin = "RODRIGOG" Or NomeDeLogin = "AAFMARTINS" Or IsAtendente Then
+    NomeDeLogin = "LEANDRO" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "SOLANGE" Or NomeDeLogin = "RODRIGOG" Or NomeDeLogin = "AAFMARTINS" Or IsAtendente Then
     cmbAnoTabela.Enabled = True
 Else
     cmbAnoTabela.Enabled = False
@@ -2388,7 +2428,10 @@ With lvTrib
                    Exit Sub
                 End If
                 
-                Sql = "SELECT * FROM MOBILIARIOATIVIDADEVS2 WHERE CODMOBILIARIO=" & Val(txtCod.Text)
+                'Sql = "SELECT * FROM MOBILIARIOATIVIDADEVS2 WHERE CODMOBILIARIO=" & Val(txtCod.Text)
+                Sql = "SELECT mobiliariovs.codigo, mobiliariovs.cnae, mobiliariovs.criterio, mobiliariovs.qtde, cnaecriterio.valor "
+                Sql = Sql & "FROM  mobiliariovs INNER JOIN cnaecriterio ON mobiliariovs.cnae = cnaecriterio.cnae "
+                Sql = Sql & "Where mobiliariovs.Codigo = " & Val(txtCod.Text)
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
                     If .RowCount = 0 Then
@@ -2533,7 +2576,7 @@ ElseIf df = 2 Then
             For x = 1 To Val(txtNumParc.Text)
                 grdData.TextMatrix(x, 0) = "Parcela " & Format(x, "00")
             Next
-            End If
+        End If
         Exit Sub
     End If
 ElseIf df = 3 Then
@@ -2578,7 +2621,7 @@ End Sub
 
 Private Sub txtCod_Change()
 Dim z As Long
-z = SendMessage(lvTrib.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvTrib.HWND, LVM_DELETEALLITEMS, 0, 0)
 End Sub
 
 Private Sub txtCod_GotFocus()
@@ -2634,20 +2677,38 @@ With RdoAux
            MsgBox "Este imóvel encontra-se inativo.", vbExclamation, "Atenção"
            Exit Sub
         End If
-        lblNum.Caption = "Insc.Cadastral"
+'        lblNum.Caption = "Insc.Cadastral"
         lblRS.Caption = "Proprietário"
         CarregaImovel nCodImovel
         Sql = "select codreduzido,cpf,cnpj from vwfullimovel where codreduzido=" & Val(txtCod.Text)
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        If SubNull(RdoAux2!CPF) <> "" Then
-            nCPF = RdoAux2!CPF
+'        If SubNull(RdoAux2!CPF) <> "" Then
+'            nCPF = RdoAux2!CPF
+'        Else
+'            If SubNull(RdoAux2!Cnpj) <> "" Then
+'                nCPF = RdoAux2!Cnpj
+'            Else
+'                nCPF = 0
+'            End If
+  '      End If
+        
+        nCPF = 0
+        If Val(SubNull(RdoAux2!Cnpj)) > 0 Then
+            lblNum.Caption = "CNPJ:"
+            lblNumInsc.Caption = Format(RdoAux2!Cnpj, "0#\.###\.###/####-##")
+            nCPF = RdoAux2!Cnpj
         Else
-            If SubNull(RdoAux2!Cnpj) <> "" Then
-                nCPF = RdoAux2!Cnpj
-            Else
-                nCPF = 0
+            If Not IsNull(RdoAux2!CPF) Then
+                If Val(RdoAux2!CPF) > 0 Then
+                    lblNum.Caption = "CPF:"
+                    lblNumInsc.Caption = Format(RetornaNumero(RdoAux2!CPF), "00#\.###\.###-##")
+                    nCPF = RdoAux2!CPF
+                End If
             End If
         End If
+
+        
+        
     Else
         Sql = "SELECT CODIGOMOB,INSCESTADUAL,RAZAOSOCIAL,CNPJ,CPF,ABREVTIPOLOG,ABREVTITLOG,NOMELOGRADOURO,NUMERO,CODBAIRRO,CEP,COMPLEMENTO,DATAENCERRAMENTO,NOMELOGR,CODCIDADE,DESCCIDADE "
         Sql = Sql & " FROM vwCNSMOBILIARIO WHERE CODIGOMOB=" & txtCod.Text
@@ -2669,11 +2730,9 @@ With RdoAux
                End With
                 nCPF = 0
                 If Val(SubNull(!Cnpj)) > 0 Then
-           '         If Val(!Cnpj) > 0 Then
-                        lblNum.Caption = "CNPJ:"
-                        lblNumInsc.Caption = Format(!Cnpj, "0#\.###\.###/####-##")
-                        nCPF = !Cnpj
-                   ' End If
+                    lblNum.Caption = "CNPJ:"
+                    lblNumInsc.Caption = Format(!Cnpj, "0#\.###\.###/####-##")
+                    nCPF = !Cnpj
                 Else
                     If Not IsNull(!CPF) Then
                         If Val(!CPF) > 0 Then
@@ -2685,13 +2744,13 @@ With RdoAux
                 End If
                
                lblRS.Caption = "Raz.Social"
-               lblProp.Caption = !RazaoSocial
+               lblProp.Caption = !razaosocial
                lblRua.Caption = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
                If Trim(lblRua.Caption) = "" Then
                     lblRua.Caption = SubNull(!NomeLogr)
                End If
                lblNumImovel.Caption = Val(SubNull(!Numero))
-               lblCep.Caption = IIf(IsNull(!Cep), "", Left$(!Cep, 5) & "-" & Right$(!Cep, 3))
+               lblCEP.Caption = IIf(IsNull(!Cep), "", Left$(!Cep, 5) & "-" & Right$(!Cep, 3))
                lblCompl.Caption = SubNull(!Complemento)
                Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=" & !CodCidade & " AND CODBAIRRO=" & !CodBairro
                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2727,7 +2786,7 @@ With RdoAux
                         lblComplentrega.Caption = lblCompl.Caption
                         lblBairroEntrega.Caption = lblBairro.Caption
                         lblCidadeEntrega.Caption = SubNull(RdoAux!descCidade)
-                        lblCepEntrega.Caption = lblCep.Caption
+                        lblCepEntrega.Caption = lblCEP.Caption
                         lblUF.Caption = "SP"
                     End If
                    .Close
@@ -2827,7 +2886,7 @@ With RdoAux
                         lblCompl.Caption = SubNull(!fcomplemento)
                         lblBairro.Caption = sBairro
                         lblCidadeEntrega.Caption = sCidade
-                        lblCep.Caption = sCep
+                        lblCEP.Caption = sCep
                         lblUF.Caption = sUF
                         
                    
@@ -2836,7 +2895,7 @@ With RdoAux
                        lblComplentrega.Caption = lblCompl.Caption
                        lblBairroEntrega.Caption = lblBairro.Caption
 '                       lblCidadeEntrega.Caption = SubNull(!desccidade)
-                       lblCepEntrega.Caption = lblCep.Caption
+                       lblCepEntrega.Caption = lblCEP.Caption
                        'lbluf.Caption = SubNull(!SiglaUF)
                         If cmbLanc.Enabled = True Then
                             cmbLanc.SetFocus
@@ -2861,11 +2920,11 @@ Ocupado
 With xImovel
     .CarregaImovel nCodigoImovel
     If .CodigoImovel > 0 Then
-          lblNumInsc.Caption = .Inscricao
+'          lblNumInsc.Caption = .Inscricao
           lblProp.Caption = .NomePropPrincipal
           lblRua.Caption = Trim$(.AbrevTipoLog) & " " & Trim$(.AbrevTitLog) & " " & .NomeLogradouro
           lblNumImovel.Caption = .Li_Num
-          lblCep.Caption = RetornaCEP(.CodLogr, .Li_Num)
+          lblCEP.Caption = RetornaCEP(.CodLogr, .Li_Num)
           lblCompl.Caption = .Li_Compl
           lblBairro.Caption = .DescBairro
           lblArea.Caption = .Dt_AreaTerreno
@@ -2877,7 +2936,7 @@ With xImovel
                     lblComplentrega.Caption = lblCompl.Caption
                     lblBairroEntrega.Caption = lblBairro.Caption
                     lblCidadeEntrega.Caption = "JABOTICABAL"
-                    lblCepEntrega.Caption = lblCep.Caption
+                    lblCepEntrega.Caption = lblCEP.Caption
                     lblUF.Caption = lblUF.Caption
                 Case 1
                     lblTipoEnd.Caption = "(Endereço do Proprietário)"
@@ -2909,10 +2968,10 @@ End Sub
 
 Private Sub Limpa()
 
-z = SendMessage(lvTrib.hwnd, LVM_DELETEALLITEMS, 0, 0)
-z = SendMessage(lvISS.hwnd, LVM_DELETEALLITEMS, 0, 0)
-z = SendMessage(lvTL.hwnd, LVM_DELETEALLITEMS, 0, 0)
-z = SendMessage(lvVS.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvTrib.HWND, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvISS.HWND, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvTL.HWND, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvVS.HWND, LVM_DELETEALLITEMS, 0, 0)
 lblArea.Caption = ""
 lblNum.Caption = ""
 lblProp.Caption = ""
@@ -2920,7 +2979,7 @@ lblRua.Caption = ""
 lblNumImovel.Caption = ""
 lblCompl.Caption = ""
 lblBairro.Caption = ""
-lblCep.Caption = ""
+lblCEP.Caption = ""
 lblRuaEntrega.Caption = ""
 lblNumEntrega.Caption = ""
 lblComplentrega.Caption = ""
@@ -2985,7 +3044,7 @@ Dim nAno As Integer
 Dim sNumProc As String
 Dim dDataProc As Date
 Dim dDataVencto As Date
-Dim nNumDoc As Long
+Dim nNumdoc As Long
 Dim sQuadra As String
 Dim sLote As String
 Dim nNumParc As Integer
@@ -3356,7 +3415,7 @@ With grdTemp2
         nComplemento = .TextMatrix(x, 5)
         dDataVencto = CDate(.TextMatrix(x, 6))
         sValorParc = .TextMatrix(x, 7)
-        nNumDoc = .TextMatrix(x, 8)
+        nNumdoc = .TextMatrix(x, 8)
         If CDbl(sValorParc) > 0 Then
 '            NumBarra2 = Gera2of5Cod(CDbl(sValorParc) + nValorTxExpParc, dDataVencto, nNumDoc, nNumParc, nCodLanc, nSeq, nComplemento)
         Else
@@ -3376,20 +3435,20 @@ With grdTemp2
         Sql = Sql & Left$(sTipoImposto, 15) & "','" & Mask(Left$(sNomeResp, 40)) & "','" & Left$(sEndImovel, 40) & "'," & nNumImovel & ",'" & Mask(Left$(sComplImovel, 30)) & "','"
         Sql = Sql & Left(sBairroImovel, 25) & "','" & Left(sEndEntrega, 40) & "'," & nNumEntrega & ",'" & Mask(Left$(sComplEntrega, 30)) & "','" & Left(sBairroEntrega, 25) & "','"
         Sql = Sql & sCepEntrega & "','" & sCidadeEntrega & "','" & sUFEntrega & "','" & sDescImposto & "'," & nAno & ",'" & sNumProc & "','"
-        Sql = Sql & Format(dDataProc, "mm/dd/yyyy") & "','" & CStr(nNumDoc) & "','" & CStr(RetornaDVNumDoc(nNumDoc)) & "','" & sQuadra & "','"
+        Sql = Sql & Format(dDataProc, "mm/dd/yyyy") & "','" & CStr(nNumdoc) & "','" & CStr(RetornaDVNumDoc(nNumdoc)) & "','" & sQuadra & "','"
         Sql = Sql & sLote & "','" & Format(dDataVencto, "mm/dd/yyyy") & "'," & IIf(nNumParc = 0, 1, nNumParc) & "," & IIf(nNumParc = 0, 1, IIf(chkUnica.value = 0, Val(grdTemp2.Rows - 1), Val(grdTemp2.Rows - 2))) & ","
         Sql = Sql & Virg2Ponto(RemovePonto(sValorParc)) & ",'" & Mask(StrBarra1) & "','" & Mask(StrBarra2) & "'," & NumBarra1 & ",'" & NumBarra2a & "','"
         Sql = Sql & NumBarra2b & "','" & NumBarra2c & "','" & NumBarra2d & "','" & sDadosLanc & "'," & Virg2Ponto(CStr(nValorTxExpParc)) & "," & "0" & ",'" & Mask(Trim(txtObs.Text)) & "')"
         cn.Execute Sql, rdExecDirect
 
-        modLg "Emissão de guia nº " & nNumDoc & " Codigo: " & Val(txtCod.Text) & " - " & lblProp.Caption
+        modLg "Emissão de guia nº " & nNumdoc & " Codigo: " & Val(txtCod.Text) & " - " & lblProp.Caption
     Next
 End With
 bGerado = True
 
 'EXIBE RELATORIO
 
-frmReport.ShowReport "Carne", frmMdi.hwnd, Me.hwnd, nNumDocEspecial, nNumDocEspecial
+frmReport.ShowReport "Carne", frmMdi.HWND, Me.HWND, nNumDocEspecial, nNumDocEspecial
 'DELETA TEMPORARIO
 Sql = "DELETE FROM CARNETMP WHERE COMPUTER='" & NomeDoUsuario & "'"
 cn.Execute Sql, rdExecDirect
@@ -3562,25 +3621,35 @@ End Function
 Private Sub CarregaLista()
 Dim itmX As ListItem, z As Long, sCnae As String
 
-z = SendMessage(lvISS.hwnd, LVM_DELETEALLITEMS, 0, 0)
-z = SendMessage(lvTL.hwnd, LVM_DELETEALLITEMS, 0, 0)
-z = SendMessage(lvVS.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvISS.HWND, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvTL.HWND, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvVS.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 
 'VS
-Sql = "SELECT  mobiliarioatividadevs2.codmobiliario,mobiliarioatividadevs2.secao,mobiliarioatividadevs2.divisao,mobiliarioatividadevs2.grupo,"
-Sql = Sql & "mobiliarioatividadevs2.classe,mobiliarioatividadevs2.subclasse,cnaesubclasse.descricao,mobiliarioatividadevs2.criterio,"
-Sql = Sql & "mobiliarioatividadevs2.qtde,mobiliarioatividadevs2.valor,cnaecriteriodesc.descricao as desc2 From  mobiliarioatividadevs2 INNER JOIN "
-Sql = Sql & "cnaesubclasse ON (mobiliarioatividadevs2.secao = cnaesubclasse.secao) AND (mobiliarioatividadevs2.divisao = cnaesubclasse.divisao) AND "
-Sql = Sql & "(mobiliarioatividadevs2.grupo = cnaesubclasse.grupo) AND (mobiliarioatividadevs2.classe = cnaesubclasse.classe) AND "
-Sql = Sql & "(mobiliarioatividadevs2.subclasse = cnaesubclasse.subclasse) INNER JOIN cnaecriteriodesc ON (mobiliarioatividadevs2.criterio = cnaecriteriodesc.criterio) "
-Sql = Sql & "WHERE mobiliarioatividadevs2.codmobiliario=" & Val(txtCod.Text)
+'Sql = "SELECT  mobiliarioatividadevs2.codmobiliario,mobiliarioatividadevs2.secao,mobiliarioatividadevs2.divisao,mobiliarioatividadevs2.grupo,"
+'Sql = Sql & "mobiliarioatividadevs2.classe,mobiliarioatividadevs2.subclasse,cnaesubclasse.descricao,mobiliarioatividadevs2.criterio,"
+'Sql = Sql & "mobiliarioatividadevs2.qtde,mobiliarioatividadevs2.valor,cnaecriteriodesc.descricao as desc2 From  mobiliarioatividadevs2 INNER JOIN "
+'Sql = Sql & "cnaesubclasse ON (mobiliarioatividadevs2.secao = cnaesubclasse.secao) AND (mobiliarioatividadevs2.divisao = cnaesubclasse.divisao) AND "
+'Sql = Sql & "(mobiliarioatividadevs2.grupo = cnaesubclasse.grupo) AND (mobiliarioatividadevs2.classe = cnaesubclasse.classe) AND "
+'Sql = Sql & "(mobiliarioatividadevs2.subclasse = cnaesubclasse.subclasse) INNER JOIN cnaecriteriodesc ON (mobiliarioatividadevs2.criterio = cnaecriteriodesc.criterio) "
+'Sql = Sql & "WHERE mobiliarioatividadevs2.codmobiliario=" & Val(txtCod.Text)
+
+On Error Resume Next
+Sql = "SELECT mobiliariovs.codigo, mobiliariovs.cnae, mobiliariovs.criterio, mobiliariovs.qtde, cnae.descricao, cnaecriteriodesc.valor "
+Sql = Sql & "FROM mobiliariovs INNER JOIN cnae_criterio ON mobiliariovs.cnae = cnae_criterio.cnae INNER JOIN cnae ON mobiliariovs.cnae = cnae.cnae "
+Sql = Sql & "INNER JOIN cnaecriteriodesc ON mobiliariovs.criterio = cnaecriteriodesc.criterio WHERE mobiliariovs.codigo = " & Val(txtCod.Text)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        sCnae = Format(!divisao, "00") & !grupo & Left(Format(!classe, "00"), 1) & "-" & Right$(Format(!classe, "00"), 1) & "/" & Format(!subclasse, "00")
-        Set itmX = lvVS.ListItems.Add(, "VS" & sCnae & Format(!CRITERIO, "00"), sCnae)
-        itmX.SubItems(1) = Format(!CRITERIO, "00")
+'        sCnae = Format(!divisao, "00") & !grupo & Left(Format(!classe, "00"), 1) & "-" & Right$(Format(!classe, "00"), 1) & "/" & Format(!subclasse, "00")
+'        Set itmX = lvVS.ListItems.Add(, "VS" & sCnae & Format(!criterio, "00"), sCnae)
+'        itmX.SubItems(1) = Format(!criterio, "00")
+'        itmX.SubItems(2) = !descricao
+'        itmX.SubItems(3) = !qtde
+'        itmX.SubItems(4) = !Valor
+        Set itmX = lvVS.ListItems.Add(, "VS" & !Cnae & Format(!criterio, "00"), !Cnae)
+        itmX.SubItems(1) = Format(!criterio, "00")
         itmX.SubItems(2) = !descricao
         itmX.SubItems(3) = !QTDE
         itmX.SubItems(4) = !Valor
@@ -3588,7 +3657,7 @@ With RdoAux
     Loop
    .Close
 End With
-
+On Error GoTo 0
 
 'TX.LIC.
 Sql = "SELECT MOBILIARIO.CODATIVIDADE,ATIVIDADE.DESCATIVIDADE FROM MOBILIARIO INNER JOIN "
@@ -3704,7 +3773,7 @@ Private Sub MontaMenu()
 
    Set m_cMenuContrib = New cPopupMenu
    With m_cMenuContrib
-      .hwndOwner = Me.hwnd
+      .hwndOwner = Me.HWND
       .GradientHighlight = True
       
       i = .AddItem("Mobiliário", "", 1, , , , , "mnuMob")
@@ -3722,7 +3791,7 @@ Private Sub GravaMulta()
 Dim RdoAux As rdoResultset, RdoAux2 As rdoResultset, Sql As String, nPos As Integer, sDataGuia As String, sDataVencto As String
 Dim nCodReduz As Long, sInsc As String, sNome As String, sDoc As String, sEnd As String, nNum As Integer, nValorDoc As Double
 Dim sCompl As String, sBairro As String, sCidade As String, sUF As String, nLinha As Integer
-Dim sUsuario As String, nNumDoc As Long, bMulta As Boolean, nValorTaxa As Double, sNumDoc As String
+Dim sUsuario As String, nNumdoc As Long, bMulta As Boolean, nValorTaxa As Double, sNumDoc As String
 Dim sLanc As String, sFullTrib As String, nAno As Integer, nSeq As Integer, nLanc As Integer, nParc As Integer, nCompl As Integer, nValorJuros As Double, nValorMulta As Double, nValorCorrecao As Double, nValorTotal As Double
 Dim nSeq2 As Integer, sAj As String, sDA As String, nValorPrincipal As Double, sNumDoc2 As String, sNumDoc3 As String, nFatorVencto As Long
 Dim nSid As Long, sDigitavel As String, sNossoNumero As String, sDv As String, sQuintoGrupo As String, dDataBase As Date
@@ -3959,8 +4028,8 @@ Select Case nCodReduz
         Sql = "SELECT * FROM vwFULLEMPRESA3 WHERE CODIGOMOB=" & nCodReduz
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
-            sInsc = !INSCESTADUAL
-            sNome = !RazaoSocial
+            sInsc = !inscestadual
+            sNome = !razaosocial
             If Not IsNull(!CPF) Then
                sDoc = !CPF
             ElseIf Not IsNull(!Cnpj) Then
@@ -4030,9 +4099,9 @@ With grdTemp2
         sValor = CDbl(.TextMatrix(nLinha, 7)) / 2
         dDataVencto = CDate(mskDataVencimento.Text)
         nNumGuia = .TextMatrix(nLinha, 8)
-        nNumDoc = nNumGuia
+        nNumdoc = nNumGuia
         sDadosLanc = "MULTA DE ROÇADA"
-        NumBarra2 = Gera2of5Cod(CStr(sValor), CDate(dDataVencto), nNumDoc, nCodReduz)
+        NumBarra2 = Gera2of5Cod(CStr(sValor), CDate(dDataVencto), nNumdoc, nCodReduz)
         NumBarra2a = Left$(NumBarra2, 13)
         NumBarra2b = Mid$(NumBarra2, 14, 13)
         NumBarra2c = Mid$(NumBarra2, 27, 13)
@@ -4073,7 +4142,7 @@ With grdTemp2
         Sql = "insert boletoguia(usuario,computer,sid,seq,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,cep,uf,fulllanc,numdoc,numparcela,totparcela,datavencto,numdoc2,"
         Sql = Sql & "digitavel,codbarra,valorguia,obs,numbarra2a,numbarra2b,numbarra2c,numbarra2d) values('" & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & nLinha & "," & nCodReduz & ",'" & Left(Mask(sNome), 80) & "','" & lblNumInsc.Caption & "','"
         Sql = Sql & Left(Mask(sEnd), 80) & "'," & nNum & ",'" & Left(Mask(sCompl), 30) & "','" & Left(Mask(sBairro), 25) & "','" & Mask(sCidade) & "','" & sCep & "','" & sUF & "','" & Mask(sDadosLanc) & "','"
-        Sql = Sql & CStr(nNumGuia) & "'," & 1 & "," & 1 & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "','" & nNumDoc & "','" & sDigitavel2 & "','" & Mask(sBarra) & "',"
+        Sql = Sql & CStr(nNumGuia) & "'," & 1 & "," & 1 & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "','" & nNumdoc & "','" & sDigitavel2 & "','" & Mask(sBarra) & "',"
         Sql = Sql & Virg2Ponto(Format(sValor, "#0.00")) & ",'" & Mask(txtObs.Text) & "','" & NumBarra2a & "','" & NumBarra2b & "','" & NumBarra2c & "','" & NumBarra2d & "')"
         cn.Execute Sql, rdExecDirect
      
@@ -4103,7 +4172,7 @@ bGerado = True
 'EXIBE RELATORIO
 
 'frmReport.ShowReport2 "BOLETOGUIA", frmMdi.hwnd, Me.hwnd, nSid, nNumGuia
-frmReport.ShowReport2 "BOLETOGUIA_V4", frmMdi.hwnd, Me.hwnd, nSid, nNumGuia
+frmReport.ShowReport2 "BOLETOGUIA_V4", frmMdi.HWND, Me.HWND, nSid, nNumGuia
 Sql = "delete from boletoguiacapa where sid=" & nSid
 cn.Execute Sql, rdExecDirect
 
@@ -4147,7 +4216,7 @@ Dim nAno As Integer
 Dim sNumProc As String
 Dim dDataProc As Date
 Dim dDataVencto As Date
-Dim nNumDoc As Long
+Dim nNumdoc As Long
 Dim sQuadra As String
 Dim sLote As String
 Dim nNumParc As Integer
@@ -4338,7 +4407,7 @@ nValorParc = FormatNumber(nValorParc / 2, 2)
 nNumParc = 1
 nComplemento = 0
 sValorParc = nValorParc
-nNumDoc = nLastCod
+nNumdoc = nLastCod
 If CDbl(sValorParc) > 0 Then
     'NumBarra2 = Gera2of5Cod(CDbl(sValorParc) + nValorTxExpParc, CDate(sVencimento), nNumDoc, nNumParc, nCodLanc, nSeq, nComplemento)
 Else
@@ -4358,18 +4427,18 @@ Sql = Sql & "DADOSLANCAMENTO,TAXAEXP,SAIR,OBS) VALUES('" & NomeDoUsuario & "'," 
 Sql = Sql & Left$(sTipoImposto, 15) & "','" & Mask(Left$(sNomeResp, 40)) & "','" & Left$(sEndImovel, 40) & "'," & nNumImovel & ",'" & Mask(Left$(sComplImovel, 30)) & "','"
 Sql = Sql & Left(sBairroImovel, 25) & "','" & Left(sEndEntrega, 40) & "'," & nNumEntrega & ",'" & Mask(Left$(sComplEntrega, 30)) & "','" & Left(sBairroEntrega, 25) & "','"
 Sql = Sql & sCepEntrega & "','" & sCidadeEntrega & "','" & sUFEntrega & "','" & sDescImposto & "'," & nAno & ",'" & sNumProc & "','"
-Sql = Sql & Format(dDataProc, "mm/dd/yyyy") & "','" & CStr(nNumDoc) & "','" & "" & "','" & sQuadra & "','"
+Sql = Sql & Format(dDataProc, "mm/dd/yyyy") & "','" & CStr(nNumdoc) & "','" & "" & "','" & sQuadra & "','"
 Sql = Sql & sLote & "','" & Format(sVencimento, "mm/dd/yyyy") & "'," & nNumParc & "," & 1 & ","
 Sql = Sql & Virg2Ponto(RemovePonto(sValorParc)) & ",'" & Mask(StrBarra1) & "','" & Mask(StrBarra2) & "'," & NumBarra1 & ",'" & NumBarra2a & "','"
 Sql = Sql & NumBarra2b & "','" & NumBarra2c & "','" & NumBarra2d & "','" & sDadosLanc & "'," & Virg2Ponto(CStr(nValorTxExpParc)) & "," & "0" & ",'" & Mask(Trim(txtObs.Text)) & "')"
 cn.Execute Sql, rdExecDirect
 
-modLg "Emissão de guia (Multa) nº " & nNumDoc & " Codigo: " & Val(txtCod.Text) & " - " & lblProp.Caption
+modLg "Emissão de guia (Multa) nº " & nNumdoc & " Codigo: " & Val(txtCod.Text) & " - " & lblProp.Caption
 bGerado = True
 
 'EXIBE RELATORIO
 
-frmReport.ShowReport "Carne", frmMdi.hwnd, Me.hwnd, nNumDocEspecial
+frmReport.ShowReport "Carne", frmMdi.HWND, Me.HWND, nNumDocEspecial
 'DELETA TEMPORARIO
 Sql = "DELETE FROM CARNETMP WHERE COMPUTER='" & NomeDoUsuario & "'"
 cn.Execute Sql, rdExecDirect
@@ -4391,7 +4460,7 @@ Private Sub EmiteBoleto()
 Dim RdoAux As rdoResultset, RdoAux2 As rdoResultset, Sql As String, nPos As Integer, sDataGuia As String, sDataVencto As String
 Dim nCodReduz As Long, sInsc As String, sNome As String, sDoc As String, sEnd As String, nNum As Integer, nValorDoc As Double
 Dim sCompl As String, sBairro As String, sCidade As String, sUF As String, nLinha As Integer, sCep As String
-Dim sUsuario As String, nNumDoc As Long, bMulta As Boolean, nValorTaxa As Double, sNumDoc As String
+Dim sUsuario As String, nNumdoc As Long, bMulta As Boolean, nValorTaxa As Double, sNumDoc As String
 Dim sLanc As String, sFullTrib As String, nAno As Integer, nSeq As Integer, nLanc As Integer, nParc As Integer, nCompl As Integer, nValorJuros As Double, nValorMulta As Double, nValorCorrecao As Double, nValorTotal As Double
 Dim nSeq2 As Integer, sAj As String, sDA As String, nValorPrincipal As Double, sNumDoc2 As String, sNumDoc3 As String, nFatorVencto As Long
 Dim nSid As Long, sDigitavel As String, sNossoNumero As String, sDv As String, sQuintoGrupo As String, dDataBase As Date
@@ -4728,7 +4797,7 @@ sCompl = lblComplentrega.Caption
 sBairro = lblBairroEntrega.Caption
 sCidade = lblCidadeEntrega.Caption
 sUF = lblUF.Caption
-sCep = lblCep.Caption
+sCep = lblCEP.Caption
 nSid = Int(Rnd(100) * 1000000)
 
 Sql = "delete from boletoguia where sid=" & nSid
@@ -4798,9 +4867,9 @@ With grdTemp2
             
             sValor = nValorDoc
             dDataVencto = CDate(sDataDam)
-            nNumDoc = nNumGuia
+            nNumdoc = nNumGuia
             sDadosLanc = cmbLanc.Text
-            NumBarra2 = Gera2of5Cod(sValor, dDataVencto, nNumDoc, nCodReduz)
+            NumBarra2 = Gera2of5Cod(sValor, dDataVencto, nNumdoc, nCodReduz)
             NumBarra2a = Left$(NumBarra2, 13)
             NumBarra2b = Mid$(NumBarra2, 14, 13)
             NumBarra2c = Mid$(NumBarra2, 27, 13)
@@ -4844,9 +4913,9 @@ bGerado = True
 
 'EXIBE RELATORIO
 If bBoleto Then
-    frmReport.ShowReport2 "BOLETOGUIA", frmMdi.hwnd, Me.hwnd, nSid, nNumGuia
+    frmReport.ShowReport2 "BOLETOGUIA", frmMdi.HWND, Me.HWND, nSid, nNumGuia
 Else
-    frmReport.ShowReport2 "BOLETOGUIA_V4", frmMdi.hwnd, Me.hwnd, nSid, nNumGuia
+    frmReport.ShowReport2 "BOLETOGUIA_V4", frmMdi.HWND, Me.HWND, nSid, nNumGuia
 End If
 
 Sql = "delete from boletoguiacapa where sid=" & nSid
@@ -4867,8 +4936,187 @@ For x = 0 To rdoErrors.Count - 1
 Next
 Resume Next
 
+End Sub
+
+Private Sub EmiteBoletoRegistrado()
+Dim v1 As String, v2 As String, v3 As String, v4 As String, v5 As String, v6 As String, v7 As String, v8 As String, v9 As String, V10 As String
+Dim RdoAux As rdoResultset, Sql As String, nNumdoc As Long, nSeq As Integer, nCodReduz As Long, nLanc As Integer, nParc As Integer, nAno As Integer
+Dim sDataBase As String, sDataVencto As String, nSeqObs As Integer, bAbateu As Boolean, aTributos() As TRIBUTO, aTributosU() As TRIBUTO
+
+nCodReduz = Val(txtCod.Text)
+nLanc = cmbLanc.ItemData(cmbLanc.ListIndex)
+nAno = Val(txtAno.Text)
+sDataBase = Right$(frmMdi.Sbar.Panels(6).Text, 10)
+ReDim aTributos(0)
+ReDim aTributosU(0)
+
+For x = 1 To lvTrib.ListItems.Count
+    If lvTrib.ListItems(x).Checked = True Then
+       ReDim Preserve aTributos(UBound(aTributos) + 1)
+       ReDim Preserve aTributosU(UBound(aTributosU) + 1)
+       aTributosU(UBound(aTributosU)).nCodTributo = Val(Right$(lvTrib.ListItems(x).Key, 3))
+       aTributos(UBound(aTributos)).nCodTributo = Val(Right$(lvTrib.ListItems(x).Key, 3))
+
+       If chkUnica.value = 0 Then
+          If Not bAbateu Then
+             aTributosU(UBound(aTributosU)).nValorTributo = FormatNumber((CDbl(lvTrib.ListItems(x).SubItems(2)) * CDbl(lvTrib.ListItems(x).SubItems(1))) - CDbl(txtAbate.Text), 2)
+          Else
+             aTributosU(UBound(aTributosU)).nValorTributo = FormatNumber(CDbl(lvTrib.ListItems(x).SubItems(2)) * CDbl(lvTrib.ListItems(x).SubItems(1)), 2)
+          End If
+       Else
+          aTributosU(UBound(aTributosU)).nValorTributo = FormatNumber(CDbl(lvTrib.ListItems(x).SubItems(2)) * CDbl(lvTrib.ListItems(x).SubItems(1)), 2)
+          If aTributosU(UBound(aTributosU)).nCodTributo = 22 Or aTributosU(UBound(aTributosU)).nCodTributo = 23 Or aTributosU(UBound(aTributosU)).nCodTributo = 24 Or aTributosU(UBound(aTributosU)).nCodTributo = 28 Then
+          Else
+             aTributosU(UBound(aTributosU)).nValorTributo = aTributosU(UBound(aTributosU)).nValorTributo - aTributosU(UBound(aTributosU)).nValorTributo * 0.05
+          End If
+       End If
+       If Not bAbateu Then
+            aTributos(UBound(aTributos)).nValorTributo = FormatNumber(((CDbl(lvTrib.ListItems(x).SubItems(2)) * CDbl(lvTrib.ListItems(x).SubItems(1))) - CDbl(txtAbate.Text)) / Val(txtNumParc.Text), 2)
+            bAbateu = True
+       Else
+            aTributos(UBound(aTributos)).nValorTributo = FormatNumber((CDbl(lvTrib.ListItems(x).SubItems(2) * CDbl(lvTrib.ListItems(x).SubItems(1))) / Val(txtNumParc.Text)), 2)
+       End If
+    End If
+Next
 
 
+For nParc = 0 To Val(txtNumParc.Text)
+    If nParc = 0 And chkUnica.value = 0 Then GoTo proximo
+    
+    If nParc > 0 Then
+        If grdData.Rows = 1 Then
+            sDataVencto = mskDataVencimento.Text
+        Else
+            sDataVencto = grdData.TextMatrix(nParc, 1)
+        End If
+    Else
+        sDataVencto = mskDataVencimento.Text
+    End If
+    
+    Sql = "SELECT MAX(NUMDOCUMENTO) AS MAXIMO FROM NUMDOCUMENTO"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    nNumdoc = RdoAux!maximo + 1
+    RdoAux.Close
 
+    Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,CODBANCO,CODAGENCIA,VALORPAGO,ISENTOMJ,PERCISENCAO,TIPODOC,emissor,registrado) VALUES("
+    Sql = Sql & nNumdoc & ",'" & Format(Now, sDataFormat) & "'," & 0 & "," & 0 & "," & 0 & "," & 0 & "," & 0 & ",3,'" & NomeDeLogin & "',1)"
+    cn.Execute Sql, rdExecDirect
+    
+    Sql = "SELECT MAX(SEQLANCAMENTO) AS SEQMAXIMA FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND CODLANCAMENTO=" & nLanc & " AND ANOEXERCICIO=" & nAno & " AND NUMPARCELA=" & nParc
+    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If IsNull(RdoAux2!SEQMAXIMA) Then
+       nSeq = 0
+    Else
+       nSeq = RdoAux2!SEQMAXIMA + 1
+    End If
+
+    Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES(" & nCodReduz & ","
+    Sql = Sql & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & "," & nNumdoc & ")"
+    cn.Execute Sql, rdExecDirect
+
+    Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,USERID) VALUES("
+    Sql = Sql & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','"
+    Sql = Sql & Format(Right$(frmMdi.Sbar.Panels(6).Text, 10), "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+    cn.Execute Sql, rdExecDirect
+
+    If Trim(txtObs.Text) <> "" Then
+        Sql = "SELECT MAX(SEQ) AS MAXIMO FROM OBSPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=0"
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
+            If IsNull(!maximo) Then
+                nSeqObs = 1
+            Else
+                nSeqObs = !maximo + 1
+            End If
+           .Close
+        End With
+        Sql = "INSERT OBSPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES(" & nCodReduz & ","
+        Sql = Sql & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & "," & nSeqObs & ",'" & Mask(Trim(txtObs.Text)) & "',"
+        Sql = Sql & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(sDataBase, "mm/dd/yyyy") & "')"
+        cn.Execute Sql, rdExecDirect
+    End If
+
+    If Trim(sObsIss) <> "" Then
+        Sql = "SELECT MAX(SEQ) AS MAXIMO FROM OBSPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=0"
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
+            If IsNull(!maximo) Then
+                nSeqObs = 1
+            Else
+                nSeqObs = !maximo + 1
+            End If
+           .Close
+        End With
+        Sql = "INSERT OBSPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES(" & nCodReduz & ","
+        Sql = Sql & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & "," & nSeqObs & ",'" & Mask(Trim(sObsIss)) & "',"
+        Sql = Sql & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(sDataBase, "mm/dd/yyyy") & "')"
+        cn.Execute Sql, rdExecDirect
+    End If
+
+    sFullTrib = ""
+    For Y = 1 To UBound(aTributos)
+       '*************
+        If bISSFixo And bTLL Then
+            If nLanc = 14 Then 'se for iss fixo ignorar outros tributos que não sejam iss fixo(11)
+                If aTributos(Y).nCodTributo <> 11 Then
+                    GoTo ProximoTrib
+                End If
+            ElseIf nLanc = 6 Then 'se for taxa licenca ignorar o tributo iss fixo(11)
+                If aTributos(Y).nCodTributo = 11 Then '
+                    GoTo ProximoTrib
+                End If
+            End If
+        End If
+      '*************
+
+        If aTributos(Y).nCodTributo <> 3 Then
+            Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+            Sql = Sql & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & ","
+            Sql = Sql & aTributos(Y).nCodTributo & "," & IIf(nParc = "0", Virg2Ponto(CStr(aTributosU(Y).nValorTributo)), Virg2Ponto(CStr(aTributos(Y).nValorTributo))) & ")"
+            cn.Execute Sql, rdExecDirect
+         End If
+ProximoTrib:
+    Next
+
+
+proximo:
+
+Next
+
+If Trim(sObsIss) <> "" Then
+    Sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & nCodigoImovel
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If IsNull(!maximo) Then
+            nSeqObs = 1
+        Else
+            nSeqObs = !maximo + 1
+        End If
+       .Close
+    End With
+        
+    Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
+    Sql = Sql & nCodigoImovel & "," & nSeqObs & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObsIss & "',236,'" & Format(Now, "mm/dd/yyyy") & "')"
+    cn.Execute Sql, rdExecDirect
+    sObsIss = ""
+End If
+
+v1 = lblProp.Caption
+v2 = Left(lblRua.Caption & ", " & lblNumImovel.Caption & IIf(lblCompl.Caption <> "", " " & lblCompl.Caption, "") & " - " & lblBairro.Caption, 60)
+v3 = mskDataVencimento.Text
+v4 = RetornaNumero(lblNumInsc.Caption)
+v5 = "287353200" & Format(nNumdoc, "00000000")
+v6 = RetornaNumero(lblTotal.Caption)
+v7 = Left("JABOTICABAL", 18)
+v8 = "SP"
+v9 = lblCEP.Caption
+V10 = NomeDeLogin
+If Trim(lblCEP.Caption) = "" Or Trim(lblCEP.Caption) = "-" Then
+    v9 = "14870-000"
+End If
+ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+
+Limpa
 
 End Sub
+

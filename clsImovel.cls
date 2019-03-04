@@ -1052,9 +1052,11 @@ If TySeqEndereco = Imobiliario Then
         If .RowCount = 0 Then Exit Sub
         If TyTipoEndereco = Localizacao Then 'imovel
             sCodLogradouro = SubNull(!CodLogr)
-            Sql = "select logradouro from vwlogradouro where codlogradouro=" & !CodLogr
+            Sql = "select logradouro,endereco_resumido from vwlogradouro where codlogradouro=" & !CodLogr
             Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-            sEndereco = SubNull(RdoAux3!Logradouro)
+            'sEndereco = SubNull(RdoAux3!Logradouro)
+            sEndereco = SubNull(RdoAux3!endereco_resumido)
+            If sEndereco = "" Then sEndereco = SubNull(!Logradouro)
             RdoAux3.Close
             sNumero = SubNull(!Li_Num)
             sComplemento = SubNull(!Li_Compl)
@@ -1073,12 +1075,14 @@ If TySeqEndereco = Imobiliario Then
                 sCep = "14870000"
             End If
             sEstado = SubNull(!li_uf)
-        ElseIf TyTipoEndereco = cadastrocidadao Then 'proprietario
+        ElseIf TyTipoEndereco = Cadastrocidadao Then 'proprietario
             Sql = "select * from vwfullcidadao where codcidadao=" & !CodCidadao
             Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux3
                 If (SubNull(!etiqueta) = "S" And SubNull(!etiqueta2) = "S") Then
-                    sEndereco = SubNull(!Endereco)
+                    'sEndereco = SubNull(!Endereco)
+                    sEndereco = SubNull(!endereco_resumido)
+                    If sEndereco = "" Then sEndereco = SubNull(!Endereco)
                     sNumero = SubNull(!NUMIMOVEL)
                     sComplemento = SubNull(!Complemento)
                     sCodBairro = SubNull(!CodBairro)
@@ -1103,7 +1107,9 @@ If TySeqEndereco = Imobiliario Then
                 End If
             
                 If (IsNull(!etiqueta2) Or SubNull(!etiqueta2) = "N") Then
-                    sEndereco = SubNull(!Endereco)
+                    'sEndereco = SubNull(!Endereco)
+                    sEndereco = SubNull(!endereco_resumido)
+                    If sEndereco = "" Then sEndereco = SubNull(!Endereco)
                     sNumero = SubNull(!NUMIMOVEL)
                     sComplemento = SubNull(!Complemento)
                     sCodBairro = SubNull(!CodBairro)
@@ -1125,9 +1131,10 @@ If TySeqEndereco = Imobiliario Then
                     End If
                     sEstado = SubNull(!SiglaUF)
                 Else
-                    sEndereco = SubNull(!nomelogradouroc)
+                    sEndereco = SubNull(!NomeLogradouroC)
                     If sEndereco = "" Then
-                        sEndereco = SubNull(!enderecoc)
+                        'sEndereco = SubNull(!Enderecoc)
+                        sEndereco = SubNull(!Endereco_resumidoC)
                     End If
                     sNumero = SubNull(!NUMIMOVEL2)
                     sComplemento = SubNull(!Complemento2)
@@ -1163,9 +1170,10 @@ If TySeqEndereco = Imobiliario Then
                     RdoAux3.Close
                 End If
             Else
-                Sql = "select logradouro from vwlogradouro where codlogradouro=" & !Ee_CodLog
+                Sql = "select logradouro,endereco_resumido from vwlogradouro where codlogradouro=" & !Ee_CodLog
                 Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                sEndereco = SubNull(RdoAux3!Logradouro)
+'                sEndereco = SubNull(RdoAux3!Logradouro)
+                sEndereco = SubNull(RdoAux3!endereco_resumido)
                 RdoAux3.Close
             End If
             sNumero = SubNull(!Ee_NumImovel)
@@ -1221,7 +1229,11 @@ ElseIf TySeqEndereco = Mobiliario Then
         If TyTipoEndereco = Localizacao Then
             'local da empresa
             sCodLogradouro = SubNull(!CodLogradouro)
-            sEndereco = Trim(SubNull(!Endereco))
+            If Val(sCodLogradouro) > 0 Then
+                sEndereco = Trim(SubNull(!Endereco))
+            Else
+                sEndereco = Trim(SubNull(!Logradouro))
+            End If
             sNumero = SubNull(!Numero)
             sComplemento = SubNull(!Complemento)
             sCodBairro = SubNull(!CodBairro)

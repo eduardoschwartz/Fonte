@@ -36,7 +36,7 @@ End Enum
 Public Enum TipoEndereco
     Localizacao = 0
     Entrega = 1
-    cadastrocidadao = 2
+    Cadastrocidadao = 2
 End Enum
 
 
@@ -148,7 +148,7 @@ uParam As Long, ByVal lpvParam As Long, ByVal fuWinIni As _
 Long) As Long
 
 Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" ( _
-ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, _
+ByVal HWND As Long, ByVal lpOperation As String, ByVal lpFile As String, _
 ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
 Declare Function GetDesktopWindow Lib "user32" () As Long
@@ -174,6 +174,7 @@ Public Const NovoProtocolo = 1
 Public ProcessInformation(1 To 10) As PROCESS_INFORMATION
 'Declaração de Variaveis
 
+Public FormParcelamento As String
 Public sDataFormat As String
 Public IPServer As String
 Public bCloseChat As Boolean
@@ -181,6 +182,7 @@ Public nGuiche As Integer
 Public aDocDAM() As Long
 Public bLocal As Boolean
 Public bAnistia As Boolean
+Public bFichaCompensacao As Boolean
 Public bComercioEletronico As Boolean
 Public dcJuros As New clsDictionary
 Public dcUfir As New clsDictionary
@@ -214,6 +216,7 @@ Public cnBkp As New rdoConnection
 Public nCodLastUser As Integer
 Public LastUser As String
 Public UserPwd As String
+Public sPathAnexo As String
 Public sPathAutoUpdate As String
 Public sPathArqBanco As String
 Public sPathArqDA As String
@@ -465,7 +468,7 @@ End Type
 
 Public Type FLASHWINFO
     cbSize As Long
-    hwnd As Long
+    HWND As Long
     dwFlags As Long
     uCount As Long
     dwTimeout As Long
@@ -521,8 +524,8 @@ Declare Function InternetOpen Lib "wininet" Alias "InternetOpenA" (ByVal sAgent 
 Declare Function InternetCloseHandle Lib "wininet" (ByVal hInet As Long) As Integer
 
 Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
-Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hwnd As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-Declare Sub ClientToScreen Lib "user32" (ByVal hwnd As Long, lpPoint As POINTAPI)
+Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal HWND As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Declare Sub ClientToScreen Lib "user32" (ByVal HWND As Long, lpPoint As POINTAPI)
 Declare Sub ClipCursor Lib "user32" (lpRect As Any)
 Declare Function CoInitialize Lib "OLE32.DLL" (ByVal pvReserved As Long) As Long
 Declare Sub CoUninitialize Lib "OLE32.DLL" ()
@@ -530,17 +533,17 @@ Declare Sub CopyMem Lib "KERNEL32" Alias "RtlMoveMemory" (Destination As Any, So
 Declare Sub CopyMemory Lib "KERNEL32" Alias "RtlMoveMemory" (ByRef lpDest As Any, ByRef lpSource As Any, ByVal iLen As Long)
 Declare Sub CoTaskMemFree Lib "OLE32.DLL" (ByVal pv As Long)
 Declare Function CloseHandle Lib "KERNEL32" (ByVal hObject As Long) As Long
-Declare Function CreateCaret Lib "user32" (ByVal hwnd As Long, ByVal hBitmap As Long, ByVal nWidth As Long, ByVal nHeight As Long) As Long
+Declare Function CreateCaret Lib "user32" (ByVal HWND As Long, ByVal hBitmap As Long, ByVal nWidth As Long, ByVal nHeight As Long) As Long
 Declare Function CreateFont Lib "gdi32" Alias "CreateFontA" (ByVal h As Long, ByVal w As Long, ByVal e As Long, ByVal o As Long, ByVal w As Long, ByVal i As Long, ByVal U As Long, ByVal s As Long, ByVal c As Long, ByVal OP As Long, ByVal CP As Long, ByVal q As Long, ByVal PAF As Long, ByVal f As String) As Long
 Declare Function CreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Long
 Declare Function CreatePen Lib "gdi32" (ByVal nPenStyle As Long, ByVal nWidth As Long, ByVal crColor As Long) As Long
 Declare Function CreateRectRgn Lib "gdi32" (ByVal X1 As Long, ByVal Y1 As Long, ByVal X2 As Long, ByVal Y2 As Long) As Long
 Declare Function CreateRoundRectRgn Lib "gdi32" (ByVal X1 As Long, ByVal Y1 As Long, ByVal X2 As Long, ByVal Y2 As Long, ByVal X3 As Long, ByVal Y3 As Long) As Long
 Declare Function CreateSolidBrush Lib "gdi32" (ByVal crColor As Long) As Long
-Declare Function DefWindowProc Lib "user32" Alias "DefWindowProcA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Declare Function DefWindowProc Lib "user32" Alias "DefWindowProcA" (ByVal HWND As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
-Declare Function DestroyWindow Lib "user32" (ByVal hwnd As Long) As Long
+Declare Function DestroyWindow Lib "user32" (ByVal HWND As Long) As Long
 Declare Function DrawIcon Lib "user32" (ByVal hdc As Long, ByVal x As Long, ByVal Y As Long, ByVal hIcon As Long) As Boolean
 Declare Function DrawIconEx Lib "user32" (ByVal hdc As Long, ByVal xLeft As Long, ByVal yTop As Long, ByVal hIcon As Long, ByVal cxWidth As Long, ByVal cyWidth As Long, ByVal istepIfAniCur As Long, ByVal hbrFlickerFreeDraw As Long, ByVal diFlags As Long) As Boolean
 Declare Function DrawText Lib "user32" Alias "DrawTextA" (ByVal hdc As Long, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
@@ -552,8 +555,8 @@ Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName 
 Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" (ByVal hwndParent As Long, ByVal hWndChildAfter As Long, ByVal lpszClass As String, ByVal lpszWindow As String) As Long
 Declare Function FlashWindowEx Lib "user32" (FWInfo As FLASHWINFO) As Boolean
 Declare Function GetAdaptersInfo Lib "IPHlpApi.dll" (IpAdapterInfo As Any, pOutBufLen As Long) As Long
-Declare Function GetClassName Lib "user32" Alias "GetClassNameA" (ByVal hwnd&, ByVal lpClassName$, ByVal nMaxCount&) As Long
-Declare Sub GetClientRect Lib "user32" (ByVal hwnd As Long, lpRect As RECT)
+Declare Function GetClassName Lib "user32" Alias "GetClassNameA" (ByVal HWND&, ByVal lpClassName$, ByVal nMaxCount&) As Long
+Declare Sub GetClientRect Lib "user32" (ByVal HWND As Long, lpRect As RECT)
 Declare Function GetComputerName Lib "KERNEL32" Alias "GetComputerNameA" (ByVal lpBuffer As String, nSize As Long) As Long
 Declare Function GetCurrentThreadId Lib "KERNEL32" () As Long
 Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
@@ -562,24 +565,24 @@ Declare Function GetIpAddrTable_API Lib "IpHlpApi" Alias "GetIpAddrTable" (pIPAd
 Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer
 Declare Function GetLongPathName Lib "KERNEL32" (ByRef pszShortPath As String, ByRef lpszLongPath As String, ByVal cchBuffer As Long) As Long
 Declare Function GetNetworkParams Lib "IpHlpApi" (FixedInfo As Any, pOutBufLen As Long) As Long
-Declare Function GetParent Lib "user32" (ByVal hwnd As Long) As Long
+Declare Function GetParent Lib "user32" (ByVal HWND As Long) As Long
 Declare Function GetQueueStatus Lib "user32" (ByVal qsFlags As Long) As Long
 Declare Function GetSystemDirectory Lib "KERNEL32" Alias "GetSystemDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
-Declare Function GetSystemMenu Lib "user32" (ByVal hwnd As Long, ByVal bRevert As Long) As Long
+Declare Function GetSystemMenu Lib "user32" (ByVal HWND As Long, ByVal bRevert As Long) As Long
 Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
 Declare Function GetVersionExA Lib "KERNEL32" (lpVersionInformation As OSVERSIONINFO) As Integer
 Declare Function GetVolumeInformation Lib "KERNEL32" Alias "GetVolumeInformationA" (ByVal lpRootPathName As String, ByVal lpVolumeNameBuffer As String, ByVal nVolumeNameSize As Long, lpVolumeSerialNumber As Long, lpMaximumComponentLength As Long, lpFileSystemFlags As Long, ByVal lpFileSystemNameBuffer As String, ByVal nFileSystemNameSize As Long) As Long
-Declare Function GetWindow Lib "user32" (ByVal hwnd As Long, ByVal wCmd As Long) As Long
-Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
-Declare Function GetWindowRect Lib "user32" (ByVal hwnd As Long, lpRect As RECT) As Long
-Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
+Declare Function GetWindow Lib "user32" (ByVal HWND As Long, ByVal wCmd As Long) As Long
+Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal HWND As Long, ByVal nIndex As Long) As Long
+Declare Function GetWindowRect Lib "user32" (ByVal HWND As Long, lpRect As RECT) As Long
+Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal HWND As Long, ByVal lpString As String, ByVal cch As Long) As Long
 Declare Function LineTo Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal Y As Long) As Long
 Declare Function LockWindowUpdate Lib "user32" (ByVal hwndLock As Long) As Long
 Declare Function MessageBoxIndirect Lib "user32" Alias "MessageBoxIndirectA" (lpMsgBoxParams As MSGBOXPARAMS) As Long
 Declare Sub MoveMemory Lib "KERNEL32" Alias "RtlMoveMemory" (pDest As Any, pSource As Any, ByVal dwLength As Long)
 Declare Function MoveToEx Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal Y As Long, lpPoint As POINTAPI) As Long
 Declare Function PlaySound Lib "winmm.dll" Alias "PlaySoundA" (ByVal lpszName As String, ByVal hModule As Long, ByVal dwFlags As Long) As Long
-Declare Function PostMessage Lib "user32" Alias "PostMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Declare Function PostMessage Lib "user32" Alias "PostMessageA" (ByVal HWND As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Declare Function PtInRect Lib "user32" (lpRect As RECT, ByVal x As Long, ByVal Y As Long) As Long
 Declare Function PtInRegion Lib "gdi32" (ByVal hRgn As Long, ByVal x As Long, ByVal Y As Long) As Long
 Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As Long
@@ -593,19 +596,19 @@ Declare Function RegQueryValue Lib "advapi32.dll" Alias "RegQueryValueA" (ByVal 
 Declare Function RegQueryValueEx Lib "advapi32.dll" Alias "RegQueryValueExA" (ByVal hKey As Long, ByVal lpValueName As String, ByVal lpReserved As Long, lpType As Long, lpData As Any, lpcbData As Long) As Long
 Declare Function RegSetValueEx Lib "advapi32.dll" Alias "RegSetValueExA" (ByVal hKey As Long, ByVal lpValueName As String, ByVal Reserved As Long, ByVal dwType As Long, lpData As Any, ByVal cbData As Long) As Long
 Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
-Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
-Declare Function SendMessageByLong Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-Declare Function SendMessageByString Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As String) As Long
+Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal HWND As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+Declare Function SendMessageByLong Lib "user32" Alias "SendMessageA" (ByVal HWND As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Declare Function SendMessageByString Lib "user32" Alias "SendMessageA" (ByVal HWND As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As String) As Long
 Declare Function SetBkMode Lib "gdi32" (ByVal hdc As Long, ByVal nBkMode As Long) As Long
 Declare Function SetBkColor Lib "gdi32" (ByVal hdc As Long, ByVal crColor As Long) As Long
-Declare Function SetCapture Lib "user32" (ByVal hwnd As Long) As Long
+Declare Function SetCapture Lib "user32" (ByVal HWND As Long) As Long
 Declare Function SetCursorPos Lib "user32" (ByVal x As Long, ByVal Y As Long) As Long
 Declare Function SetParent Lib "user32" (ByVal hWndChild As Long, ByVal hWndNewParent As Long) As Long
 Declare Function SetRect Lib "user32" (lpRect As RECT, ByVal X1 As Long, ByVal Y1 As Long, ByVal X2 As Long, ByVal Y2 As Long) As Long
 Declare Function SetWindowsHookEx Lib "user32" Alias "SetWindowsHookExA" (ByVal idHook As Long, ByVal lpfn As Long, ByVal hMod As Long, ByVal dwThreadId As Long) As Long
-Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
-Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
-Declare Function SetWindowText Lib "user32.dll" Alias "SetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String) As Long
+Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal HWND As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Declare Function SetWindowPos Lib "user32" (ByVal HWND As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function SetWindowText Lib "user32.dll" Alias "SetWindowTextA" (ByVal HWND As Long, ByVal lpString As String) As Long
 Declare Function SHBrowseForFolder Lib "shell32.dll" Alias "SHBrowseForFolderA" (lpBrowseInfo As BROWSEINFO) As Long                               ' ITEMIDLIST
 Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pIdl As Long, ByVal pszPath As String) As Long
 Declare Function ShowCursor Lib "user32" (ByVal bShow As Long) As Long
@@ -622,7 +625,7 @@ Public Sub Unhook()
      TEMP = SetWindowLong(gHW, GWL_WNDPROC, lpPrevWndProc)
 End Sub
 
-Function WindowProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Function WindowProc(ByVal HWND As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
    Dim nmh As NMHDR
 
    Select Case uMsg
@@ -644,7 +647,7 @@ Function WindowProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long
    End Select
 
    'Pass message on to the original window message handler
-   WindowProc = CallWindowProc(lpPrevWndProc, hwnd, uMsg, wParam, lParam)
+   WindowProc = CallWindowProc(lpPrevWndProc, HWND, uMsg, wParam, lParam)
 
 End Function
 Sub Main()
@@ -969,6 +972,8 @@ GetUser$ = Trim$(tmpUserName)
 
 End Function
 
+
+
 Public Function Conecta(User As String, Pwd As String, Optional sParam As String) As Boolean
 Dim FS As FileSystemObject
 On Error GoTo Erro
@@ -1192,7 +1197,7 @@ With enBinary
     .LoginTimeout = 20
      
     Conn$ = "UID=" & UL & ";PWD=" & UP & ";" _
-    & "DATABASE=GTI_BINARY;" _
+    & "DATABASE=GTI_FILES;" _
     & "SERVER=" & IPServer & ";" _
     & "DRIVER={SQL SERVER};DSN='';"
     Set cnBinary = en.OpenConnection(dsname:="", Prompt:=rdDriverNoPrompt, Connect:=Conn$)
@@ -1738,8 +1743,14 @@ Public Function ValidaCPF(CPF As String) As Integer
         ValidaCPF = False
         Exit Function
     End If
-    
-    ValidaCPF = True
+        
+    If (CPF = "11111111111" Or CPF = "22222222222" Or CPF = "33333333333" Or CPF = "44444444444" Or CPF = "55555555555" Or CPF = "66666666666" Or CPF = "77777777777" Or CPF = "88888888888" Or CPF = "99999999999") Then
+        ValidaCPF = False
+    Else
+        ValidaCPF = True
+    End If
+
+
 
 End Function
 
@@ -2875,11 +2886,19 @@ RetornaNumeroProcessoPlusDV = Val(sNumProc)
 End Function
 
 Public Function ExtraiNumeroProcesso(sNumProcesso As String) As String
+On Error GoTo Erro
 ExtraiNumeroProcesso = Left$(sNumProcesso, InStr(1, sNumProcesso, "/", vbBinaryCompare) - 1)
+Exit Function
+Erro:
+ExtraiNumeroProcesso = ""
 End Function
 
 Public Function ExtraiAnoProcesso(sNumProcesso As String) As String
+On Error GoTo Erro
 ExtraiAnoProcesso = Right$(sNumProcesso, 4)
+Exit Function
+Erro:
+ExtraiAnoProcesso = ""
 End Function
 
 
@@ -3007,7 +3026,7 @@ On Error Resume Next
 Dim lHwnd As Long
 Dim lRet As Long
 
-lHwnd = ControlorForm.hwnd
+lHwnd = ControlorForm.HWND
 If lHwnd = 0 Then Exit Sub
 ControlorForm.BorderStyle = 0
 lRet = GetWindowLong(lHwnd, GWL_EXSTYLE)
@@ -3036,7 +3055,7 @@ End If
 End Function
 
 Public Sub RemoveTitleBar(frmDest As Form)
-SetWindowLong frmDest.hwnd, GWL_STYLE, GetWindowLong(frmDest.hwnd, GWL_STYLE) And Not WS_CAPTION
+SetWindowLong frmDest.HWND, GWL_STYLE, GetWindowLong(frmDest.HWND, GWL_STYLE) And Not WS_CAPTION
 oldMode% = frmDest.ScaleMode
 frmDest.ScaleMode = 1
 frmDest.Height = frmDest.Height - 300
@@ -3466,6 +3485,20 @@ End With
 
 End Function
 
+Public Function RetornaUsuarioFullName3(nId) As String
+Dim Sql As String, RdoAux As rdoResultset
+
+Sql = "SELECT NOMECOMPLETO FROM USUARIO WHERE ID=" & nId
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    RetornaUsuarioFullName3 = !NomeCompleto
+   .Close
+End With
+
+End Function
+
+
+
 Public Function RetornaUsuarioLoginName(sFullName) As String
 Dim Sql As String, RdoAux As rdoResultset
 
@@ -3566,7 +3599,7 @@ With RdoAux
             nPos = UBound(aRel) + 1
             ReDim Preserve aRel(nPos)
             aRel(nPos).nCodReduz = !codigomob
-            aRel(nPos).sRazao = !RazaoSocial
+            aRel(nPos).sRazao = !razaosocial
             aRel(nPos).nAno = !AnoExercicio
             aRel(nPos).sTx1 = FillLeft(FormatNumber(0, 2), 11)
             aRel(nPos).sTx2 = FillLeft(FormatNumber(0, 2), 11)
@@ -3673,9 +3706,9 @@ Public Sub AlwaysOnTop(FrmID As Form, OnTop As Boolean)
     Const HWND_TOPMOST = -1
     Const HWND_NOTOPMOST = -2
     If OnTop Then
-       OnTop = SetWindowPos(FrmID.hwnd, HWND_TOPMOST, 0, 0, 0, 0, flags)
+       OnTop = SetWindowPos(FrmID.HWND, HWND_TOPMOST, 0, 0, 0, 0, flags)
     Else
-       OnTop = SetWindowPos(FrmID.hwnd, HWND_TOPMOST, 0, 0, 0, 0, flags)
+       OnTop = SetWindowPos(FrmID.HWND, HWND_TOPMOST, 0, 0, 0, 0, flags)
     End If
 End Sub
 
@@ -3803,7 +3836,7 @@ With RdoAux
     dData = Format(dData, "dd/mm/yyyy")
     Do Until .EOF
         dDataIni = Format(!dataini, "dd/mm/yyyy")
-        dDataFim = Format(!datafim, "dd/mm/yyyy")
+        dDataFim = Format(!Datafim, "dd/mm/yyyy")
         If dData >= dDataIni And dData <= dDataFim Then
             bAchou = True
             ProdEventoDia = !CODEVENTO
@@ -4033,7 +4066,7 @@ End Sub
 
 
 Public Sub GeraRefisDam(nAno As Integer)
-Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nNumDoc As Long, ax As String, z As Long, nTotal As Double
+Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nNumdoc As Long, ax As String, z As Long, nTotal As Double
 nTotal = 0
 Ocupado
 Open sPathBin & "\RefisDAM.txt" For Output As #1
@@ -4057,8 +4090,8 @@ With RdoAux
     Do Until .EOF
         If !DataPagamento < CDate("08/15/2016") Then GoTo proximo
         nTotal = nTotal + !ValorPago
-        nNumDoc = !NumDocumento
-        ax = nNumDoc & " " & FillLeft(FormatNumber(!valordoc, 2), 10) & "     " & FillLeft(!CODREDUZIDO, 6) & "  " & Format(!DataPagamento, "dd/mm/yyyy")
+        nNumdoc = !NumDocumento
+        ax = nNumdoc & " " & FillLeft(FormatNumber(!valordoc, 2), 10) & "     " & FillLeft(!CODREDUZIDO, 6) & "  " & Format(!DataPagamento, "dd/mm/yyyy")
         Print #1, ax
 proximo:
        .MoveNext
@@ -4074,7 +4107,7 @@ Liberado
 End Sub
 
 Public Sub DocEmitido(sDataIni As String, sDataFim As String, sUser As String)
-Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nNumDoc As Long, ax As String, z As Long, nTotal As Double
+Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nNumdoc As Long, ax As String, z As Long, nTotal As Double
 nTotal = 0
 Ocupado
 Open sPathBin & "\RefisDAM.txt" For Output As #1
@@ -4099,8 +4132,8 @@ With RdoAux
     Do Until .EOF
         If !DataPagamento < CDate("08/15/2016") Then GoTo proximo
         nTotal = nTotal + !ValorPago
-        nNumDoc = !NumDocumento
-        ax = nNumDoc & " " & FillLeft(FormatNumber(!valordoc, 2), 10) & "     " & FillLeft(!CODREDUZIDO, 6) & "  " & Format(!DataPagamento, "dd/mm/yyyy")
+        nNumdoc = !NumDocumento
+        ax = nNumdoc & " " & FillLeft(FormatNumber(!valordoc, 2), 10) & "     " & FillLeft(!CODREDUZIDO, 6) & "  " & Format(!DataPagamento, "dd/mm/yyyy")
         Print #1, ax
 proximo:
        .MoveNext
@@ -4121,12 +4154,14 @@ Dim bRet As Boolean
 bRet = False
 
 If NomeDeLogin = "BRUNO.MASCARO" Or NomeDeLogin = "NAIARA.SOUZA" Or NomeDeLogin = "ELTON.DIAS" Or NomeDeLogin = "FERNANDO.MEDALHA" Or NomeDeLogin = "RENATA" Or _
-   NomeDeLogin = "RAFAEL.OLIVEIRA" Or NomeDeLogin = "ANDRE.FRANCA" Or NomeDeLogin = "MICHELLE.POLETTI" Or NomeDeLogin = "NATALIA.FRACASSO" Or _
-   NomeDeLogin = "MICHELE.OLIVEIRA" Or NomeDeLogin = "GABRIEL.MARQUES" Or NomeDeLogin = "ISRAEL" Or NomeDeLogin = "IORIO" Or NomeDeLogin = "POLYANA.TAVARES" Or _
-   NomeDeLogin = "TATIANE.SILVA" Or NomeDeLogin = "MIRELA.ASSONI" Or NomeDeLogin = "CARLA.REMIRO" Then
+   NomeDeLogin = "MICHELLE.POLETTI" Or NomeDeLogin = "NATALIA.FRACASSO" Or NomeDeLogin = "MARA.BELLINI" Or _
+   NomeDeLogin = "MICHELE.OLIVEIRA" Or NomeDeLogin = "GABRIEL.MARQUES" Or NomeDeLogin = "RODRIGOG" Or NomeDeLogin = "POLYANA.TAVARES" Or _
+   NomeDeLogin = "TATIANE.SILVA" Or NomeDeLogin = "MIRELA.ASSONI" Then
     bRet = True
 End If
 
+
+'Bruno Mascaro, Elton Dias, Gabriel Marques, Fernando Medalha, Michele Oliveira, Michelle Poletti, Naiara Souza, Natalia Fracasso, Polyana Tavares, Tatiane Silva, Mirela Assoni, Rodrigo Greijo e Mara Bellini
 IsAtendente = bRet
 
 End Function

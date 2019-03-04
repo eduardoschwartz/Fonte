@@ -1883,8 +1883,8 @@ lblEndGTI.Caption = ""
 lblNomeContador.Tag = ""
 lblNomeContador.Caption = ""
 lblEndGTI.Tag = ""
-z = SendMessage(lvSocio.hwnd, LVM_DELETEALLITEMS, 0, 0)
-z = SendMessage(lvCnae.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvSocio.HWND, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvCnae.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 Sql = "select * from vre_empresa where id=" & nId
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1964,7 +1964,7 @@ With RdoAux
     
     lblComplemento.Caption = SubNull(!Complemento)
     lblNumero.Caption = IIf(!numero_imovel = 0, "S/N", !numero_imovel)
-    lblCep.Caption = Format(!Cep, "00000-000")
+    lblCEP.Caption = Format(!Cep, "00000-000")
     
     If Val(!numero_crc_pf) = 0 Then
         sCRCF = ""
@@ -2036,7 +2036,7 @@ Sql = "select * from vre_atividade where id=" & nId
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        Set itmX = lvCnae.ListItems.Add(, , !CNAE)
+        Set itmX = lvCnae.ListItems.Add(, , !Cnae)
         itmX.SubItems(1) = IIf(!principal, "Sim", "Não")
         itmX.SubItems(2) = IIf(!exercida, "Sim", "Não")
        .MoveNext
@@ -2045,14 +2045,14 @@ With RdoAux
 End With
 
 'Sql = "select * from vre_licenciamento where empresa_id=" & nId & " and orgao=1"
-Sql = "select * from vre_licenciamento where empresa_id=" & nId & " and orgao=287"
+Sql = "select * from vre_licenciamento where empresa_id=" & nId & " and orgao_id=287"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
         If Val(!Numero) > 0 Then
             lblProtocolo.Caption = Format(RetornaNumero(!Numero), "0000000000000")
             lblProtocolo.Caption = Mid(lblProtocolo.Caption, 1, Len(lblProtocolo.Caption) - 6) & "." & Mid(lblProtocolo.Caption, 8, 4) & "-" & Right(lblProtocolo.Caption, 2)
-            lblDataEmissao.Caption = Format(!data_emissao, "dd/mm/yyyy")
+            lblDataEmissao.Caption = Format(!Data_Emissao, "dd/mm/yyyy")
             lblValidade.Caption = Format(!Data_Vencimento, "dd/mm/yyyy")
         Else
             If MsgBox("Número de protocolo não encontrado, deseja informar agora?", vbQuestion + vbYesNo, "Atenção") = vbYes Then
@@ -2163,7 +2163,7 @@ With RdoAux
     Do Until .EOF
         sSilNew = !Numero
         sSilNew = Mid(sSilNew, 1, Len(sSilNew) - 6) & "." & Mid(sSilNew, 7, 4) & "-" & Right(sSilNew, 2)
-        sDataEmissao = Format(!data_emissao, "dd/mm/yyyy")
+        sDataEmissao = Format(!Data_Emissao, "dd/mm/yyyy")
         sDataValidade = Format(!Data_Vencimento, "dd/mm/yyyy")
        .MoveNext
     Loop
@@ -2289,6 +2289,13 @@ Private Sub mnuCriar_Click()
 Dim Sql As String, RdoAux As rdoResultset, nId As Long, MinCod As Long, MaxCod As Long, nCodReduz As Long, nCodCidadao As Long
 Dim nCodLogradouro As Integer, nCodBairro As Integer, nCodCidade As Integer, x As Integer, sCnae As String, bPrincipal As Boolean, bExercida As Boolean, sSil As String, sDataTmp As String
 Dim sDivisao As String, sGrupo As String, sClasse As String, sSubClasse As String, sAtividade As String, sDataEmissao As String, sDataValidade As String, sprotocolo As String
+Dim sDDD_NF As String, sTelefone_NF As String, sFone As String
+
+sFone = RetornaNumero(lblFone.Caption)
+If IsNumeric(sFone) Then
+    sDDD_NF = Left(sFone, 2)
+    sTelefone_NF = Mid(sFone, 3, Len(sFone) - 2)
+End If
 
 nId = grdMain.CellText(grdMain.SelectedRow, 1)
 sAtividade = ""
@@ -2364,9 +2371,10 @@ Else
     nCodCidade = 999
 End If
 
-Sql = "insert mobiliario(codigomob,dvmob,razaosocial,cnpj,areatl,ativextenso,codlogradouro,numero,complemento,codbairro,codcidade,siglauf,cep,dataabertura,respcontabil,cadastro_vre,liberado_vre,fonecontato,emailcontato,imovel) values("
+Sql = "insert mobiliario(codigomob,dvmob,razaosocial,cnpj,areatl,ativextenso,codlogradouro,numero,complemento,codbairro,codcidade,siglauf,cep,dataabertura,respcontabil,cadastro_vre,liberado_vre,fonecontato,emailcontato,imovel,ddd_nf,telefone_nf,email_nf) values("
 Sql = Sql & nCodReduz & "," & RetornaDVCodReduzido(nCodReduz) & ",'" & Mask(lblRazao.Caption) & "','" & RetornaNumero(lblCNPJ.Caption) & "'," & Virg2Ponto(lblAreaEstab.Caption) & ",'" & UCase(Mask(sAtividade)) & "'," & nCodLogradouro & "," & Val(lblNumero.Caption) & ",'" & Mask(lblComplemento.Caption) & "',"
-Sql = Sql & nCodBairro & "," & nCodCidade & ",'" & lblUF.Caption & "','" & RetornaNumero(lblCep.Caption) & "','" & Format(lblDataAbertura.Caption, "mm/dd/yyyy") & "'," & Val(lblNomeContador.Tag) & ",1,0,'" & lblFone.Caption & "','" & LCase(lblEmail.Caption) & "'," & Val(lblCodImovel.Caption) & ")"
+Sql = Sql & nCodBairro & "," & nCodCidade & ",'" & lblUF.Caption & "','" & RetornaNumero(lblCEP.Caption) & "','" & Format(lblDataAbertura.Caption, "mm/dd/yyyy") & "'," & Val(lblNomeContador.Tag) & ",1,0,'" & lblFone.Caption & "','" & LCase(lblEmail.Caption) & "'," & Val(lblCodImovel.Caption) & ",'"
+Sql = Sql & sDDD_NF & "','" & sTelefone_NF & "','" & LCase(lblEmail.Caption) & "')"
 cn.Execute Sql, rdExecDirect
 
 For x = 1 To lvSocio.ListItems.Count
@@ -2409,7 +2417,7 @@ Next
 If sprotocolo <> "" Then
     If Not IsDate(sDataEmissao) Then
 ini1:
-        sSil = InputBox("Digite manualmente o nº de protocolo SIL", "Não foi possível carregar o protocolo SIL")
+        sSil = InputBox("Digite manualmente o nº de protocolo ", "Não foi possível carregar o protocolo")
         If sSil = "" Then
             GoTo ini1
         End If
@@ -2429,16 +2437,18 @@ ini3:
         sDataValidade = sDataTmp
         
     Else
-        sSil = sprotocolo & " Dt.Emissão: " & sDataEmissao & " Área imóvel: " & lblAreaImovel.Caption & "m² Validade: " & sDataValidade
+        sSil = sSil & " Dt.Emissão: " & sDataEmissao & " Área imóvel: " & lblAreaImovel.Caption & "m² Validade: " & sDataValidade
     End If
-    If sSil <> "" Then
-        Sql = "insert sil(codigo,sil,protocolo,data_emissao,data_validade,area_imovel) values(" & nCodReduz & ",'" & sSil & "','" & sprotocolo & "','" & Format(sDataEmissao, "mm/dd/yyyy") & "','" & Format(sDataValidade, "mm/dd/yyyy") & "'," & Virg2Ponto(lblAreaImovel.Caption) & ")"
+    If sprotocolo <> "" Then
+        Sql = "insert sil(codigo,protocolo,data_emissao,data_validade,area_imovel) values(" & nCodReduz & ",'" & sprotocolo & "','" & Format(sDataEmissao, "mm/dd/yyyy") & "','" & Format(sDataValidade, "mm/dd/yyyy") & "'," & Virg2Ponto(lblAreaImovel.Caption) & ")"
         cn.Execute Sql, rdExecDirect
     End If
 End If
 
 Sql = "update vre_empresa set situacao='Cadastrada',codreduzido=" & nCodReduz & " where id=" & nId
 cn.Execute Sql, rdExecDirect
+
+MsgBox "A empresa foi criada com a inscrição municipal nº " & nCodReduz, vbInformation, "Informação"
 CarregaLista
 cmdVoltar1_Click
 

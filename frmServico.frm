@@ -150,14 +150,14 @@ Attribute VB_Exposed = False
 
 Dim Sql As String, RdoAux As rdoResultset
 Private Declare Function FindWindow Lib "user32.dll" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
-Private Declare Function PostMessage Lib "user32.dll" Alias "PostMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Private Declare Function PostMessage Lib "user32.dll" Alias "PostMessageA" (ByVal HWND As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Private Const WM_QUIT As Long = &H12
 Private Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Long, ByVal uParam As Long, ByRef lpvParam As Any, ByVal fuWinIni As Long) As Long
 Private Const SPI_GETWORKAREA = 48
 Private Const MsgDefault = "Pronto para atualização dos sistemas."
 Private Type NOTIFYICONDATA
    cbSize As Long
-   hwnd As Long
+   HWND As Long
    uID As Long
    uFlags As Long
    uCallbackMessage As Long
@@ -179,7 +179,7 @@ Private Type RECT
 End Type
     
 Private Type RegistroProcessado
-    CNAE As String
+    Cnae As String
     CodigoEmpresa As Long
     CodigoSocio As Long
     Existe As Boolean
@@ -347,26 +347,40 @@ End If
 On Error Resume Next
 RdoAux.Close
 
-ConectaEicon
 
-Sql = "select * from tb_inter_empr_mei_giss where controle is null"
-Set RdoAux = cnEicon.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Sql = "select * from periodomei where data_exportacao is null"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
-    RdoAux.Close
     AtualizaMei
 End If
-On Error Resume Next
 RdoAux.Close
 
-Sql = "select * from tb_inter_empr_snacional_giss where controle is null"
-Set RdoAux = cnEicon.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Sql = "select * from optante_simples where data_exportacao is null"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
-    RdoAux.Close
     AtualizaSN
 End If
-On Error Resume Next
 RdoAux.Close
 
+'Sql = "select * from tb_inter_empr_mei_giss where controle is null"
+'Set RdoAux = cnEicon.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'If RdoAux.RowCount > 0 Then
+'    RdoAux.Close
+    'AtualizaMei
+'End If
+'On Error Resume Next
+'RdoAux.Close
+'
+'Sql = "select * from tb_inter_empr_snacional_giss where controle is null"
+'Set RdoAux = cnEicon.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'If RdoAux.RowCount > 0 Then
+'    RdoAux.Close
+'    AtualizaSN
+'End If
+'On Error Resume Next
+'RdoAux.Close
+
+ConectaEicon
 Sql = "select * from tb_inter_empresas_giss where controle is null"
 Set RdoAux = cnEicon.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
@@ -393,7 +407,6 @@ If RdoAux.RowCount > 0 Then
 End If
 On Error Resume Next
 RdoAux.Close
-
 
 Sql = "SELECT debitoparcela.codreduzido, debitoparcela.anoexercicio, debitoparcela.codlancamento, debitoparcela.seqlancamento, debitoparcela.numparcela, "
 Sql = Sql & "debitoparcela.codcomplemento, debitoparcela.statuslanc, debitoparcela.datavencimento, debitoparcela.datadebase, debitoparcela.codmoeda,"
@@ -508,7 +521,7 @@ Private Sub AtualizaEmpresa()
 Dim Sql As String, RdoAux As rdoResultset, RdoEmp As rdoResultset, RdoAux2 As rdoResultset, RdoProp As rdoResultset, RdoAux3 As rdoResultset, sCnae As String
 Dim nCodigo As Long, sIE As String, sRazao As String, sFantasia As String, sNumProcesso As String, sTipoEmpresa As String, nArea As Double, t As Integer
 Dim sDoc As String, sDataAbertura As String, sDataEncerramento As String, sTipoLog As String, sTitLog As String, sNomeLog As String, sRegime As String
-Dim nNumImovel As Integer, sCompl As String, sBairro As String, sCep As String, sCidade As String, sUF As String, sFone As String, sFax As String, sEmail As String
+Dim nNumImovel As Integer, sCompl As String, sBairro As String, sCep As String, sCidade As String, sUF As String, sFone As String, sFax As String, sEmail As String, sDDD As String
 Dim nCodCidadao As Long, sNome As String, nCodLogr As Long, nTipoEnd As String, nPos As Long, nTot As Long, aAtiv() As RegistroProcessado, bFind As Boolean
 Dim aSocio() As Long, z As Long, nValor As Double
 
@@ -533,7 +546,7 @@ With RdoAux
         With RdoEmp
             If RdoEmp.RowCount = 0 Then GoTo proximo
             sIE = RetornaNumero(SubNull(!INSCESTADUAL))
-            sRazao = !RazaoSocial
+            sRazao = !razaosocial
             sFantasia = SubNull(!NOMEFANTASIA)
             sNumProcesso = SubNull(!numprocesso)
             If Len(SubNull(!Cnpj)) = 14 Then
@@ -544,7 +557,7 @@ With RdoAux
                 sDoc = RetornaNumero(SubNull(!CPF))
             End If
             If Len(sDoc) < 2 Then sTipoEmpresa = "J"
-            sDataAbertura = Format(!DATAABERTURA, "dd/mm/yyyy")
+            sDataAbertura = Format(!DataAbertura, "dd/mm/yyyy")
             If IsNull(!dataencerramento) Then
                 sDataEncerramento = ""
             Else
@@ -571,7 +584,8 @@ With RdoAux
             End If
             sCidade = SubNull(!descCidade)
             sUF = SubNull(!SiglaUF)
-            sFone = Left(RetornaNumero(SubNull(!fonecontato)), 15)
+            sDDD = SubNull(!ddd_nf)
+            sFone = Left(SubNull(!telefone_nf), 15)
             sFax = Left(RetornaNumero(SubNull(!faxcontato)), 15)
             sEmail = SubNull(!emailcontato)
             
@@ -600,12 +614,12 @@ With RdoAux
         
         Sql = "insert tb_inter_empresas(cod_cliente,num_cadastro,timestamp,inscricao,inscricao_estadual,nome_empresa,nome_fantasia,"
         Sql = Sql & "num_processo,tipo_empresa,cpf_cnpj,data_abertura,data_encerramento,tipo_logradouro,titulo_logradouro,logradouro,"
-        Sql = Sql & "num_imovel,complemento,bairro,cep,cidade,estado,telefone,fax,email,regime_empresa,status_empresa,classificacao,area_ocupada) "
+        Sql = Sql & "num_imovel,complemento,bairro,cep,cidade,estado,ddd,telefone,fax,email,regime_empresa,status_empresa,classificacao,area_ocupada) "
         Sql = Sql & "values(2177," & nCodigo & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & nCodigo & "," & IIf(Val(sIE) > 0, Val(sIE), "Null") & ",'" & Mask(sRazao) & "',"
         Sql = Sql & IIf(sFantasia <> "", "'" & Mask(sFantasia) & "'", "Null") & "," & IIf(sNumProcesso <> "", "'" & sNumProcesso & "'", "Null") & ",'" & sTipoEmpresa & "'," & IIf(Val(sDoc) > 0, Val(sDoc), "Null") & ",'" & Format(sDataAbertura, "m/dd/yyyy") & "',"
         Sql = Sql & IIf(IsDate(sDataEncerramento), "'" & Format(sDataEncerramento, "mm/dd/yyyy") & "'", "Null") & "," & IIf(sTipoLog <> "", "'" & sTipoLog & "'", "Null") & ","
         Sql = Sql & IIf(sTitLog <> "", "'" & sTitLog & "'", "Null") & ",'" & Mask(sNomeLog) & "'," & IIf(nNumImovel > 0, "'" & CStr(nNumImovel) & "'", "Null") & "," & IIf(sCompl <> "", "'" & Left(sCompl, 40) & "'", "Null") & ",'"
-        Sql = Sql & sBairro & "'," & IIf(Val(sCep) > 0, Val(sCep), "Null") & ",'" & sCidade & "','" & sUF & "'," & IIf(Val(sFone) > 0, Val(sFone), "Null") & "," & IIf(Val(sFax) > 0, Val(sFax), "Null") & "," & IIf(sEmail <> "", "'" & sEmail & "'", "Null") & ","
+        Sql = Sql & sBairro & "'," & IIf(Val(sCep) > 0, Val(sCep), "Null") & ",'" & sCidade & "','" & sUF & "'," & IIf(Val(sDDD) > 0, Val(sDDD), "Null") & "," & IIf(Val(sFone) > 0, Val(sFone), "Null") & "," & IIf(Val(sFax) > 0, Val(sFax), "Null") & "," & IIf(sEmail <> "", "'" & sEmail & "'", "Null") & ","
         Sql = Sql & IIf(sRegime <> "", "'" & sRegime & "'", "Null") & ",'" & IIf(IsDate(sDataEncerramento), "E", "A") & "'," & "Null" & "," & RetornaNumero(FormatNumber(nArea, 2)) & ")"
         cnEicon.Execute Sql, rdExecDirect
         
@@ -659,7 +673,7 @@ With RdoAux
         With RdoAux2
             Do Until .EOF
                 ReDim Preserve aAtiv(UBound(aAtiv) + 1)
-                aAtiv(UBound(aAtiv)).CNAE = !cod_atividade
+                aAtiv(UBound(aAtiv)).Cnae = !cod_atividade
                 aAtiv(UBound(aAtiv)).Existe = False
                 aAtiv(UBound(aAtiv)).Novo = False
                .MoveNext
@@ -675,14 +689,14 @@ With RdoAux
                 sCnae = Format(!divisao, "00") & !grupo & Left(Format(!classe, "00"), 1) & "-" & Right$(Format(!classe, "00"), 1) & "/" & Format(!subclasse, "00")
                 bFind = False
                 For t = 1 To UBound(aAtiv)
-                    If sCnae = aAtiv(t).CNAE Then
+                    If sCnae = aAtiv(t).Cnae Then
                         bFind = True
                         Exit For
                     End If
                 Next
                 If Not bFind Then
                     ReDim Preserve aAtiv(UBound(aAtiv) + 1)
-                    aAtiv(UBound(aAtiv)).CNAE = sCnae
+                    aAtiv(UBound(aAtiv)).Cnae = sCnae
                     aAtiv(UBound(aAtiv)).Novo = True
                     aAtiv(UBound(aAtiv)).Existe = False
                 Else
@@ -696,11 +710,11 @@ With RdoAux
         For t = 1 To UBound(aAtiv)
             If aAtiv(t).Novo = True Then
                 Sql = "insert tb_inter_atividades(cod_cliente,num_cadastro,cod_atividade,timestamp,data_inicio) values("
-                Sql = Sql & 2177 & "," & nCodigo & ",'" & aAtiv(t).CNAE & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & Format(Now, "mm/dd/yyyy") & "')"
+                Sql = Sql & 2177 & "," & nCodigo & ",'" & aAtiv(t).Cnae & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & Format(Now, "mm/dd/yyyy") & "')"
                 cnEicon.Execute Sql, rdExecDirect
             End If
             If aAtiv(t).Existe = False And aAtiv(t).Novo = False Then
-                Sql = "update tb_inter_atividades set data_fim='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where num_cadastro=" & nCodigo & " and cod_atividade='" & aAtiv(t).CNAE & "' and data_fim is null"
+                Sql = "update tb_inter_atividades set data_fim='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where num_cadastro=" & nCodigo & " and cod_atividade='" & aAtiv(t).Cnae & "' and data_fim is null"
                 cnEicon.Execute Sql, rdExecDirect
             End If
         Next
@@ -714,7 +728,7 @@ With RdoAux
         With RdoAux2
             Do Until .EOF
                 ReDim Preserve aAtiv(UBound(aAtiv) + 1)
-                aAtiv(UBound(aAtiv)).CNAE = !cod_atividade
+                aAtiv(UBound(aAtiv)).Cnae = !cod_atividade
                 aAtiv(UBound(aAtiv)).Existe = False
                 aAtiv(UBound(aAtiv)).Novo = False
                .MoveNext
@@ -730,14 +744,14 @@ With RdoAux
                 sCnae = Format(!divisao, "00") & !grupo & Left(Format(!classe, "00"), 1) & "-" & Right$(Format(!classe, "00"), 1) & "/" & Format(!subclasse, "00")
                 bFind = False
                 For t = 1 To UBound(aAtiv)
-                    If sCnae = aAtiv(t).CNAE Then
+                    If sCnae = aAtiv(t).Cnae Then
                         bFind = True
                         Exit For
                     End If
                 Next
                 If Not bFind Then
                     ReDim Preserve aAtiv(UBound(aAtiv) + 1)
-                    aAtiv(UBound(aAtiv)).CNAE = sCnae
+                    aAtiv(UBound(aAtiv)).Cnae = sCnae
                     aAtiv(UBound(aAtiv)).Novo = True
                     aAtiv(UBound(aAtiv)).Existe = False
                 Else
@@ -762,11 +776,11 @@ With RdoAux
         For t = 1 To UBound(aAtiv)
             If aAtiv(t).Novo = True And sRegime = "T" Then
                 Sql = "insert tb_inter_estimativa(cod_cliente,num_cadastro,dt_inicio,vlr_estimativa,cod_atividade,timestamp) values("
-                Sql = Sql & 2177 & "," & nCodigo & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & Virg2Ponto(Format(nValor, "#0.00")) & ",'" & aAtiv(t).CNAE & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
+                Sql = Sql & 2177 & "," & nCodigo & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & Virg2Ponto(Format(nValor, "#0.00")) & ",'" & aAtiv(t).Cnae & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
                 cnEicon.Execute Sql, rdExecDirect
             End If
             If aAtiv(t).Existe = False And aAtiv(t).Novo = False Then
-                Sql = "update tb_inter_atividades set data_fim='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where num_cadastro=" & nCodigo & " and cod_atividade='" & aAtiv(t).CNAE & "' and data_fim is null"
+                Sql = "update tb_inter_atividades set data_fim='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where num_cadastro=" & nCodigo & " and cod_atividade='" & aAtiv(t).Cnae & "' and data_fim is null"
                 cnEicon.Execute Sql, rdExecDirect
             End If
         Next
@@ -884,7 +898,7 @@ With RdoAux
                         sCidade = SubNull(!descCidade)
                         sUF = SubNull(!SiglaUF)
                         sFone = SubNull(!telefone)
-                        sEmail = SubNull(!email)
+                        sEmail = SubNull(!Email)
                     Else
                         sTipoLog = SubNull(!AbrevTipoLogC)
                         sTitLog = SubNull(!AbrevTitLogC)
@@ -900,7 +914,7 @@ With RdoAux
                         End If
                         sCidade = SubNull(!desccidadeC)
                         sUF = SubNull(!SiglaUF2)
-                        sFone = SubNull(!TELEFONE2)
+                        sFone = SubNull(!Telefone2)
                         sEmail = SubNull(!EMAIL2)
                     End If
                    .Close
@@ -1021,13 +1035,15 @@ End Sub
 Private Sub AtualizaMei()
 On Error GoTo Erro
 Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset
-Dim nCodigo As Long, sDataIni As String, sDataFim As String, nPos As Long, nTot As Long
+Dim nCodigo As Long, sDataIni As String, sDataFim As String, nPos As Long, nTot As Long, sCNPJ As String
 
 ConectaEicon2
+
 PBar.value = 0
 nPos = 0
-Sql = "select * from tb_inter_empr_mei_giss where controle is null order by inscricao"
-Set RdoAux = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Sql = "SELECT periodomei.id, periodomei.codigo, periodomei.datainicio, periodomei.datafim, periodomei.cnpj_base, periodomei.data_exportacao, mobiliario.cnpj "
+Sql = Sql & "FROM periodomei INNER JOIN mobiliario ON periodomei.codigo = mobiliario.codigomob where data_exportacao is null order by id"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
     Do Until .EOF
@@ -1035,22 +1051,22 @@ With RdoAux
         If nPos Mod 10 = 0 Then
             CallPb nPos, nTot
         End If
-        nCodigo = !Inscricao
-        sDataIni = Format(!data_inicio, "mm/dd/yyyy")
-        sDataFim = IIf(IsNull(!data_fim), "", Format(!data_fim, "mm/dd/yyyy"))
+        nCodigo = !Codigo
+        sDataIni = Format(!DataInicio, "dd/mm/yyyy")
+        sDataFim = IIf(IsNull(!Datafim), "", Format(!Datafim, "dd/mm/yyyy"))
+        sCNPJ = !Cnpj_Base
         
-        Sql = "select * from mei where codigo=" & nCodigo & " and datainicio='" & Format(sDataIni, "mm/dd/yyyy") & "'"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        If RdoAux.RowCount = 0 Then
-            Sql = "insert mei(codigo,datainicio,datafim) values(" & nCodigo & ",'" & Format(sDataIni, "mm/dd/yyyy") & "',"
-            Sql = Sql & IIf(IsDate(sDataFim), "'" & Format(sDataFim, "mm/dd/yyyy") & "'", "Null") & ")"
+        If sDataFim = "" Then
+            Sql = "insert tb_inter_empr_mei(cod_cliente,num_cadastro,inscricao,base_cnpj,data_inicio,[ timestamp]) values(2177,"
+            Sql = Sql & nCodigo & "," & nCodigo & ",'" & sCNPJ & "','" & Format(sDataIni, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
         Else
-            Sql = "update mei set datafim=" & IIf(IsDate(sDataFim), "'" & Format(sDataFim, "mm/dd/yyyy") & "'", "Null") & " where codigo=" & nCodigo & " and datainicio='" & Format(sDataIni, "mm/dd/yyyy") & "'"
+            Sql = "insert tb_inter_empr_mei(cod_cliente,num_cadastro,inscricao,base_cnpj,data_inicio,data_fim,[ timestamp]) values(2177,"
+            Sql = Sql & nCodigo & "," & nCodigo & ",'" & sCNPJ & "','" & Format(sDataIni, "mm/dd/yyyy") & "','" & Format(sDataFim, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
         End If
-        cn.Execute Sql, rdExecDirect
-        
-        Sql = "update tb_inter_empr_mei_giss set controle=1 where inscricao=" & nCodigo
         cnEicon2.Execute Sql, rdExecDirect
+        
+        Sql = "update periodomei set data_exportacao='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where id=" & RdoAux!id
+        cn.Execute Sql, rdExecDirect
         nPos = nPos + 1
         DoEvents
         RdoAux.MoveNext
@@ -1058,6 +1074,44 @@ proximo:
     Loop
     RdoAux.Close
 End With
+
+
+
+
+'PBar.value = 0
+'nPos = 0
+'Sql = "select * from tb_inter_empr_mei_giss where controle is null order by inscricao"
+'Set RdoAux = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'With RdoAux
+'    nTot = .RowCount
+'    Do Until .EOF
+'        If nPos > nTot Then Exit Do
+'        If nPos Mod 10 = 0 Then
+'            CallPb nPos, nTot
+'        End If
+'        nCodigo = !Inscricao
+'        sDataIni = Format(!Data_Inicio, "mm/dd/yyyy")
+'        sDataFim = IIf(IsNull(!data_fim), "", Format(!data_fim, "mm/dd/yyyy"))
+'
+'        Sql = "select * from mei where codigo=" & nCodigo & " and datainicio='" & Format(sDataIni, "mm/dd/yyyy") & "'"
+'        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'        If RdoAux.RowCount = 0 Then
+'            Sql = "insert mei(codigo,datainicio,datafim) values(" & nCodigo & ",'" & Format(sDataIni, "mm/dd/yyyy") & "',"
+'            Sql = Sql & IIf(IsDate(sDataFim), "'" & Format(sDataFim, "mm/dd/yyyy") & "'", "Null") & ")"
+'        Else
+'            Sql = "update mei set datafim=" & IIf(IsDate(sDataFim), "'" & Format(sDataFim, "mm/dd/yyyy") & "'", "Null") & " where codigo=" & nCodigo & " and datainicio='" & Format(sDataIni, "mm/dd/yyyy") & "'"
+'        End If
+'        cn.Execute Sql, rdExecDirect
+'
+'        Sql = "update tb_inter_empr_mei_giss set controle=1 where inscricao=" & nCodigo
+'        cnEicon2.Execute Sql, rdExecDirect
+'        nPos = nPos + 1
+'        DoEvents
+'        RdoAux.MoveNext
+'proximo:
+'    Loop
+'    RdoAux.Close
+'End With
 
 cnEicon2.Close
 PBar.value = 0
@@ -1072,35 +1126,77 @@ On Error GoTo Erro
 Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset
 Dim nCodigo As Long, sDataIni As String, sDataFim As String, nPos As Long, nTot As Long
 
+'Exit Sub
+
 ConectaEicon2
+
 PBar.value = 0
 nPos = 0
-Sql = "select * from tb_inter_empr_snacional_giss where controle is null and ip<>'1.1.1.1' order by inscricao"
-Set RdoAux = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Sql = "SELECT optante_simples.codigo, optante_simples.data_inicio, optante_simples.data_final, optante_simples.cnpj_base, optante_simples.timestamp, optante_simples.data_exportacao, mobiliario.cnpj "
+Sql = Sql & "FROM optante_simples INNER JOIN mobiliario ON optante_simples.codigo = mobiliario.codigomob where data_exportacao is null order by timestamp"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
     Do Until .EOF
+        If nPos > nTot Then Exit Do
         If nPos Mod 10 = 0 Then
             CallPb nPos, nTot
         End If
-        If !Inscricao > 300000 Then GoTo proximo
-        nCodigo = !Inscricao
-        sDataIni = Format(!data_inicio, "mm/dd/yyyy")
-        sDataFim = IIf(IsNull(!data_fim), "", Format(!data_fim, "mm/dd/yyyy"))
+        nCodigo = !Codigo
+        sDataIni = Format(!Data_Inicio, "dd/mm/yyyy")
+        sDataFim = IIf(IsNull(!Data_Final), "", Format(!Data_Final, "dd/mm/yyyy"))
+        sCNPJ = !Cnpj
         
-        Sql = "insert periodosn(codigo,dataini,datafim) values(" & nCodigo & ",'" & Format(sDataIni, "mm/dd/yyyy") & "',"
-        Sql = Sql & IIf(IsDate(sDataFim), "'" & Format(sDataFim, "mm/dd/yyyy") & "'", "Null") & ")"
-        cn.Execute Sql, rdExecDirect
-        
-        Sql = "update tb_inter_empr_snacional_giss set controle=1 where inscricao=" & nCodigo
+        If sDataFim = "" Then
+            Sql = "insert tb_inter_empr_snacional(cod_cliente,num_cadastro,inscricao,cnpj,data_inicio,[timestamp]) values(2177,"
+            Sql = Sql & nCodigo & "," & nCodigo & ",'" & sCNPJ & "','" & Format(sDataIni, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
+        Else
+            Sql = "insert tb_inter_empr_snacional(cod_cliente,num_cadastro,inscricao,cnpj,data_inicio,data_fim,[timestamp]) values(2177,"
+            Sql = Sql & nCodigo & "," & nCodigo & ",'" & sCNPJ & "','" & Format(sDataIni, "mm/dd/yyyy") & "','" & Format(sDataFim, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
+        End If
         cnEicon2.Execute Sql, rdExecDirect
-proximo:
+        
+        Sql = "update optante_simples set data_exportacao='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' "
+        Sql = Sql & "where codigo=" & nCodigo & " and data_inicio='" & Format(sDataIni, "mm/dd/yyyy") & "' and data_final='" & sDataFim & "'"
+        cn.Execute Sql, rdExecDirect
         nPos = nPos + 1
         DoEvents
         RdoAux.MoveNext
+proximo:
     Loop
     RdoAux.Close
 End With
+
+
+
+'PBar.value = 0
+'nPos = 0
+'Sql = "select * from tb_inter_empr_snacional_giss where controle is null and ip<>'1.1.1.1' order by inscricao"
+'Set RdoAux = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'With RdoAux
+'    nTot = .RowCount
+'    Do Until .EOF
+'        If nPos Mod 10 = 0 Then
+'            CallPb nPos, nTot
+'        End If
+'        If !Inscricao > 300000 Then GoTo proximo
+'        nCodigo = !Inscricao
+'        sDataIni = Format(!Data_Inicio, "mm/dd/yyyy")
+'        sDataFim = IIf(IsNull(!data_fim), "", Format(!data_fim, "mm/dd/yyyy"))
+'
+'        Sql = "insert periodosn(codigo,dataini,datafim) values(" & nCodigo & ",'" & Format(sDataIni, "mm/dd/yyyy") & "',"
+'        Sql = Sql & IIf(IsDate(sDataFim), "'" & Format(sDataFim, "mm/dd/yyyy") & "'", "Null") & ")"
+'        cn.Execute Sql, rdExecDirect
+'
+'        Sql = "update tb_inter_empr_snacional_giss set controle=1 where inscricao=" & nCodigo
+'        cnEicon2.Execute Sql, rdExecDirect
+'proximo:
+'        nPos = nPos + 1
+'        DoEvents
+'        RdoAux.MoveNext
+'    Loop
+'    RdoAux.Close
+'End With
 
 cnEicon2.Close
 PBar.value = 0
@@ -1155,8 +1251,8 @@ With RdoAux
         sBairro = SubNull(!Bairro)
         sCidade = SubNull(!Cidade)
         sUF = SubNull(!estado)
-        sFone = SubNull(!ddd) & SubNull(!telefone)
-        sEmail = SubNull(!email)
+        sFone = SubNull(!DDD) & SubNull(!telefone)
+        sEmail = SubNull(!Email)
         
         nCodCidade = 999
         Sql = "select codcidade from cidade where siglauf='" & sUF & "' and desccidade='" & sCidade & "'"
@@ -1458,6 +1554,7 @@ Private Sub Atualiza_Parcelamento()
 Dim Sql As String, RdoAux As rdoResultset, nAnoproc As Integer, nNumproc As Long, RdoAux2 As rdoResultset
 Dim nQtdeParcela As Integer, sDataParc As String, bCancelado As Boolean, nValorTotal As Double
 On Error GoTo Erro
+Exit Sub
 ConectaEicon2
 
 Sql = "SELECT DISTINCT origemreparc.anoproc, origemreparc.numproc FROM origemreparc INNER JOIN parceladocumento ON origemreparc.codreduzido = parceladocumento.codreduzido AND origemreparc.anoexercicio = parceladocumento.anoexercicio AND "
