@@ -149,7 +149,7 @@ With RdoAux
             Else
                 nSit = 0
                 RdoAux2.Close
-                Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2014", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3)"
+                Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2018", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     nSit = 1
@@ -205,7 +205,7 @@ With RdoAux
        .MoveNext
     Loop
     Print #1, "99999999999999"
-    GoTo fim
+    GoTo FIM
 End With
 
 proximo:
@@ -214,7 +214,7 @@ nReg = nReg + 1
 GoTo Inicio
 
 
-fim:
+FIM:
 Close #1
 Liberado
 MsgBox "Gravação concluída", vbInformation, "Informação"

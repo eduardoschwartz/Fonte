@@ -747,7 +747,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim nOldAlvara As Long
+Dim nOldAlvara As Long, sHorario As String
+Public sControle As String
 
 Private Sub chkTipoAlvara_Click()
 Dim Sql As String, RdoAux As rdoResultset
@@ -759,8 +760,8 @@ Else
     Sql = "select * from parametros where nomeparam='SEQALVARA'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        txtAlvara.Text = !VALPARAM
-        nOldAlvara = !VALPARAM
+        txtAlvara.Text = !valparam
+        nOldAlvara = !valparam
         .Close
     End With
     frN.Visible = False
@@ -771,7 +772,7 @@ End Sub
 
 Private Sub cmdPrint_Click()
 Dim z As Integer, bAchou As Boolean, bAchou2 As Boolean, Sql As String, sTexto1 As String, nCodReduz As Long, nSeq As Integer
-Dim qd As New rdoQuery, RdoAux As rdoResultset
+Dim qd As New rdoQuery, RdoAux As rdoResultset, sValidade As String, sDoc As String
 
 If chkTipoAlvara.value = vbChecked Then
     If NomeDeLogin <> "RITA" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "SCHWARTZ" Then
@@ -813,10 +814,10 @@ If chkTipoAlvara.value = 1 Then
         MsgBox "Selecione ao menos um documento.", vbCritical, "Atenção"
     Else
         nOldAlvara = nOldAlvara + 1
-        Sql = "update parametros set valparam='" & CStr(nOldAlvara) & "' where nomeparam='SEQALVARA'"
-        cn.Execute Sql, rdExecDirect
-       ' frmReport.ShowReport "ALVARAPROVISORIO", frmMdi.hwnd, Me.hwnd
-        frmReport.ShowReport "ALVARAPROVISORIOVICE", frmMdi.hwnd, Me.hwnd
+'        Sql = "update parametros set valparam='" & CStr(nOldAlvara) & "' where nomeparam='SEQALVARA'"
+'        cn.Execute Sql, rdExecDirect
+        frmReport.ShowReport "ALVARAPROVISORIO", frmMdi.HWND, Me.HWND
+       ' frmReport.ShowReport "ALVARAPROVISORIOVICE", frmMdi.HWND, Me.HWND
         txtAlvara.Text = nOldAlvara
         Limpa
         txtCodigo.Text = ""
@@ -858,14 +859,26 @@ Else
     On Error Resume Next
     RdoAux.Close
     On Error GoTo 0
-    qd.Sql = "{ Call spALVARA(?) }"
+    qd.Sql = "{ Call spALVARA2(?) }"
     qd(0) = Val(txtCodigo.Text)
     Set RdoAux = qd.OpenResultset(rdOpenKeyset)
     If RdoAux!Tipo <> 1 And RdoAux!Tipo <> 3 Then
         MsgBox "Solicitação inválida", vbCritical, "ERRO"
-    Exit Sub
+        Exit Sub
+    Else
+        sHorario = SubNull(RdoAux!Horario)
+        sDoc = SubNull(RdoAux!Cnpj)
+        If sDoc = "" Then
+            sDoc = SubNull(RdoAux!CPF)
+            If sDoc <> "" Then
+                sDoc = Format(RdoAux!CPF, "000\.000\.000-00")
+            End If
+        Else
+            sDoc = Format(RdoAux!Cnpj, "00\.000\.000/0000-00")
+        End If
     End If
     RdoAux.Close
+    sValidade = "30/06/2019"
     
     If cmbDataAlvara.ListIndex = 1 Then
         Sql = "select * from debitoparcela where codreduzido=" & Val(txtCodigo.Text) & " and anoexercicio=" & Year(Now) & " and "
@@ -877,13 +890,32 @@ Else
         End If
     End If
     
+    'Sql = "select * from parametros where nomeparam='SEQALVARA'"
+    Sql = "select max(numero) as maximo from alvara_funcionamento where ano=" & Year(Now)
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If RdoAux!maximo = Null Then
+            nodalvara = 1
+        Else
+            nOldAlvara = !maximo + 1
+        End If
+        .Close
+    End With
+    
+    sControle = Format(nOldAlvara, "00000") & Format(Year(Now), "0000") & "/" & Format(Val(txtCodigo.Text), "000000") & "-AF"
+    Sql = " insert alvara_funcionamento(ano,numero,controle,codigo,razao_social,documento,endereco,bairro,atividade,horario,validade,data_gravada) values("
+    Sql = Sql & Year(Now) & "," & nOldAlvara & ",'" & sControle & "'," & Val(txtCodigo.Text) & ",'" & Mask(lblNome.Caption) & "','" & sDoc & "','" & Mask(lblEndereco.Caption) & "','" & Mask(lblBairro.Caption) & "','" & lblAtividade.Caption & "','" & sHorario & "','" & Format(sValidade, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
+    cn.Execute Sql, rdExecDirect
+    
+'    Sql = "update parametros set valparam='" & nOldAlvara + 1 & "' where nomeparam='SEQALVARA'"
+'    cn.Execute Sql, rdExecDirect
     
     If txtData.Text = "" Then
-        'frmReport.ShowReport2 "ALVARA", frmMdi.hwnd, Me.hwnd
-        frmReport.ShowReport2 "ALVARAVICE", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "ALVARA", frmMdi.HWND, Me.HWND
+        'frmReport.ShowReport2 "ALVARAVICE", frmMdi.HWND, Me.HWND
     Else
-        'frmReport.ShowReport2 "ALVARASEMDATA", frmMdi.hwnd, Me.hwnd
-        frmReport.ShowReport2 "ALVARASEMDATAVICE", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "ALVARASEMDATA", frmMdi.HWND, Me.HWND
+        'frmReport.ShowReport2 "ALVARASEMDATAVICE", frmMdi.HWND, Me.HWND
     End If
 End If
 
@@ -935,8 +967,8 @@ End If
 
 If Val(txtAlvara.Text) <> nOldAlvara Then
     nOldAlvara = Val(txtAlvara.Text)
-    Sql = "update parametros set valparam='" & CStr(nOldAlvara) & "' where nomeparam='SEQALVARA'"
-    cn.Execute Sql, rdExecDirect
+'    Sql = "update parametros set valparam='" & CStr(nOldAlvara) & "' where nomeparam='SEQALVARA'"
+'    cn.Execute Sql, rdExecDirect
 End If
 
 End Sub
@@ -966,7 +998,7 @@ With RdoAux
        .Close
         Exit Sub
     Else
-        lblNome.Caption = !RazaoSocial
+        lblNome.Caption = !razaosocial
         mskCNPJ.Text = Format(Trim(!Cnpj), "00\.000\.000/0000-00")
         mskCPF.Text = Format(Trim(!CPF), "000\.000\.000-00")
         If Not IsNull(!NomeLogradouro) Then
@@ -978,7 +1010,7 @@ With RdoAux
         lblNum.Caption = !Numero
         lblBairro.Caption = !DescBairro
         lblCidade.Caption = SubNull(!descCidade) & " - " & SubNull(!SiglaUF)
-        lblCep.Caption = Format(!Cep, "00000-000")
+        lblCEP.Caption = Format(!Cep, "00000-000")
         lblAtividade.Caption = !ativextenso
         lblPontoAgencia.Caption = SubNull(!ponto_agencia)
         lblIE.Caption = IIf(IsNull(!INSCESTADUAL), "ISENTO", !INSCESTADUAL)
@@ -1004,3 +1036,4 @@ End Sub
 Private Sub txtCodigo_LostFocus()
 Carrega
 End Sub
+

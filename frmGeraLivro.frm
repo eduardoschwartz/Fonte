@@ -438,7 +438,7 @@ End If
 For x = 0 To lstTipo.ListCount - 1
     If lstTipo.Selected(x) = True Then
         lstTipo.ListIndex = x
-        y = x + 1
+        Y = x + 1
         sTipo = sTipo & lstTipo.ItemData(lstTipo.ListIndex) & ","
     End If
 Next
@@ -459,17 +459,17 @@ If cGetInputState() <> 0 Then DoEvents
 Calcula
 'Calculo2
 If Opt(0).value = True Then
-    frmReport.ShowReport "DIVIDATIVATOTAL", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "DIVIDATIVATOTAL", frmMdi.HWND, Me.HWND
 Else
     If chkReparc.value = vbUnchecked Then
-        frmReport.ShowReport "DIVIDATIVA", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "DIVIDATIVA", frmMdi.HWND, Me.HWND
     Else
         If lstTipo.ListIndex = 0 Then
-           frmReport.ShowReport "DIVIDATIVAPARCIPTU", frmMdi.hwnd, Me.hwnd
+           frmReport.ShowReport "DIVIDATIVAPARCIPTU", frmMdi.HWND, Me.HWND
         ElseIf lstTipo.ListIndex = 1 Then
-           frmReport.ShowReport "DIVIDATIVAPARCISS", frmMdi.hwnd, Me.hwnd
+           frmReport.ShowReport "DIVIDATIVAPARCISS", frmMdi.HWND, Me.HWND
         Else
-            frmReport.ShowReport "DIVIDATIVAPARCNAOTRIBUTAVEL", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "DIVIDATIVAPARCNAOTRIBUTAVEL", frmMdi.HWND, Me.HWND
         End If
     End If
 End If
@@ -539,8 +539,8 @@ Sql = "SELECT CODSITUACAO,DESCSITUACAO FROM SITUACAOLANCAMENTO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-       lstStatus.AddItem !DescSituacao
-       lstStatus.ItemData(lstStatus.NewIndex) = !Codsituacao
+       lstStatus.AddItem !DescSituacao & " (" & Format(!codsituacao, "00") & ")"
+       lstStatus.ItemData(lstStatus.NewIndex) = !codsituacao
       .MoveNext
     Loop
 End With
@@ -549,7 +549,7 @@ End Sub
 
 Private Sub CarregaGrid()
 
-Dim sAno As String, sTipo As String, x As Integer, y As Integer
+Dim sAno As String, sTipo As String, x As Integer, Y As Integer
 
 grdTemp.Rows = 1
 
@@ -564,7 +564,7 @@ sAno = Chomp(sAno, chomp_righT, 1)
 For x = 0 To lstTipo.ListCount - 1
     If lstTipo.Selected(x) = True Then
         lstTipo.ListIndex = x
-        y = x + 1
+        Y = x + 1
         sTipo = sTipo & lstTipo.ItemData(lstTipo.ListIndex) & ","
     End If
 Next
@@ -601,7 +601,7 @@ With RdoAux
 End With
 
 If grdTemp.Rows = 1 Then
-    grdTemp.AddItem lstAno.Text & Chr(9) & y & Chr(9) & 100 & Chr(9) & 100
+    grdTemp.AddItem lstAno.Text & Chr(9) & Y & Chr(9) & 100 & Chr(9) & 100
 End If
 
 
@@ -722,7 +722,7 @@ With grdTemp
                         Sql = "SELECT * FROM vwfullimovel2 WHERE CODREDUZIDO=" & RdoC!CODREDUZIDO
                         Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
                         If rdoc2.RowCount > 0 Then
-                            sProp = rdoc2!nomecidadao
+                            sProp = rdoc2!NomeCidadao
                             rdoc2.Close
                         End If
                     ElseIf RdoC!CODREDUZIDO >= 100000 And RdoC!CODREDUZIDO < 500000 Then
@@ -737,7 +737,7 @@ With grdTemp
                         Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & RdoC!CODREDUZIDO
                         Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
                         If rdoc2.RowCount > 0 Then
-                            sProp = rdoc2!nomecidadao
+                            sProp = rdoc2!NomeCidadao
                             rdoc2.Close
                         End If
                        .RetornaEndereco RdoC!CODREDUZIDO, cidadao, cadastrocidadao
@@ -929,7 +929,7 @@ For z = 1 To grdTemp.Rows - 1
             Set RdoEnd = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoEnd
                 sInscricao = SubNull(!Inscricao)
-                sNome = !nomecidadao
+                sNome = !NomeCidadao
                 sEnd = !Logradouro & " Nº " & CStr(!Li_Num)
                 sCompl = SubNull(Left(!Li_Compl, 35))
                 sCep = RetornaCEP(!CodLogr, !Li_Num)
@@ -1112,7 +1112,7 @@ With RdoC
              If .RowCount = 0 Then
                 sProp = ""
              Else
-                sProp = !nomecidadao
+                sProp = !NomeCidadao
              End If
             .Close
           End With
@@ -1170,7 +1170,7 @@ With RdoC
              If .RowCount = 0 Then
                 sProp = ""
              Else
-                sProp = !nomecidadao
+                sProp = !NomeCidadao
              End If
             .Close
           End With
@@ -1222,8 +1222,11 @@ With RdoC
        nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorJuros
 proximo:
        
-       
-                nNumLivro = Val(SubNull(!numerolivro))
+                If Val(SubNull(!numerolivro)) > 10000 Then
+                    nNumLivro = 0
+                Else
+                    nNumLivro = Val(SubNull(!numerolivro))
+                End If
                 bFind = False
                 For x = 0 To UBound(aSomaTributo)
                     If aSomaTributo(x).nNumLivro = nNumLivro And aSomaTributo(x).nCodTributo = !CodTributo Then
@@ -1271,7 +1274,7 @@ Next
 
 
 nValorTotal = 0
-frmReport.ShowReport "DIVIDATIVACANCELADO", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "DIVIDATIVACANCELADO", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM DIVIDATIVA where usuario='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmTramite 
    BackColor       =   &H00EEEEEE&
@@ -1852,7 +1852,7 @@ Sql = "SELECT * FROM tramitacaocc Where ano = " & lblAno.Caption & " And Numero 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount = 0 Then
-        Sql = "SELECT ano, numero, seq, ccusto, DESCRICAO From vwtramitacao Where ano =" & lblAno.Caption & " And Numero = " & Val(Left$(lblNumProc.Caption, Len(lblNumProc.Caption) - 2)) & " order by seq"
+        Sql = "SELECT ano, numero, seq, ccusto, DESCRICAO From vwTRAMITACAO2 Where ano =" & lblAno.Caption & " And Numero = " & Val(Left$(lblNumProc.Caption, Len(lblNumProc.Caption) - 2)) & " order by seq"
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             Do Until .EOF
@@ -1906,7 +1906,7 @@ End With
 'VERIFICA OS TRAMITES CONCLUIDOS
 If Val(frmProcesso.lblNumProc.Caption) > 0 Then
     For x = 1 To grdTramite.Rows - 1
-        Sql = "SELECT CCUSTO,DESCRICAO,DATAHORA,NOMECOMPLETO,DESCDESPACHO,dataenvio,nomelogin2 FROM VWTRAMITACAO WHERE ANO=" & lblAno.Caption
+        Sql = "SELECT CCUSTO,DESCRICAO,DATAHORA,NOMECOMPLETO,DESCDESPACHO,dataenvio,nomelogin2 FROM vwTRAMITACAO2 WHERE ANO=" & lblAno.Caption
         Sql = Sql & " AND NUMERO=" & Val(Left$(lblNumProc.Caption, Len(lblNumProc.Caption) - 2))
         Sql = Sql & " AND SEQ=" & grdTramite.TextMatrix(x, 0)
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)

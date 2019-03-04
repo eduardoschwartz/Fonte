@@ -25,7 +25,7 @@ Begin VB.Form frmCalculoCIP
       _ExtentY        =   609
       BTYPE           =   3
       TX              =   "Guias sem registro"
-      ENAB            =   -1  'True
+      ENAB            =   0   'False
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -397,9 +397,9 @@ Sql = Sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND pa
 Sql = Sql & "debitotributo ON debitoparcela.codreduzido = debitotributo.codreduzido AND debitoparcela.anoexercicio = debitotributo.anoexercicio AND "
 Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND "
 Sql = Sql & "debitoparcela.NumParcela = debitotributo.NumParcela And debitoparcela.CODCOMPLEMENTO = debitotributo.CODCOMPLEMENTO "
-Sql = Sql & "Where (cadimob.codreduzido in (select codigo from cip_semregistro where ano=2018)) "
+Sql = Sql & "Where (cadimob.codreduzido in (select codigo from cip_semregistro where ano=2019)) "
 'Sql = Sql & "Where (cadimob.li_codbairro =1069) "
-Sql = Sql & " And (parceladocumento.AnoExercicio = 2018) And (parceladocumento.CodLancamento =79) And (parceladocumento.SeqLancamento = 0) "
+Sql = Sql & " And (parceladocumento.AnoExercicio = 2019) And (parceladocumento.CodLancamento =79) And (parceladocumento.SeqLancamento = 0) "
 Sql = Sql & "AND  statuslanc=18 ORDER BY cadimob.codreduzido, parceladocumento.numparcela"
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -477,7 +477,7 @@ With RdoAux
     sValor = nValorDoc
     dDataVencto = CDate(sDataDam)
     nNumDoc = nNumGuia
-    sDadosLanc = "CONTRIBUIÇÃO DE ILUMINAÇÃO PÚBLICA 2018"
+    sDadosLanc = "CONTRIBUIÇÃO DE ILUMINAÇÃO PÚBLICA 2019"
     NumBarra2 = Gera2of5Cod(CStr(sValor), CDate(dDataVencto), CLng(nNumDoc), CLng(nCodReduz))
     NumBarra2a = Left$(NumBarra2, 13)
     NumBarra2b = Mid$(NumBarra2, 14, 13)
@@ -488,11 +488,11 @@ With RdoAux
     sBarra = StrBarra2
 
     If nParc = 1 Then
-        sDescImposto = "CIP 2018 - Referente aos meses de Jan, Fev, Mar e Abr."
+        sDescImposto = "CIP 2019 - Referente aos meses de Jan, Fev, Mar e Abr."
     ElseIf nParc = 2 Then
-        sDescImposto = "CIP 2018 - Referente aos meses de Mai, Jun, Jul e Ago."
+        sDescImposto = "CIP 2019 - Referente aos meses de Mai, Jun, Jul e Ago."
     ElseIf nParc = 3 Then
-        sDescImposto = "CIP 2018 - Referente aos meses de Set, Out, Nov e Dez."
+        sDescImposto = "CIP 2019 - Referente aos meses de Set, Out, Nov e Dez."
     End If
 
     '*******************************************
@@ -507,7 +507,7 @@ With RdoAux
         
         If nParc = 1 Then
             Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
-            Sql = Sql & NomeDeLogin & "'," & x & ",'" & Format(nCodReduz, "000000") & " - CIP 2018','" & Mask(sNomeResp) & "','"
+            Sql = Sql & NomeDeLogin & "'," & x & ",'" & Format(nCodReduz, "000000") & " - CIP 2019','" & Mask(sNomeResp) & "','"
             Sql = Sql & Left(sEndEntrega & " " & nNumEntrega & " " & sComplEntrega, 60) & "','" & sBairroEntrega & " - " & sCidadeEntrega & "','" & sUFEntrega & " - " & sCepEntrega & "')"
             cn.Execute Sql, rdExecDirect
         End If
@@ -518,9 +518,9 @@ With RdoAux
    .Close
 End With
 
-frmReport.ShowReport2 "BOLETOGUIA_CIP", frmMdi.hwnd, Me.hwnd, nSid, nNumGuia
+frmReport.ShowReport2 "BOLETOGUIA_CIP", frmMdi.HWND, Me.HWND, nSid, nNumGuia
 If cGetInputState() <> 0 Then DoEvents
-frmReport.ShowReport "ETIQUETACIP", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "ETIQUETACIP", frmMdi.HWND, Me.HWND
 
 
 
@@ -621,7 +621,7 @@ cn.Execute Sql, rdExecDirect
 Sql = "select * from debitoparcela where anoexercicio=" & nAno & " and codlancamento=79 "
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount = 0 Then
-    nNumDoc = 16388487
+    nNumDoc = 17110332
     Sql = "select * from vwfullimovel where ativo='S' and codreduzido not in (select codreduzido from areas) AND (imune = 0 OR imune IS NULL) order by cpf,cnpj,logradouro,li_num,nomecidadao"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
@@ -633,9 +633,6 @@ If RdoAux.RowCount = 0 Then
             nCodReduz = !CODREDUZIDO
             For Y = 1 To Val(lblQtdeParcela.Caption)
                 'GRAVA NA TABELA DEBITOPARCELA
-'                 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-'                 Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USUARIO) VALUES(" & nCodReduz & "," & nAno & ",79," & 0 & "," & Y & ",0,18,'"
-'                 Sql = Sql & Format(aVencto(Y), "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',1,'" & "GTI/CIP" & "')"
                  Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
                  Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAno & ",79," & 0 & "," & Y & ",0,18,'"
                  Sql = Sql & Format(aVencto(Y), "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',1," & 236 & ")"
@@ -672,7 +669,7 @@ Sql = "SELECT debitoparcela.codreduzido, debitoparcela.numparcela, debitoparcela
 Sql = Sql & "vwFULLIMOVEL.CPF , vwFULLIMOVEL.Cnpj, vwFULLIMOVEL.Ee_TipoEnd FROM debitoparcela INNER JOIN parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND "
 Sql = Sql & "debitoparcela.anoexercicio = parceladocumento.anoexercicio AND debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
 Sql = Sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN vwFULLIMOVEL ON debitoparcela.codreduzido = vwFULLIMOVEL.codreduzido "
-Sql = Sql & "Where (debitoparcela.AnoExercicio = 2016) And (debitoparcela.CodLancamento = 79) ORDER BY debitoparcela.codreduzido, debitoparcela.numparcela"
+Sql = Sql & "Where (debitoparcela.AnoExercicio = 2019) And (debitoparcela.CodLancamento = 79) ORDER BY debitoparcela.codreduzido, debitoparcela.numparcela"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount

@@ -348,7 +348,7 @@ Private aNome() As Usuarios, aNomeTmp() As Usuarios
 
 Private Sub cmbGRUPO_Click()
 Dim z As Long
-z = SendMessage(lvMain2.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain2.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 If cmbGrupo.ListIndex > -1 Then
     
@@ -521,7 +521,7 @@ soundfile = App.Path & "\bin\Monitor.wav"
 Centraliza Me
 bRunOnce = True
 ReDim aNome(0)
-On Error GoTo fim
+On Error GoTo FIM
 Dim c As cTab
 With vTab
     Set c = .Tabs.Add("Tab1", , "Usuários")
@@ -564,7 +564,7 @@ With RdoAux
     Loop
    .Close
 End With
-fim:
+FIM:
 End Sub
 
 Private Sub CarregaUser()
@@ -613,7 +613,7 @@ If UBound(aNome) = 0 Then
     Next
 End If
 
-On Error GoTo fim
+On Error GoTo FIM
 For x = 1 To UBound(aNomeTmp)
     If aNomeTmp(x).bLogado <> aNome(x).bLogado Then
         Set oListItem = ListViewFindItem(aNomeTmp(x).sNomeLogin, lvMain, 1)
@@ -682,7 +682,7 @@ Else
     frmMdi.Sbar.Panels(1).Text = Y + 1 & " usuários conectados (Base Local)."
 End If
         
-fim:
+FIM:
 Exit Sub
 Erro:
 MsgBox Err.Description
@@ -787,7 +787,7 @@ Dim retval As Integer, FWInfo As FLASHWINFO
 
 With FWInfo
     .cbSize = 20
-    .hwnd = frmMdi.hwnd
+    .HWND = frmMdi.HWND
     .dwFlags = FLASHW_ALL
     .uCount = 5
     .dwTimeout = 0
@@ -795,9 +795,9 @@ End With
 
 CarregaUser
 ''
-If UCase(NomeDeLogin) = "SCHWARTZ" Then
-    Exit Sub
-End If
+'If UCase(NomeDeLogin) = "SCHWARTZ" Then
+'    Exit Sub
+'End If
 
 If bRunOnce Then
     Sql = "SELECT * FROM chat WHERE DATACHAT='" & Format(Now, sDataFormat) & "' AND USERRECEIVED='" & NomeDeLogin & "' AND ATIVO=1"
@@ -873,7 +873,7 @@ End Sub
 Private Sub MontaMenu()
    Set m_cMenuOpcoes = New cPopupMenu
    With m_cMenuOpcoes
-      .hwndOwner = Me.hwnd
+      .hwndOwner = Me.HWND
       .GradientHighlight = True
       
       i = .AddItem("Ficar invisível", "", 1, , , bInvisivel, , "mnuInvisivel")
@@ -923,7 +923,7 @@ End Sub
 
 Private Sub LoadList()
 Dim Sql As String, RdoAux As rdoResultset, bLogado As Boolean, z As Long
-z = SendMessage(lvMain.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 Sql = "SELECT * FROM USUARIO WHERE NOMELOGIN<>'" & NomeDeLogin & "' AND ATIVO=1"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux

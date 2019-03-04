@@ -2436,9 +2436,9 @@ Private Sub cmbBairro_GotFocus()
 Dim i  As Long
     If cmbCidade.ListIndex = -1 Then Exit Sub
     If cmbCidade.ListIndex > -1 Then
-       i = SendMessage(cmbCidade.hwnd, CB_FINDSTRING, -1, ByVal cmbCidade.Text)
+       i = SendMessage(cmbCidade.HWND, CB_FINDSTRING, -1, ByVal cmbCidade.Text)
        If i <> CB_ERR Then
-          PostMessage cmbCidade.hwnd, CB_SETCURSEL, i, 0
+          PostMessage cmbCidade.HWND, CB_SETCURSEL, i, 0
        End If
     End If
     cmbBairro.Clear
@@ -2474,7 +2474,7 @@ Dim strPartial As String, i As Long
 With cmbBairro
     If .Text <> "" Then
         strPartial = .Text
-        i = SendMessage(.hwnd, CB_FINDSTRING, -1, ByVal strPartial)
+        i = SendMessage(.HWND, CB_FINDSTRING, -1, ByVal strPartial)
         If i = CB_ERR Then
            MsgBox "Bairro Inválido.", vbExclamation, "Atenção"
            Cancel = True
@@ -2507,7 +2507,7 @@ Private Sub cmbBairroImovel_Change()
     End If
     With cmbBairroImovel
         strPartial = .Text
-        i = SendMessage(.hwnd, CB_FINDSTRING, -1, ByVal strPartial)
+        i = SendMessage(.HWND, CB_FINDSTRING, -1, ByVal strPartial)
         If i <> CB_ERR Then
             strTotal = .List(i)
             j = Len(strTotal) - Len(strPartial)
@@ -2517,7 +2517,7 @@ Private Sub cmbBairroImovel_Change()
                 .SelStart = Len(strPartial)
                 .SelLength = j
             Else
-                PostMessage cmbBairroImovel.hwnd, CB_SETCURSEL, i, 0
+                PostMessage cmbBairroImovel.HWND, CB_SETCURSEL, i, 0
             End If
         End If
     End With
@@ -2538,7 +2538,7 @@ Dim strPartial As String, i As Long
 With cmbBairroImovel
     If .Text <> "" Then
         strPartial = .Text
-        i = SendMessage(.hwnd, CB_FINDSTRING, -1, ByVal strPartial)
+        i = SendMessage(.HWND, CB_FINDSTRING, -1, ByVal strPartial)
         If i = CB_ERR Then
            MsgBox "Bairro Inválido.", vbExclamation, "Atenção"
            Cancel = True
@@ -2568,7 +2568,7 @@ Private Sub cmbCidade_Change()
     End If
     With cmbCidade
         strPartial = .Text
-        i = SendMessage(.hwnd, CB_FINDSTRING, -1, ByVal strPartial)
+        i = SendMessage(.HWND, CB_FINDSTRING, -1, ByVal strPartial)
         If i <> CB_ERR Then
             strTotal = .List(i)
             j = Len(strTotal) - Len(strPartial)
@@ -2578,7 +2578,7 @@ Private Sub cmbCidade_Change()
                 .SelStart = Len(strPartial)
                 .SelLength = j
             Else
-                PostMessage cmbCidade.hwnd, CB_SETCURSEL, i, 0
+                PostMessage cmbCidade.HWND, CB_SETCURSEL, i, 0
             End If
         End If
     End With
@@ -2622,7 +2622,7 @@ Dim strPartial As String, i As Long
 With cmbCidade
     If .Text <> "" Then
         strPartial = .Text
-        i = SendMessage(.hwnd, CB_FINDSTRING, -1, ByVal strPartial)
+        i = SendMessage(.HWND, CB_FINDSTRING, -1, ByVal strPartial)
         If i = CB_ERR Then
            MsgBox "Cidade Inválida.", vbExclamation, "Atenção"
            Cancel = True
@@ -2654,7 +2654,7 @@ Private Sub cmbUF_Change()
     End If
     With cmbUF
         strPartial = .Text
-        i = SendMessage(.hwnd, CB_FINDSTRING, -1, ByVal strPartial)
+        i = SendMessage(.HWND, CB_FINDSTRING, -1, ByVal strPartial)
         If i <> CB_ERR Then
             strTotal = .List(i)
             j = Len(strTotal) - Len(strPartial)
@@ -2664,7 +2664,7 @@ Private Sub cmbUF_Change()
                 .SelStart = Len(strPartial)
                 .SelLength = j
             Else
-                PostMessage cmbUF.hwnd, CB_SETCURSEL, i, 0
+                PostMessage cmbUF.HWND, CB_SETCURSEL, i, 0
             End If
         End If
     End With
@@ -2706,7 +2706,7 @@ Dim strPartial As String, i As Long
 With cmbUF
     If .Text <> "" Then
         strPartial = .Text
-        i = SendMessage(.hwnd, CB_FINDSTRING, -1, ByVal strPartial)
+        i = SendMessage(.HWND, CB_FINDSTRING, -1, ByVal strPartial)
         If i = CB_ERR Then
            MsgBox "UF Inválida.", vbExclamation, "Atenção"
            Cancel = True
@@ -3099,6 +3099,12 @@ End If
 '   GoTo Falso
 'End If
 
+If cmbBairroImovel.ListIndex = -1 Then
+   MsgBox "Selecione o bairro do Imóvel.", vbCritical, "Erro de Validação."
+   GoTo Falso
+End If
+
+
 If mskCEP.ClipText = "" Then
    MsgBox "Digite o CEP do Imóvel.", vbCritical, "Erro de Validação."
    GoTo Falso
@@ -3452,7 +3458,7 @@ End With
 
 'Areas
 Dim z As Long
-z = SendMessage(lvArea.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvArea.HWND, LVM_DELETEALLITEMS, 0, 0)
 Sql = "SELECT CONDOMINIOAREA.SEQAREA,CONDOMINIOAREA.QTDEPAV,CONDOMINIOAREA.TIPOAREA,CONDOMINIOAREA.DATAAPROVA,CONDOMINIOAREA.AREACONSTR,CONDOMINIOAREA.NUMPROCESSO,CONDOMINIOAREA.DATAPROCESSO,"
 Sql = Sql & "CONDOMINIOAREA.USOCONSTR,USOCONSTR.DESCUSOCONSTR,CONDOMINIOAREA.TIPOCONSTR,TIPOCONSTR.DESCTIPOCONSTR,"
 Sql = Sql & "CONDOMINIOAREA.CATCONSTR,CATEGCONSTR.DESCCATEGCONSTR FROM CONDOMINIOAREA INNER JOIN USOCONSTR ON "
@@ -4570,7 +4576,7 @@ End Sub
 Private Sub Le()
 Dim x As Integer, nCodReduz As Long, nSeq As Integer
 Dim itmX As ListItem, z As Long
-z = SendMessage(lvArea.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvArea.HWND, LVM_DELETEALLITEMS, 0, 0)
 Limpa
 lblCodReduz.Caption = CodImovel
 nCodReduz = Val(Left$(CodImovel, 7))
@@ -5086,7 +5092,7 @@ End Sub
 
 Private Sub Limpa()
 Dim z As Long
-z = SendMessage(lvArea.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvArea.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 'Cabeçalho
 

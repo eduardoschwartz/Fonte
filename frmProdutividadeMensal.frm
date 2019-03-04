@@ -382,14 +382,14 @@ With RdoAux
    .Close
 End With
 
-If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "EDUARDO" Then
+If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "NOELI" Then
     If Not ProdIsBossLogin() Then
         cmbFiscal.Text = RetornaUsuarioFullName()
         cmbFiscal.Enabled = False
     End If
 End If
 
-For x = 2011 To 2018
+For x = 2011 To 2019
     cmbAno.AddItem (CStr(x))
 Next
 
@@ -423,7 +423,7 @@ For nDay = 1 To nLastDay
     ReDim Preserve aExtrato(UBound(aExtrato) + 1)
     aExtrato(nDay).nDia = nDay
     sData = Format(nDay, "00") & "/" & Format(nMes, "00") & "/" & cmbAno.Text
-    If sData = "29/02/2018" Then sData = "28/02/2018"
+    If sData = "29/02/2019" Then sData = "28/02/2019"
     nWeekDay = Weekday(CDate(sData))
     aExtrato(nDay).sDia = WeekdayName(nWeekDay, True)
 
@@ -676,7 +676,7 @@ ReDim aFiscalEvento(0)
 
 For x = 1 To nLastDay
     sDataTmp = Format(x, "00") & "/" & Format(nMes, "00") & "/" & cmbAno.Text
-    If sDataTmp = "29/02/2018" Then sDataTmp = "28/02/2018"
+    If sDataTmp = "29/02/2019" Then sDataTmp = "28/02/2019"
     nWeekDay = Weekday(CDate(sDataTmp))
     nCodEvento = ProdEventoDia(nCodFiscal, CDate(sDataTmp))
     If nCodEvento = 0 And bIsBoss Then
@@ -827,7 +827,7 @@ End If
 'lblReceber.Caption = FormatNumber(nReceber, 2)
 'lblTransportar.Caption = FormatNumber(nTransportar, 2)
 
-frmReport.ShowReport2 "PRODMOB1", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "PRODMOB1", frmMdi.HWND, Me.HWND
 
 Sql = "delete from produtividaderel1 where usuario='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect

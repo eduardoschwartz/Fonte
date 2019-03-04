@@ -1455,7 +1455,7 @@ If lstArq.ListIndex > -1 Then
     If grdReg.Rows = 1 Then
         
         MsgBox "Não existem registros para baixar, verifique o arquivo.", vbExclamation, "Atenção"
-        GoTo fim
+        GoTo FIM
     End If
    
     '*** VERIFICA BAIXA NO ARQUIVO ***
@@ -1484,7 +1484,7 @@ If lstArq.ListIndex > -1 Then
             CarregaDocumento grdReg.TextMatrix(1, 0), grdReg.TextMatrix(1, 11), grdReg.TextMatrix(1, 9)
          End If
     End If
-fim:
+FIM:
     cmdOpcoes.Enabled = True: cmdLoad.Enabled = True: lstArq.Enabled = True
 End If
 End Sub
@@ -1666,7 +1666,7 @@ End Sub
 
 Private Sub Form_Load()
 Dim x As Long
-x = SetParent(Me.hwnd, frmMdi.hwnd)
+x = SetParent(Me.HWND, frmMdi.HWND)
 MontaMenu
 Centraliza Me
 LimpaTela
@@ -1783,6 +1783,20 @@ With RdoAux
                 nPercDesconto = 60
             ElseIf !plano = 25 Then
                 nPercDesconto = 40
+            ElseIf !plano = 26 Then
+                nPercDesconto = 100
+            ElseIf !plano = 27 Then
+                nPercDesconto = 90
+            ElseIf !plano = 28 Then
+                nPercDesconto = 80
+            ElseIf !plano = 29 Then
+                nPercDesconto = 50
+            ElseIf !plano = 30 Then
+                nPercDesconto = 40
+            ElseIf !plano = 31 Then
+                nPercDesconto = 30
+            ElseIf !plano = 32 Then
+                nPercDesconto = 100
             Else
                 nPercDesconto = 0
             End If
@@ -1883,7 +1897,7 @@ With RdoAux
                             aTrib(nLast).sDA = "S"
                             GoTo continua
                         End If
-                        sNumProc = !NUMPROCESSO
+                        sNumProc = !numprocesso
                        .Close
                     End With
                     
@@ -2278,7 +2292,7 @@ Select Case m_cMenu.ItemKey(ItemNumber)
             .DialogTitle = "Selecione um arquivo CBR724"
             .CancelError = True
             .flags = OFN_FILEMUSTEXIST Or OFN_PATHMUSTEXIST
-            .InitDir = "\\apolo\atualizagti"
+            .InitDir = "\\192.168.200.130\atualizagti"
             .Filter = "All Files (*.*)|*.*"
             .ShowOpen
             
@@ -2296,13 +2310,13 @@ Select Case m_cMenu.ItemKey(ItemNumber)
         If grdReg.Rows = 1 Then
             MsgBox "Arquivo não carregado.", vbExclamation, "Atenção"
         Else
-            frmReport.ShowReport "ANALISE2", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ANALISE2", frmMdi.HWND, Me.HWND
         End If
     Case "mnuAnaliseD"
         If grdReg.Rows = 1 Then
             MsgBox "Arquivo não carregado.", vbExclamation, "Atenção"
         Else
-            frmReport.ShowReport "ANALISE1", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "ANALISE1", frmMdi.HWND, Me.HWND
         End If
 End Select
 
@@ -2453,7 +2467,7 @@ For nLinha = 1 To UBound(aRegistro)
                     Sql = Sql & "ANOEXERCICIO=" & aDocTmp(nLinha2).nAno & " AND CODLANCAMENTO=" & aDocTmp(nLinha2).nLanc & " AND "
                     Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA = " & aDocTmp(nLinha2).nParc & " AND CODCOMPLEMENTO=" & aDocTmp(nLinha2).nCompl
                     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                    sNumProc = SubNull(RdoAux2!NUMPROCESSO)
+                    sNumProc = SubNull(RdoAux2!numprocesso)
                     RdoAux2.Close
                     
                     If sNumProc <> "" Then
@@ -2532,19 +2546,27 @@ For nLinha = 1 To UBound(aRegistro)
                  If nStatus = 1 Then
                     Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=1  WHERE CODREDUZIDO=" & aDocTmp(nLinha2).nCodReduz & " AND "
                     Sql = Sql & "ANOEXERCICIO=" & aDocTmp(nLinha2).nAno & " AND CODLANCAMENTO=" & aDocTmp(nLinha2).nLanc & " AND "
-                    'Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA > 0 AND CODCOMPLEMENTO=" & aDocTmp(nLinha2).nCompl
                     Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA > 0 "
                     cn.Execute Sql, rdExecDirect
+                    
+                    
+                    Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=5  WHERE CODREDUZIDO=" & aDocTmp(nLinha2).nCodReduz & " AND "
+                    Sql = Sql & "ANOEXERCICIO=" & aDocTmp(nLinha2).nAno & " AND CODLANCAMENTO=" & aDocTmp(nLinha2).nLanc & " AND "
+                    Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA = 0 and CODCOMPLEMENTO<>" & aDocTmp(nLinha2).nCompl & " And STATUSLANC = 3"
+                    cn.Execute Sql, rdExecDirect
+                    
+                    
                  Else
                     Sql = "SELECT * FROM DEBITOPARCELA WHERE CODREDUZIDO=" & aDocTmp(nLinha2).nCodReduz & " AND "
                     Sql = Sql & "ANOEXERCICIO=" & aDocTmp(nLinha2).nAno & " AND CODLANCAMENTO=" & aDocTmp(nLinha2).nLanc & " AND "
-                    Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA = 0 AND CODCOMPLEMENTO=" & aDocTmp(nLinha2).nCompl
+                    'Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA = 0 AND CODCOMPLEMENTO=" & aDocTmp(nLinha2).nCompl
+                    Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA = 0 "
                     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     If RdoAux.RowCount > 0 Then
                         If RdoAux!statuslanc = 3 And lblTit.Visible = False Then
                             Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=5 WHERE CODREDUZIDO=" & aDocTmp(nLinha2).nCodReduz & " AND "
                             Sql = Sql & "ANOEXERCICIO=" & aDocTmp(nLinha2).nAno & " AND CODLANCAMENTO=" & aDocTmp(nLinha2).nLanc & " AND "
-                            Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA = 0 AND CODCOMPLEMENTO=" & aDocTmp(nLinha2).nCompl
+                            Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA = 0 AND STATUSLANC=3"
                             cn.Execute Sql, rdExecDirect
                         End If
                     End If
@@ -2614,7 +2636,7 @@ For nLinha = 1 To UBound(aRegistro)
                             Sql = "SELECT * FROM DEBITOPARCELA WHERE CODREDUZIDO=" & .nCodReduz & " AND ANOEXERCICIO=" & .nAno & " AND CODLANCAMENTO=" & .nLanc & " AND "
                             Sql = Sql & "SEQLANCAMENTO=" & .nSeq & " AND NUMPARCELA=" & .nParc
                             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                            sNumProc = SubNull(RdoAux2!NUMPROCESSO)
+                            sNumProc = SubNull(RdoAux2!numprocesso)
                             RdoAux2.Close
                             
                             'GERA O COMPLEMENTO EM DEBITOPARCELA E DEBITOTRIBUTO
@@ -2962,7 +2984,7 @@ For x = 1 To UBound(aDoc)
     End With
 Next
 
-frmReport.ShowReport "RESUMOBANCO", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "RESUMOBANCO", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM RESUMOBANCO3 WHERE COMPUTER='" & NomeDeLogin & "';"
 Sql = Sql & "DELETE FROM RESUMOBANCO2 WHERE COMPUTER='" & NomeDeLogin & "';"
@@ -3251,7 +3273,7 @@ Test1:
                     CarregaParcela nNumDoc, nSeqReg, ConvDataSerial(Mid(sReg, 30, 8))
                 
                     
-                    If nNumDoc > 2000000 And nNumDoc < 3000000 Then
+                    If (nNumDoc > 2000000 And nNumDoc < 3000000) Or nNumDoc < 2000 Then
                         '***** GRAVA BAIXA NA GISS ***************
                         Sql = "insert tb_inter_baixa(cod_cliente,cod_banco,num_sequencia,timestamp,data_geracao,nome_arquivo,data_movimento) values("
                         Sql = Sql & 2177 & "," & Val(Left(lblBanco.Caption, 3)) & "," & 0 & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & Format(Now, "mm/dd/yyyy") & "','"
@@ -3929,7 +3951,7 @@ While Not EOF(FF1)
                 Else
                     nNumDoc = Val(Mid(sReg, 46, 8))
                 End If
-        '        If nNumDoc = 8113670 Then MsgBox "teste"
+                'If nNumDoc = 2103745 Then MsgBox "teste"
                ' nNumDoc = Val(Mid(sReg, 106, 8))
                ' If nNumDoc = 0 Then
                '     nNumDoc = Val(Mid(sReg, 45, 9))
@@ -3979,7 +4001,7 @@ Test2bb:
                 aRegistro(UBound(aRegistro)).sDataPagCalc = RetornaDiaUtil(CDate(aRegistro(UBound(aRegistro)).sDataPag))
                 CarregaParcela nNumDoc, nSeqReg, CStr(aRegistro(UBound(aRegistro)).sDataPag)
             
-                If nNumDoc > 2000000 And nNumDoc < 3000000 Then
+                If (nNumDoc > 2000000 And nNumDoc < 3000000) Or nNumDoc < 3000 Then
                     '***** GRAVA BAIXA NA GISS ***************
                     Sql = "insert tb_inter_baixa(cod_cliente,cod_banco,num_sequencia,timestamp,data_geracao,nome_arquivo,data_movimento) values("
                     Sql = Sql & 2177 & "," & 1 & "," & Val(sSeqArq) & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & Format(sDataGeracao, "mm/dd/yyyy") & "','"
@@ -4052,6 +4074,7 @@ nErro = 0
 cmbDataCredito.Clear
 
 For nPos = 1 To UBound(aRegistro)
+'If nPos = 327 Then MsgBox "teste"
     bData = False
     For nData = 0 To cmbDataCredito.ListCount - 1
         If aRegistro(nPos).sDataCred = cmbDataCredito.List(nData) Then
@@ -4214,7 +4237,11 @@ Open sFullPath For Binary Access Read Write As FF1
                     aRegistro(UBound(aRegistro)).sDataCred = sDataVencto
                     aRegistro(UBound(aRegistro)).nValorPago = (CDbl(Mid(sReg, 53, 15)) / 100)
                     aRegistro(UBound(aRegistro)).sAgencia = Mid(sReg, 27, 4)
-                    aRegistro(UBound(aRegistro)).nValorTarifa = RdoAux!ValorTaxaDoc
+                    If IsNull(RdoAux!ValorTaxaDoc) Then
+                        aRegistro(UBound(aRegistro)).nValorTarifa = 0
+                    Else
+                        aRegistro(UBound(aRegistro)).nValorTarifa = RdoAux!ValorTaxaDoc
+                    End If
                     aRegistro(UBound(aRegistro)).nValorTarifaBancaria = 0
                     aRegistro(UBound(aRegistro)).sSitRetorno = sRetorno
                     aRegistro(UBound(aRegistro)).bExiste = True
@@ -4422,7 +4449,7 @@ Private Sub MontaMenu()
 
    Set m_cMenu = New cPopupMenu
    With m_cMenu
-      .hwndOwner = Me.hwnd
+      .hwndOwner = Me.HWND
       .GradientHighlight = True
       
       i = .AddItem("Visualizar arquivo texto", "", 1, , , , , "mnuVisualizar")

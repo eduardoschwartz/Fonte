@@ -845,7 +845,7 @@ With RdoAux
                 aImovel(UBound(aImovel)).sDescPedologia = !DescPedologia
                 aImovel(UBound(aImovel)).nAreaTerreno = !Dt_AreaTerreno
                 aImovel(UBound(aImovel)).nCodProprietario = !CodCidadao
-                aImovel(UBound(aImovel)).sNomeProprietario = !nomecidadao
+                aImovel(UBound(aImovel)).sNomeProprietario = !NomeCidadao
                 CarregaCampos
                 AdicionaImovel = True
             End If
@@ -1356,7 +1356,7 @@ With RdoAux
                 'GRAVA DEBITOTRIBUTO NOVO
                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
                 Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodNovo & "," & nAno & "," & nLanc & "," & nSeq2 & "," & nParc & "," & nCompl & "," & !CodTributo & "," & Virg2Ponto(CStr(!ValorTributo)) & ")"
-                'cn.Execute Sql, rdExecDirect
+                cn.Execute Sql, rdExecDirect
                .MoveNext
             Loop
            .Close
@@ -1431,7 +1431,7 @@ With RdoS
                         'GRAVA DEBITOTRIBUTO NOVO
                         Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
                         Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodNovo & "," & nAno & "," & nLanc & "," & nSeq2 & "," & nParc & "," & nCompl & "," & !CodTributo & "," & Virg2Ponto(CStr(!ValorTributo)) & ")"
-                      '  cn.Execute Sql, rdExecDirect
+                        cn.Execute Sql, rdExecDirect
                        .MoveNext
                     Loop
                    .Close

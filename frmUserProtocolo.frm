@@ -692,7 +692,7 @@ Private Sub cmdFoto_Click()
 Dim fName As String, cc As cCommonDlg
 
 Set cc = New cCommonDlg
-cc.VBGetOpenFileName fName, , , , , , "Imagem da assinatura|*.jpg;*.png", , "C:\trabalho\gti\diversos", "Selecione uma assinatura", , Me.hwnd, OFN_HIDEREADONLY, False
+cc.VBGetOpenFileName fName, , , , , , "Imagem da assinatura|*.jpg;*.png", , "C:\trabalho\gti\diversos", "Selecione uma assinatura", , Me.HWND, OFN_HIDEREADONLY, False
 Image1.Picture = LoadPicture(fName)
 lblAss.Caption = fName
 
@@ -968,7 +968,7 @@ txtSenha2.Text = "************"
 Sql = "SELECT id,NOMELOGIN,FISCAL FROM USUARIO WHERE NOMECOMPLETO='" & Mask(lstUser.Text) & "' and ativo=1"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-    lblCod.Caption = Format(!id, "0000")
+    lblCod.Caption = Format(!Id, "0000")
     txtNome.Text = lstUser.Text
     txtLogin.Text = !NomeLogin
     If Not IsNull(!fiscal) Then
@@ -1085,19 +1085,19 @@ If Evento = "Novo" Then
        'adiciona os centro de custos
         For j = 0 To lstSetor.ListCount - 1
             If lstSetor.Selected(j) = True Then
-                Sql = "INSERT USUARIOCC (NOME,CODIGOCC) VALUES('"
-                Sql = Sql & sLogin & "'," & lstSetor.ItemData(j) & ")"
+                Sql = "INSERT USUARIOCC (USERID,CODIGOCC) VALUES("
+                Sql = Sql & RetornaUsuarioID(NomeDeLogin) & "," & lstSetor.ItemData(j) & ")"
                 cn.Execute Sql, rdExecDirect
            End If
         Next
        'adiciona os centro de custos
-        For j = 0 To lstSetor2.ListCount - 1
-            If lstSetor2.Selected(j) = True Then
-                Sql = "INSERT CPUSUARIOCC (NOME,CODIGOCC) VALUES('"
-                Sql = Sql & sLogin & "'," & lstSetor2.ItemData(j) & ")"
-                cn.Execute Sql, rdExecDirect
-           End If
-        Next
+'        For j = 0 To lstSetor2.ListCount - 1
+'            If lstSetor2.Selected(j) = True Then
+'                Sql = "INSERT CPUSUARIOCC (NOME,CODIGOCC) VALUES('"
+ '               Sql = Sql & sLogin & "'," & lstSetor2.ItemData(j) & ")"
+ '               cn.Execute Sql, rdExecDirect
+ '          End If
+ ''       Next
        'adiciona usuário a lista na tela
         lstUser.AddItem txtNome.Text
 '       .Close

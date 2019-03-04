@@ -31,12 +31,12 @@ Begin VB.Form frmImportaBanco
       Width           =   1125
    End
    Begin VB.CommandButton Command1 
-      Caption         =   "Command1"
+      Caption         =   "frmbaixabancaria"
       Height          =   345
       Left            =   360
       TabIndex        =   9
       Top             =   4710
-      Width           =   915
+      Width           =   1425
    End
    Begin Tributacao.jcFrames frProgress 
       Height          =   1155
@@ -285,30 +285,30 @@ End Sub
 Private Sub Command2_Click()
 List1.Clear
 Dim strStartPath As String
-    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\01"
+    strStartPath = "D:\Trabalho\GTI\Banco\2019\01"
     ListFolder strStartPath
-    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\02"
-    ListFolder strStartPath
-    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\03"
-    ListFolder strStartPath
-    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\04"
-    ListFolder strStartPath
-    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\05"
-    ListFolder strStartPath
-'    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\06"
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\02"
+ '   ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\03"
+  '  ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\04"
+   ' ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\05"
+    'ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\06"
 '    ListFolder strStartPath
-'    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\07"
-'    ListFolder strStartPath
-'    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\08"
-'    ListFolder strStartPath
-'    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\09"
-'    ListFolder strStartPath
-'    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\10"
-'    ListFolder strStartPath
-'    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\11"
-'    ListFolder strStartPath
-'    strStartPath = "\\192.168.200.130\AtualizaGTI\2018\12"
-'    ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\07"
+ '   ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\08"
+  '  ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\09"
+   ' ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\10"
+    'ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\11"
+    'ListFolder strStartPath
+    strStartPath = "D:\Trabalho\GTI\Banco\2018\12"
+    'ListFolder strStartPath
 
 End Sub
 

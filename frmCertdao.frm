@@ -781,6 +781,7 @@ frm.ZOrder 0
 End Sub
 
 Private Sub cmdLoadDeb_Click()
+Dim bResidencial As Boolean, bResideImovel As Boolean
 Limpa
 If Trim$(txtNumProc.Text) = "" Then
     MsgBox "Digite o nº do Processo.", vbCritical, "Atenção"
@@ -814,11 +815,12 @@ If nCodReduz < 100000 Then
                     Limpa
                     Exit Sub
                 End If
+                
                 .CarregaImovel nCodReduz
                 nNumeroImovel = .Li_Num
                 lblProp.Caption = .NomePropPrincipal
                 lblQuadra.Caption = .Li_Quadras
-                
+                bResideImovel = .ResideImovel
                 lblLote.Caption = .Li_Lotes
                 lblInscricao.Caption = .Inscricao
                 'lblEnd.Caption = Trim$(SubNull(.AbrevTipoLog)) & " " & Trim$(SubNull(.AbrevTitLog)) & " " & .NomeLogradouro & ", " & .Li_Num & " " & .Li_Compl
@@ -870,7 +872,7 @@ Else
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
          If .RowCount > 0 Then
-             lblProp.Caption = !nomecidadao
+             lblProp.Caption = !NomeCidadao
              If Not IsNull(!NomeLogradouro) Then
                 If !NomeLogradouro <> "" Then
                     lblEnd.Caption = Trim$(SubNull(!NomeLogradouro)) & ", " & Val(SubNull(!NUMIMOVEL))
@@ -892,6 +894,10 @@ If lblCodCert.Caption = 1 Then
     VerificaDebito
 ElseIf lblCodCert.Caption = 6 Then
     bImune = False
+    If Not bResideImovel Then
+        MsgBox "Proprietario não reside no imóvel", vbInformation, "Atenção"
+        GoTo FimIsento
+    End If
     Sql = "select codreduzido,imune from cadimob where codreduzido=" & nCodReduz
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     If RdoAux!Imune = True Then
@@ -903,6 +909,8 @@ ElseIf lblCodCert.Caption = 6 Then
     End If
 
     bIsento65 = False
+    
+    bResidencial = True
     Sql = "SELECT * FROM VWISENCAOprocesso WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & Year(Now)
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
@@ -941,7 +949,20 @@ ElseIf lblCodCert.Caption = 6 Then
                      End If
                     .Close
                  End With
+                 Do Until .EOF
+                    If !USOCONSTR > 1 Then
+                        bResidencial = False
+                        Exit Do
+                    End If
+                   .MoveNext
+                 Loop
              End With
+             If Not bResidencial Then
+                MsgBox "Este Imóvel possui área não residencial.", vbExclamation, "Atenção"
+                cmdPrint.Enabled = False
+                Exit Sub
+             End If
+             
            Else
                 If Not IsNull(RdoAux2!numprocesso) Then
                    lblProcIsencao.Caption = RdoAux2!numprocesso
@@ -979,7 +1000,7 @@ cmdPrint.Enabled = True
 End Sub
 
 Private Sub VerificaDebito()
-Dim X As Integer, bAchou As Boolean, sDescReduz As String
+Dim x As Integer, bAchou As Boolean, sDescReduz As String
 Dim aTipo() As String, bTemValor As Boolean
 ReDim aTipo(0)
 
@@ -1027,8 +1048,8 @@ With RdoAux
         bAchou = False
         sDescReduz = !descreduz
         If sDescReduz = "RECALCULO IPTU" Then sDescReduz = "ITU / IPTU"
-        For X = 1 To UBound(aTipo)
-            If aTipo(X) = sDescReduz Then
+        For x = 1 To UBound(aTipo)
+            If aTipo(x) = sDescReduz Then
                 bAchou = True
                 Exit For
             End If
@@ -1043,8 +1064,8 @@ proximo:
 End With
 
 If UBound(aTipo) > 0 Then
-    For X = 1 To UBound(aTipo)
-        sTipo = sTipo & aTipo(X) & "/ "
+    For x = 1 To UBound(aTipo)
+        sTipo = sTipo & aTipo(x) & "/ "
     Next
     sTipo = Left(sTipo, Len(sTipo) - 2)
     lblTipo.Caption = "CERTIDÃO DE DÉBITO POSITIVA"
@@ -1186,7 +1207,7 @@ Select Case lblTipo.Caption
 '   qd(2) = 0
     Set RdoAux = qd.OpenResultset(rdOpenKeyset)
     With RdoAux
-        lblVVT.Caption = FormatNumber(!VVT, 2) & " (" & FormatNumber(!VVT / !AreaTerreno, 2) & " R$/m²)"
+        lblVVT.Caption = FormatNumber(!vvt, 2) & " (" & FormatNumber(!vvt / !AreaTerreno, 2) & " R$/m²)"
         lblVVC.Caption = FormatNumber(!VVP, 2)
         lblVVI.Caption = FormatNumber(!VVI, 2)
         .Close
@@ -1259,19 +1280,19 @@ With RdoAux
         .Close
         Exit Sub
     End If
-    lblCertidao.Caption = Format(!VALPARAM + 1, "000000")
+    lblCertidao.Caption = Format(!valparam + 1, "000000")
    .Close
 End With
 
 If sNomeReport = "CVVIMOVEL" Then
-    frmReport.ShowReport2 sNomeReport, frmMdi.hwnd, Me.hwnd
-    GoTo fim
+    frmReport.ShowReport2 sNomeReport, frmMdi.HWND, Me.HWND
+    GoTo FIM
 ElseIf sNomeReport = "CENDERECO" Then
-    frmReport.ShowReport2 sNomeReport, frmMdi.hwnd, Me.hwnd
-    GoTo fim
+    frmReport.ShowReport2 sNomeReport, frmMdi.HWND, Me.HWND
+    GoTo FIM
 ElseIf sNomeReport = "CISENCAO" Or sNomeReport = "CISENCAOAREA" Then
-    frmReport.ShowReport2 sNomeReport, frmMdi.hwnd, Me.hwnd
-    GoTo fim
+    frmReport.ShowReport2 sNomeReport, frmMdi.HWND, Me.HWND
+    GoTo FIM
 End If
 
 sAut1 = Encrypt128(NomeDeLogin, sChave)
@@ -1289,13 +1310,13 @@ cn.Execute Sql, rdExecDirect
 Sql = "UPDATE PARAMETROS SET VALPARAM=VALPARAM + 1 WHERE NOMEPARAM='" & sNomeParam & "'"
 cn.Execute Sql, rdExecDirect
 
-frmReport.ShowReport sNomeReport, frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport sNomeReport, frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM CERTIDAO WHERE COMPUTER='" & NomeDoUsuario & "'"
 cn.Execute Sql, rdExecDirect
 
 
-fim:
+FIM:
 Sql = "UPDATE PARAMETROS SET VALPARAM=VALPARAM + 1 WHERE NOMEPARAM='" & sNomeParam & "'"
 cn.Execute Sql, rdExecDirect
 
@@ -1375,7 +1396,7 @@ End Sub
 Private Sub CalculoIndividual(nCodReduz As Long)
 Dim nSomaTestada As Double, nAreaTerrenoReal As Double, RdoAux4 As rdoResultset, RdoAux5 As rdoResultset, RdoAux6 As rdoResultset
 Dim nUso As Integer, nTipo As Integer, nCat As Integer, nCodBairro As Integer, bCalcProc As Boolean
-Dim bIsento As Boolean, nTestada1 As Double, X As Integer
+Dim bIsento As Boolean, nTestada1 As Double, x As Integer
 
 bCalcProc = False
 bIsento = False
@@ -1551,9 +1572,9 @@ With RdoAux
                     nTipo = !TIPOCONSTR
                     nCat = !CATCONSTR
                     nFatorCategoria = 0
-                    For X = 1 To UBound(aFatorC)
-                        If aFatorC(X).Uso = nUso And aFatorC(X).Tipo = nTipo And aFatorC(X).Categoria = nCat Then
-                           nFatorCategoria = aFatorC(X).Fator
+                    For x = 1 To UBound(aFatorC)
+                        If aFatorC(x).Uso = nUso And aFatorC(x).Tipo = nTipo And aFatorC(x).Categoria = nCat Then
+                           nFatorCategoria = aFatorC(x).Fator
                            Exit For
                         End If
                     Next
@@ -1585,14 +1606,14 @@ With RdoAux
     '**************************
     '### FATOR GLEBA ###
     '**************************
-    For X = 1 To UBound(aGleba)
-        If nAreaTerreno >= aGleba(X).Min And nAreaTerreno <= aGleba(X).Max Then
+    For x = 1 To UBound(aGleba)
+        If nAreaTerreno >= aGleba(x).Min And nAreaTerreno <= aGleba(x).Max Then
              Exit For
-        ElseIf nAreaTerreno >= aGleba(X).Min And aGleba(X).Max = 0 Then
+        ElseIf nAreaTerreno >= aGleba(x).Min And aGleba(x).Max = 0 Then
              Exit For
         End If
     Next
-    nCodGleba = aGleba(X).Codigo
+    nCodGleba = aGleba(x).Codigo
     'PROCURAMOS AGORA O VALOR DO FATOR GLEBA
     nFatorGleba = aFatorG(nCodGleba)
  '   lblFatorG.Caption = FormatNumber(nFatorGleba, 2)
@@ -1603,21 +1624,21 @@ With RdoAux
         '*** PROFUNDIDADE = AREA DO TERRENO / TESTADA PRINCIPAL DO LOTE
          nValorProfundidade = FormatNumber(nAreaTerrenoReal / nTestada1, 2)
         'LOCALIZAMOS PRIMEIRO O CODIGO DA PROFUNDIDADE A QUE PERTENCE O IMOVEL
-        For X = 1 To UBound(aProf)
-            If aProf(X).Distrito = !Distrito Then
-               If nValorProfundidade >= Round(aProf(X).Min, 2) And nValorProfundidade <= aProf(X).Max Then
+        For x = 1 To UBound(aProf)
+            If aProf(x).Distrito = !Distrito Then
+               If nValorProfundidade >= Round(aProf(x).Min, 2) And nValorProfundidade <= aProf(x).Max Then
                   Exit For
-               ElseIf nValorProfundidade >= aProf(X).Min And aProf(X).Max = 0 Then
+               ElseIf nValorProfundidade >= aProf(x).Min And aProf(x).Max = 0 Then
                   Exit For
                End If
             End If
         Next
-        nCodProfundidade = aProf(X).Codigo
+        nCodProfundidade = aProf(x).Codigo
         'PROCURAMOS AGORA O VALOR DO FATOR PROFUNDIDADE
         nFatorProfundidade = 0
-        For X = 1 To UBound(aFatorF)
-            If aFatorF(X).Distrito = !Distrito And aFatorF(X).Codigo = nCodProfundidade Then
-               nFatorProfundidade = aFatorF(X).Fator
+        For x = 1 To UBound(aFatorF)
+            If aFatorF(x).Distrito = !Distrito And aFatorF(x).Codigo = nCodProfundidade Then
+               nFatorProfundidade = aFatorF(x).Fator
                Exit For
             End If
         Next
@@ -1670,9 +1691,9 @@ With RdoAux
         If nAnoCalculo < 2008 Then
             nValorVenalPredial = 0
             nFatorCategoria = 0
-            For X = 1 To UBound(aFatorC)
-                If aFatorC(X).Uso = nUso And aFatorC(X).Tipo = nTipo And aFatorC(X).Categoria = nCat Then
-                   nFatorCategoria = aFatorC(X).Fator
+            For x = 1 To UBound(aFatorC)
+                If aFatorC(x).Uso = nUso And aFatorC(x).Tipo = nTipo And aFatorC(x).Categoria = nCat Then
+                   nFatorCategoria = aFatorC(x).Fator
                    Exit For
                 End If
             Next
@@ -1737,7 +1758,7 @@ End Sub
 Private Sub CalculoIndividualOld2(nCodReduz As Long)
 Dim nSomaTestada As Double, nAreaTerrenoReal As Double
 Dim nUso As Integer, nTipo As Integer, nCat As Integer, nCodBairro As Integer
-Dim bIsento As Boolean, nTestada1 As Double, X As Integer
+Dim bIsento As Boolean, nTestada1 As Double, x As Integer
 
 'CÁLCULO
 Sql = "SELECT CADIMOB.CODREDUZIDO,LI_CODBAIRRO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
@@ -1851,9 +1872,9 @@ With RdoAux
                 nTipo = !TIPOCONSTR
                 nCat = !CATCONSTR
                 nFatorCategoria = 0
-                For X = 1 To UBound(aFatorC)
-                    If aFatorC(X).Uso = nUso And aFatorC(X).Tipo = nTipo And aFatorC(X).Categoria = nCat Then
-                       nFatorCategoria = aFatorC(X).Fator
+                For x = 1 To UBound(aFatorC)
+                    If aFatorC(x).Uso = nUso And aFatorC(x).Tipo = nTipo And aFatorC(x).Categoria = nCat Then
+                       nFatorCategoria = aFatorC(x).Fator
                        Exit For
                     End If
                 Next
@@ -1879,14 +1900,14 @@ With RdoAux
     '**************************
     'If !Dt_CodUsoTerreno = 6 Then
         'LOCALIZAMOS PRIMEIRO O CODIGO DA GLEBA A QUE PERTENCE O IMOVEL DE ACORDO COM A SUA AREA DO TERRENO
-        For X = 1 To UBound(aGleba)
-            If nAreaTerreno >= aGleba(X).Min And nAreaTerreno <= aGleba(X).Max Then
+        For x = 1 To UBound(aGleba)
+            If nAreaTerreno >= aGleba(x).Min And nAreaTerreno <= aGleba(x).Max Then
                  Exit For
-            ElseIf nAreaTerreno >= aGleba(X).Min And aGleba(X).Max = 0 Then
+            ElseIf nAreaTerreno >= aGleba(x).Min And aGleba(x).Max = 0 Then
                  Exit For
             End If
         Next
-        nCodGleba = aGleba(X).Codigo
+        nCodGleba = aGleba(x).Codigo
         'PROCURAMOS AGORA O VALOR DO FATOR GLEBA
         nFatorGleba = aFatorG(nCodGleba)
         'PROCURAMOS AGORA O VALOR DO FATOR GLEBA98
@@ -1900,21 +1921,21 @@ With RdoAux
         '*** PROFUNDIDADE = AREA DO TERRENO / TESTADA PRINCIPAL DO LOTE
          nValorProfundidade = FormatNumber(nAreaTerrenoReal / nTestada1, 2)
         'LOCALIZAMOS PRIMEIRO O CODIGO DA PROFUNDIDADE A QUE PERTENCE O IMOVEL
-        For X = 1 To UBound(aProf)
-            If aProf(X).Distrito = !Distrito Then
-               If nValorProfundidade >= Round(aProf(X).Min, 2) And nValorProfundidade <= aProf(X).Max Then
+        For x = 1 To UBound(aProf)
+            If aProf(x).Distrito = !Distrito Then
+               If nValorProfundidade >= Round(aProf(x).Min, 2) And nValorProfundidade <= aProf(x).Max Then
                   Exit For
-               ElseIf nValorProfundidade >= aProf(X).Min And aProf(X).Max = 0 Then
+               ElseIf nValorProfundidade >= aProf(x).Min And aProf(x).Max = 0 Then
                   Exit For
                End If
             End If
         Next
-        nCodProfundidade = aProf(X).Codigo
+        nCodProfundidade = aProf(x).Codigo
         'PROCURAMOS AGORA O VALOR DO FATOR PROFUNDIDADE
         nFatorProfundidade = 0
-        For X = 1 To UBound(aFatorF)
-            If aFatorF(X).Distrito = !Distrito And aFatorF(X).Codigo = nCodProfundidade Then
-               nFatorProfundidade = aFatorF(X).Fator
+        For x = 1 To UBound(aFatorF)
+            If aFatorF(x).Distrito = !Distrito And aFatorF(x).Codigo = nCodProfundidade Then
+               nFatorProfundidade = aFatorF(x).Fator
                Exit For
             End If
         Next
@@ -1983,7 +2004,7 @@ End Sub
 Private Sub CalculoIndividualOld(nCodReduz As Long)
 Dim nSomaTestada As Double, nAreaTerrenoReal As Double
 Dim nUso As Integer, nTipo As Integer, nCat As Integer, nCodBairro As Integer
-Dim bIsento As Boolean, nTestada1 As Double, X As Integer
+Dim bIsento As Boolean, nTestada1 As Double, x As Integer
 
 'CÁLCULO
 Sql = "SELECT CADIMOB.CODREDUZIDO,LI_CODBAIRRO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
@@ -2104,14 +2125,14 @@ With RdoAux
     '**************************
     'If !Dt_CodUsoTerreno = 6 Then
         'LOCALIZAMOS PRIMEIRO O CODIGO DA GLEBA A QUE PERTENCE O IMOVEL DE ACORDO COM A SUA AREA DO TERRENO
-        For X = 1 To UBound(aGleba)
-            If nAreaTerreno >= aGleba(X).Min And nAreaTerreno <= aGleba(X).Max Then
+        For x = 1 To UBound(aGleba)
+            If nAreaTerreno >= aGleba(x).Min And nAreaTerreno <= aGleba(x).Max Then
                  Exit For
-            ElseIf nAreaTerreno >= aGleba(X).Min And aGleba(X).Max = 0 Then
+            ElseIf nAreaTerreno >= aGleba(x).Min And aGleba(x).Max = 0 Then
                  Exit For
             End If
         Next
-        nCodGleba = aGleba(X).Codigo
+        nCodGleba = aGleba(x).Codigo
         'PROCURAMOS AGORA O VALOR DO FATOR GLEBA
         nFatorGleba = aFatorG(nCodGleba)
         'PROCURAMOS AGORA O VALOR DO FATOR GLEBA98
@@ -2125,21 +2146,21 @@ With RdoAux
         '*** PROFUNDIDADE = AREA DO TERRENO / TESTADA PRINCIPAL DO LOTE
          nValorProfundidade = FormatNumber(nAreaTerrenoReal / nTestada1, 2)
         'LOCALIZAMOS PRIMEIRO O CODIGO DA PROFUNDIDADE A QUE PERTENCE O IMOVEL
-        For X = 1 To UBound(aProf)
-            If aProf(X).Distrito = !Distrito Then
-               If nValorProfundidade >= Round(aProf(X).Min, 2) And nValorProfundidade <= aProf(X).Max Then
+        For x = 1 To UBound(aProf)
+            If aProf(x).Distrito = !Distrito Then
+               If nValorProfundidade >= Round(aProf(x).Min, 2) And nValorProfundidade <= aProf(x).Max Then
                   Exit For
-               ElseIf nValorProfundidade >= aProf(X).Min And aProf(X).Max = 0 Then
+               ElseIf nValorProfundidade >= aProf(x).Min And aProf(x).Max = 0 Then
                   Exit For
                End If
             End If
         Next
-        nCodProfundidade = aProf(X).Codigo
+        nCodProfundidade = aProf(x).Codigo
         'PROCURAMOS AGORA O VALOR DO FATOR PROFUNDIDADE
         nFatorProfundidade = 0
-        For X = 1 To UBound(aFatorF)
-            If aFatorF(X).Distrito = !Distrito And aFatorF(X).Codigo = nCodProfundidade Then
-               nFatorProfundidade = aFatorF(X).Fator
+        For x = 1 To UBound(aFatorF)
+            If aFatorF(x).Distrito = !Distrito And aFatorF(x).Codigo = nCodProfundidade Then
+               nFatorProfundidade = aFatorF(x).Fator
                Exit For
             End If
         Next
@@ -2178,9 +2199,9 @@ With RdoAux
         '### FATOR CATEGORIA ###
         '**************************
         nValorVenalPredial = 0
-        For X = 1 To UBound(aFatorC)
-            If aFatorC(X).Uso = nUso And aFatorC(X).Tipo = nTipo And aFatorC(X).Categoria = nCat Then
-               nFatorCategoria = aFatorC(X).Fator
+        For x = 1 To UBound(aFatorC)
+            If aFatorC(x).Uso = nUso And aFatorC(x).Tipo = nTipo And aFatorC(x).Categoria = nCat Then
+               nFatorCategoria = aFatorC(x).Fator
                Exit For
             End If
         Next
@@ -2360,7 +2381,7 @@ If nCodCidadao > 0 Then
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
-            lblRequerente.Caption = !nomecidadao
+            lblRequerente.Caption = !NomeCidadao
         End If
        .Close
     End With

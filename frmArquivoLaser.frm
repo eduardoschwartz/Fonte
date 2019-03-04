@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmArquivoLaser 
    BackColor       =   &H00EEEEEE&
@@ -275,7 +275,7 @@ ElseIf Opt(3).value = True Then
 ElseIf Opt(4).value = True Then
    GeraVS
 ElseIf Opt(5).value = True Then
-    nAno = 2018
+    nAno = 2019
    GeraCIP
 End If
 Liberado
@@ -328,7 +328,7 @@ With RdoAux
         End With
 
 
-        ax = !codigomob & "#" & !RazaoSocial & "#" & sCNPJ & "#" & dData & "#" & dDataS & "#" & sDivida
+        ax = !codigomob & "#" & !razaosocial & "#" & sCNPJ & "#" & dData & "#" & dDataS & "#" & sDivida
         Print #1, ax
        .MoveNext
     Loop
@@ -346,7 +346,7 @@ End Sub
 Private Sub Form_Load()
 Centraliza Me
 Set xImovel = New clsImovel
-nAno = 2018
+nAno = 2019
 CarregaEnderecoContabil
 End Sub
 
@@ -462,7 +462,7 @@ With RdoAux
             nCodLogr = !CodLogradouro
             sExercicio = CStr(nAno) '1-4
             sCodInscricao = Format(!codigomob, "00000000000000")
-            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
+            sContribuinte = FillSpace(!razaosocial, 40) '5-44
             sFantasia = FillSpace(SubNull(!NOMEFANTASIA), 40) '45-84
             sCodAtiv = Format(!codatividade, "00000000000000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
@@ -1870,7 +1870,7 @@ cn.Execute Sql, rdExecDirect
 Open sPathBin & "\LASERVIGSANIT.TXT" For Output As #1
 
 Sql = "SELECT DISTINCT CODREDUZIDO From DEBITOPARCELA "
-Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 13) AND DATADEBASE='01/01/2018'   ORDER BY CODREDUZIDO"
+Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 13) AND DATADEBASE='01/01/2019'   ORDER BY CODREDUZIDO"
  
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -1880,6 +1880,9 @@ With RdoAux
         If xId Mod 50 = 0 Then
            CallPb xId, nNumRec
         End If
+        
+'        If xId = 50 Then Exit Do
+        
         Sql = "SELECT MOBILIARIO.CODIGOMOB,MOBILIARIO.DVMOB,MOBILIARIO.RAZAOSOCIAL,MOBILIARIO.NOMEFANTASIA,MOBILIARIO.RESPCONTABIL,CPF,CNPJ,"
         Sql = Sql & "MOBILIARIO.CODATIVIDADE,MOBILIARIO.ATIVEXTENSO FROM MOBILIARIO LEFT OUTER JOIN CIDADE ON MOBILIARIO.SIGLAUF = CIDADE.SIGLAUF AND MOBILIARIO.CODCIDADE = CIDADE.CODCIDADE LEFT OUTER JOIN "
         Sql = Sql & "BAIRRO ON MOBILIARIO.SIGLAUF = BAIRRO.SIGLAUF AND MOBILIARIO.CODCIDADE = BAIRRO.CODCIDADE AND MOBILIARIO.CODBAIRRO = BAIRRO.CODBAIRRO "
@@ -1887,7 +1890,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             nCodReduz = !codigomob
-'            If !codigomob = 100126 Then MsgBox "teste"
+'            If !codigomob = 100157 Then MsgBox "teste"
                 
             If .RowCount = 0 Then
                 GoTo proximo
@@ -1895,7 +1898,7 @@ With RdoAux
             nCodEsc = Val(SubNull(!RESPCONTABIL))
             sExercicio = CStr(nAno) '1-4
             sCodInscricao = Format(!codigomob, "000000")
-            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
+            sContribuinte = FillSpace(!razaosocial, 40) '5-44
             sFantasia = FillSpace(SubNull(!NOMEFANTASIA), 40) '45-84
             sCodAtiv = Format(!codatividade, "00000000000000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
@@ -2048,35 +2051,45 @@ With RdoAux
             Next
             x = 1
             
-            Sql = "SELECT * FROM MOBILIARIOATIVIDADEVS2 WHERE CODMOBILIARIO=" & nCodReduz
+            'Sql = "SELECT * FROM MOBILIARIOATIVIDADEVS2 WHERE CODMOBILIARIO=" & nCodReduz
+            Sql = "SELECT DISTINCT mobiliariovs.codigo, mobiliariovs.cnae, mobiliariovs.criterio, mobiliariovs.qtde, cnae.descricao, cnaecriteriodesc.descricao AS criteriodesc, cnaecriteriodesc.valor "
+            Sql = Sql & "FROM mobiliariovs INNER JOIN cnae_criterio ON mobiliariovs.cnae = cnae_criterio.cnae INNER JOIN cnaecriteriodesc ON mobiliariovs.criterio = cnaecriteriodesc.criterio LEFT OUTER JOIN "
+            Sql = Sql & "cnae ON mobiliariovs.cnae = cnae.cnae Where mobiliariovs.Codigo = " & nCodReduz
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 Do Until .EOF
-                    sCnae = Format(!divisao, "00") & !grupo & Left(Format(!classe, "00"), 1) & "-" & Right$(Format(!classe, "00"), 1) & "/" & Format(!subclasse, "00")
-                    Sql = "SELECT * FROM CNAESUBCLASSE WHERE DIVISAO=" & !divisao & " AND GRUPO=" & !grupo & " AND CLASSE=" & !classe & " AND SUBCLASSE=" & !subclasse
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                    With RdoAux2
-                        sDesc = !descricao
-                       .Close
-                    End With
-                    Sql = "SELECT cnaecriterio.criterio,cnaecriteriodesc.descricao,cnaecriterio.valor From cnaecriteriodesc INNER JOIN cnaecriterio ON "
-                    Sql = Sql & "(cnaecriteriodesc.criterio = cnaecriterio.criterio) WHERE DIVISAO=" & !divisao & " AND GRUPO=" & !grupo & " AND CLASSE=" & !classe & " AND SUBCLASSE=" & !subclasse & " AND cnaecriterio.CRITERIO=" & !CRITERIO
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                    With RdoAux2
-                        If .RowCount > 0 Then
-                            sDesc2 = !descricao
-                        End If
-                       .Close
-                    End With
+'                    sCnae = Format(!divisao, "00") & !grupo & Left(Format(!classe, "00"), 1) & "-" & Right$(Format(!classe, "00"), 1) & "/" & Format(!subclasse, "00")
+'                    Sql = "SELECT * FROM CNAESUBCLASSE WHERE DIVISAO=" & !divisao & " AND GRUPO=" & !grupo & " AND CLASSE=" & !classe & " AND SUBCLASSE=" & !subclasse
+'                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'                    With RdoAux2
+'                        sDesc = !descricao
+'                       .Close
+'                    End With
+'                    Sql = "SELECT cnaecriterio.criterio,cnaecriteriodesc.descricao,cnaecriterio.valor From cnaecriteriodesc INNER JOIN cnaecriterio ON "
+'                    Sql = Sql & "(cnaecriteriodesc.criterio = cnaecriterio.criterio) WHERE DIVISAO=" & !divisao & " AND GRUPO=" & !grupo & " AND CLASSE=" & !classe & " AND SUBCLASSE=" & !subclasse & " AND cnaecriterio.CRITERIO=" & !criterio
+'                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'                    With RdoAux2
+'                        If .RowCount > 0 Then
+'                            sDesc2 = !descricao
+'                        End If
+'                       .Close
+'                    End With
                    
                     If x > 5 Then Exit Do
                     aValorTributo(x) = FillLeft((FormatNumber(!Valor * !QTDE, 2)), 13)
-                    aCodTrib(x) = FillSpace(Left$(sCnae, 15), 9)
-                    If sDesc2 = "não especificado" Then
-                        aDescTrib(x) = FillSpace(Left$(sDesc, 50), 50)
+'                    aCodTrib(x) = FillSpace(Left$(sCnae, 15), 9)
+'                    If sDesc2 = "não especificado" Then
+'                        aDescTrib(x) = FillSpace(Left$(sDesc, 50), 50)
+'                    Else
+'                        aDescTrib(x) = FillSpace(Left$(sDesc & "-" & sDesc2, 50), 50)
+'                    End If
+                    aCodTrib(x) = FillSpace(Left$(!Cnae, 15), 9)
+                    If Left(SubNull(!criteriodesc), 6) = "não es" Then
+                        aDescTrib(x) = FillSpace(Left$(SubNull(!descricao), 50), 50)
                     Else
-                        aDescTrib(x) = FillSpace(Left$(sDesc & "-" & sDesc2, 50), 50)
+                        aDescTrib(x) = FillSpace(Left$(!descricao & "-" & !criteriodesc, 50), 50)
                     End If
+
                     x = x + 1
                    
                    .MoveNext
@@ -2243,10 +2256,12 @@ Dim aCodBarra(0 To 3) As String, sCodBarra As String
 Dim dDataBase As Date, nUfir As Double
 Dim tDado As String, tEnd As String, tNum As Integer, tTipo As Integer, sCPF As String
 Dim tCidade As String, tBairro As String, nDesc5Perc As Double
-Dim sAgencia As String, nValorTribUnica As Double
-Dim sValorEXP As String
+Dim sAgencia As String, nValorTribUnica As Double, nValorAliq As Double, sAtividade As String, sValorAliq As String
+Dim sValorEXP As String, nCodAtividadeTL As Long, sAtividadeTL As String, nValorAliqTL As Double
+Dim nCodAtividadeISS As Integer, sAtividadeISS As String, nValorAliqISS As Double, sCodAtividadeISS As String, sValorAliqISS As String
 
 'GoTo ORDENA
+
 '********************************
 ' PARAMETROS DAS PARCELAS
 '********************************
@@ -2270,8 +2285,8 @@ cn.Execute Sql, rdExecDirect
 Open sPathBin & "\LASERISSFIXOTL.TXT" For Output As #1
 
 Sql = "SELECT DISTINCT CODREDUZIDO From DEBITOPARCELA "
-Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 14 OR CODLANCAMENTO=6 ) AND DATADEBASE='01/01/2018'"
-'Sql = Sql & " and codreduzido =122083"
+Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 14 OR CODLANCAMENTO=6 ) AND DATADEBASE='01/01/2019'"
+'Sql = Sql & " and codreduzido =120685"
 Sql = Sql & " ORDER BY CODREDUZIDO"
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2282,8 +2297,60 @@ With RdoAux
        ' If !CODREDUZIDO = 100438 Then MsgBox "TESTE"
         If xId Mod 50 = 0 Then
             DoEvents
+            
            CallPb xId, nNumRec
         End If
+        
+        'If xId = 50 Then Exit Do
+        
+        nValorAliq = 0
+        Sql = "SELECT MOBILIARIO.CODATIVIDADE, DESCATIVIDADE,VALORALIQ1,VALORALIQ2,VALORALIQ3,AREATL,CODIGOALIQ FROM MOBILIARIO INNER JOIN "
+        Sql = Sql & "ATIVIDADE ON MOBILIARIO.CODATIVIDADE = ATIVIDADE.CODATIVIDADE Where CODIGOMOB =" & nCodReduz
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
+            If .RowCount > 0 Then
+                If Val(!codatividade) > 0 Then
+                    nCodAtividadeTL = !codatividade
+                    sAtividadeTL = !descatividade
+                    
+                    
+                    sAtividade = !descatividade
+                    Select Case !CODIGOALIQ
+                        Case 1
+                            nValorAliq = FormatNumber(!VALORALIQ1, 3)
+                        Case 2
+                            nValorAliq = FormatNumber(!VALORALIQ2, 3)
+                        Case 3
+                            nValorAliq = FormatNumber(!VALORALIQ3, 3)
+                    End Select
+                    nValorAliqTL = nValorAliq
+                End If
+            End If
+           .Close
+        End With
+        
+        sAtividadeISS = "": sValorAliqISS = "": sCodAtividadeISS = ""
+        
+        Sql = "SELECT mobiliarioatividadeiss.codmobiliario, atividadeiss.descatividade, mobiliarioatividadeiss.codatividade, mobiliarioatividadeiss.valoriss "
+        Sql = Sql & "FROM mobiliarioatividadeiss INNER JOIN atividadeiss ON mobiliarioatividadeiss.codatividade = atividadeiss.codatividade "
+        Sql = Sql & "WHERE mobiliarioatividadeiss.codtributo = 11 and codmobiliario =" & nCodReduz
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
+            If .RowCount > 0 Then
+                sCodAtividadeISS = Format(!codatividade, "00000")
+                sAtividadeISS = !descatividade
+                sValorAliqISS = FormatNumber(!valoriss, 3)
+            End If
+           .Close
+        End With
+        
+        sCodAtividadeISS = FillLeft(sCodAtividadeISS, 5)
+        sAtividadeISS = FillSpace(Left$(sAtividadeISS, 50), 50)
+        sValorAliqISS = FillLeft(Format(sValorAliqISS, "#0.00"), 13)
+        
+        
+        sAtividade = FillSpace(Left$(sAtividade, 50), 50)
+        sValorAliq = FillLeft(Format(nValorAliq, "#0.00"), 13)
         
         Sql = "SELECT mobiliario.codigomob, mobiliario.razaosocial, mobiliario.nomefantasia,mobiliario.cpf,mobiliario.cnpj,mobiliario.codatividade, mobiliario.ativextenso,MOBILIARIO.RESPCONTABIL "
         Sql = Sql & "FROM mobiliario Where MOBILIARIO.CODIGOMOB = " & !CODREDUZIDO
@@ -2294,8 +2361,8 @@ With RdoAux
             nCodEsc = Val(SubNull(!RESPCONTABIL))
             sExercicio = CStr(nAno) '1-4
             sCodInscricao = Format(!codigomob, "00000000000000")
-            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
-            sCodAtiv = Format(!codatividade, "00000000000000")
+            sContribuinte = FillSpace(!razaosocial, 40) '5-44
+            sCodAtiv = Format(!codatividade, "00000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
             sCPF = ""
             If Not IsNull(!CPF) Then
@@ -2515,9 +2582,10 @@ fimend:
             sDescTrib = sDescTrib & aDescTrib(x)
         Next
             
+        If sCodAtiv = "" Then sCodAtiv = "00000"
         sTotalTrib = FillLeft("0,00", 17) '????
         ax = sExercicio & CStr(nCodReduz) & sContribuinte & sCPF & sEnd & sNum & sCompl & sCep & sBairro & sCidade & sUF & sEndEntrega & sNumEntrega & sComplEntrega & sCepEntrega & sBairroEntrega & sCidEntrega
-        ax = ax & sUFEntrega & sTipoImposto & sDescAtiv & sDescParc & FillLeft(sQtdeParc, 2) & sDataProc & sNumDoc & sCodTrib & sValorParc & sVencParc & sDescTrib & sValorTributo & sNossoNumero
+        ax = ax & sUFEntrega & sTipoImposto & sAtividadeISS & sDescParc & FillLeft(sQtdeParc, 2) & sDataProc & sNumDoc & sCodTrib & sValorParc & sVencParc & sDescTrib & sValorTributo & sNossoNumero & sAtividade & sValorAliq & sCodAtiv & sValorAliqISS & sCodAtividadeISS
        
         Print #1, ax
 
@@ -2548,7 +2616,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
     Do Until .EOF
-        Print #1, Trim(!dado) & Format(xId, "000000")
+        Print #1, !dado & Format(xId, "000000")
         xId = xId + 1
        .MoveNext
     Loop
@@ -2986,7 +3054,7 @@ cn.Execute Sql, rdExecDirect
 cmdGerar.Enabled = False
 Open sPathBin & "\LASERIPTU.TXT" For Output As #1
 
-Sql = "delete from cip_semregistro where ano=2018"
+Sql = "delete from cip_semregistro where ano=2019"
 cn.Execute Sql, rdExecDirect
 
 Sql = "SELECT DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=79"
@@ -3029,7 +3097,7 @@ With RdoAux
         sCPF = FillSpace(sCPF, 14)
         
         If Trim(sCPF) = "" Then
-            Sql = "insert cip_semregistro(ano,codigo) values(2018," & nCodReduz & ")"
+            Sql = "insert cip_semregistro(ano,codigo) values(2019," & nCodReduz & ")"
             cn.Execute Sql, rdExecDirect
            tTipo = 3
         End If
@@ -3167,9 +3235,9 @@ With RdoAux
                       nSomaTrib = nSomaTrib + !ValorTributo
                       aVencParc(!NumParcela) = Format(!DataVencimento, "dd/mm/yyyy")
                       'aNumDoc(!NumParcela) = Format(!NumDocumento & RetornaDVNumDoc(!NumDocumento), "000000000")
-                      aNumDoc(!NumParcela) = Format(!NumDocumento, "000000000")
+                      aNumDoc(!NumParcela) = Format(!NumDocumento, "00000000")
                       If tTipo = 3 Then
-                         Sql = "INSERT BOLETOSEMREGISTRO(NUMDOCUMENTO,TIPO,ANO) VALUES(" & !NumDocumento & ",'CIP',2018)"
+                         Sql = "INSERT BOLETOSEMREGISTRO(NUMDOCUMENTO,TIPO,ANO) VALUES(" & !NumDocumento & ",'CIP',2019)"
                          cn.Execute Sql, rdExecDirect
                          aNosNum(!NumParcela) = FillLeft("267847800" & !NumDocumento, 17)
                       Else
@@ -3198,7 +3266,7 @@ With RdoAux
                 aDescParc(x) = "00/00"
             Next
             sDescParc = ""
-            For x = 0 To 12
+            For x = 1 To 3
                 sDescParc = sDescParc & aDescParc(x) '597-661
             Next
             
@@ -3206,7 +3274,7 @@ With RdoAux
                 aVencParc(x) = "00/00/0000"
             Next
             sVencParc = ""
-            For x = 0 To 12
+            For x = 1 To 3
                 If aVencParc(x) = "" Then
                     sVencParc = "00/00/0000"
                 Else
@@ -3217,7 +3285,7 @@ With RdoAux
             sNosNum = ""
             
             On Error Resume Next
-            For x = 0 To 12
+            For x = 1 To 3
                 If x <= Val(sQtdeParcela) Then
                     If aNosNum(x) = "" Then
 '                        sNosNum = sNosNum & FillLeft(Val(aNosNum(x)) & Modulo11(aNosNum(x)), 13)
@@ -3233,10 +3301,10 @@ With RdoAux
             Next
 
             For x = Val(sQtdeParcela) + 1 To 12
-                aNumDoc(x) = "000000000"
+                aNumDoc(x) = "00000000"
             Next
             sNumDoc = ""
-            For x = 0 To 12
+            For x = 1 To 3
                 sNumDoc = sNumDoc & aNumDoc(x) '1013-1168
             Next
             For x = Val(sQtdeParcela) + 1 To 12
@@ -3261,7 +3329,7 @@ With RdoAux
                 aValorParc(x) = "0"
             Next
             sValorParc = ""
-            For x = 0 To 12
+            For x = 1 To 3
                 sValorParc = sValorParc & FillLeft(FormatNumber(aValorParc(x), 2), 17)
             Next
                         
@@ -3280,10 +3348,13 @@ With RdoAux
             sCompl = FillSpace(Replace(sCompl, vbNewLine, "", , , vbTextCompare), 20)
             sComplEntrega = FillSpace(Replace(sComplEntrega, vbNewLine, "", , , vbTextCompare), 20)
             
-            ax = sExercicio & sContribuinte & sSacado & sEnd & sCompl & sBairro & sCep & sEndEntrega & sComplEntrega & sBairroEntrega & sCidEntrega & sCepEntrega & sUFEntrega
-            ax = ax & sCodContribuinte & sInscricao & sValorTotal & sValorUnica & sDataProc & sQtdeParcela & sDescParc & sVencParc & sValorParc & sNumDoc
-            ax = ax & sCodProc & sNosNum & sCPF & sQuadra & sLote
+'            ax = sExercicio & sContribuinte & sSacado & sEnd & sCompl & sBairro & sCep & sEndEntrega & sComplEntrega & sBairroEntrega & sCidEntrega & sCepEntrega & sUFEntrega
+'            ax = ax & sCodContribuinte & sInscricao & sValorTotal & sValorUnica & sDataProc & sQtdeParcela & sDescParc & sVencParc & sValorParc & sNumDoc
+'            ax = ax & sCodProc & sNosNum & sCPF & sQuadra & sLote
 
+            ax = sCodContribuinte & sInscricao & sContribuinte & sCPF & sEnd & sCompl & sBairro & sCep & "JABOTICABALSP" & sQuadra & sLote & sEndEntrega & sComplEntrega & sBairroEntrega & sCidEntrega & sCepEntrega & sUFEntrega
+            ax = ax & sValorTotal & Format(Now, "dd/mm/yyyy") & sQtdeParcela & sDescParc & sVencParc & sValorParc & sNumDoc & sNosNum & sCodProc
+            
             tDado = ax
             
             ax = tDado & "," & tEnd & "," & tNum & "," & tTipo
@@ -3849,7 +3920,7 @@ Open sPathBin & "\LASERFORA.TXT" For Binary Access Read Write As #1
 fim:
 Pb.value = 100
 
-frmReport.ShowReport "ETIQUETACONSIST", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
@@ -4085,7 +4156,7 @@ With RdoAux
             nCodLogr = !CodLogradouro
             sExercicio = "2014" '1-4
             sCodInscricao = Format(!codigomob, "00000000000000")
-            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
+            sContribuinte = FillSpace(!razaosocial, 40) '5-44
             sFantasia = FillSpace(SubNull(!NOMEFANTASIA), 40) '45-84
             sCodAtiv = Format(!codatividade, "00000000000000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
@@ -4513,8 +4584,11 @@ End Sub
 Private Sub CarregaEnderecoContabil()
 Dim Sql As String, RdoAux As rdoResultset, nLast As Integer
 ReDim aEnd(0)
-Sql = "SELECT codigoesc, nomeesc, nomelogradouro, numero, nomebairro, cep, nomecidade, uf, recebecarne "
-Sql = Sql & "From escritoriocontabil Where (codigoesc > 0)"
+Sql = "SELECT codigoesc, nomeesc, escritoriocontabil.nomelogradouro,escritoriocontabil.codlogradouro, numero, descbairro, cep, desccidade, uf, recebecarne,logradouro.endereco_resumido,cidade.codcidade "
+Sql = Sql & "From escritoriocontabil left outer join cidade on escritoriocontabil.uf=cidade.siglauf and "
+Sql = Sql & "escritoriocontabil.codcidade=cidade.codcidade left outer join bairro on escritoriocontabil.uf=bairro.siglauf and "
+Sql = Sql & "escritoriocontabil.codcidade=bairro.codcidade and escritoriocontabil.codbairro=bairro.codbairro "
+Sql = Sql & "left outer join logradouro on escritoriocontabil.codlogradouro=logradouro.codlogradouro   Where (codigoesc > 0)"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
@@ -4522,12 +4596,16 @@ With RdoAux
         nLast = UBound(aEnd)
         aEnd(nLast).nCodigo = !codigoesc
         aEnd(nLast).sNome = !NOMEESC
-        aEnd(nLast).sLogradouro = !NomeLogradouro
+        If (!UF = "SP" And !CodCidade = 413) Then
+            aEnd(nLast).sLogradouro = SubNull(!endereco_resumido)
+        Else
+            aEnd(nLast).sLogradouro = SubNull(!NomeLogradouro)
+        End If
         aEnd(nLast).nNumero = !Numero
-        aEnd(nLast).sBairro = SubNull(!NOMEBairro)
-        aEnd(nLast).sCep = !Cep
-        aEnd(nLast).sCidade = !NomeCidade
-        aEnd(nLast).sUF = !UF
+        aEnd(nLast).sBairro = SubNull(!DescBairro)
+        aEnd(nLast).sCep = SubNull(!Cep)
+        aEnd(nLast).sCidade = Trim(SubNull(!descCidade))
+        aEnd(nLast).sUF = Trim(SubNull(!UF))
         aEnd(nLast).bRecebe = !RECEBECARNE
        .MoveNext
     Loop
@@ -4624,7 +4702,7 @@ With RdoAux
             nCodLogr = !CodLogradouro
             sExercicio = CStr(nAno) '1-4
             sCodInscricao = Format(!codigomob, "00000000000000")
-            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
+            sContribuinte = FillSpace(!razaosocial, 40) '5-44
             sFantasia = FillSpace(SubNull(!NOMEFANTASIA), 40) '45-84
             sCodAtiv = Format(!codatividade, "00000000000000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
@@ -5096,6 +5174,7 @@ Dim aValorParc(0 To 14) As String, sValorParc As String
 Dim aNumDoc(0 To 14) As String, sNumDoc As String
 Dim aNosNum(0 To 14) As String, sNosNum As String
 
+
 Sql = "TRUNCATE TABLE LASERTMP"
 cn.Execute Sql, rdExecDirect
 cmdGerar.Enabled = False
@@ -5104,7 +5183,7 @@ xId = 1
 sAgencia = "0269-0 / 74000-4"
 Sql = "SELECT CODREDUZIDO, VVT, VVC, VVI, IMPOSTOPREDIAL,IMPOSTOTERRITORIAL, NATUREZA, AREACONSTRUCAO,"
 Sql = Sql & "TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,QTDEPARC,TXEXPPARC,TXEXPUNICA From LASERIPTU WHERE ANO=" & nAno
-'Sql = Sql & " and CODREDUZIDO between 5001 and 5600 "
+'Sql = Sql & " and CODREDUZIDO =18102 "
 Sql = Sql & " ORDER BY CODREDUZIDO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux

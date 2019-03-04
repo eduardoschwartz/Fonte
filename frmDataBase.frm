@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmDataBase 
    BackColor       =   &H00EEEEEE&
@@ -79,12 +79,12 @@ Begin VB.Form frmDataBase
       EndProperty
       MonthBackColor  =   16777215
       ShowToday       =   0   'False
-      StartOfWeek     =   103612417
+      StartOfWeek     =   159973377
       TitleBackColor  =   192
       TitleForeColor  =   16777215
       TrailingForeColor=   12632256
       CurrentDate     =   42736
-      MaxDate         =   43465
+      MaxDate         =   43830
       MinDate         =   42736
    End
    Begin VB.Label lblDB 
@@ -128,8 +128,9 @@ If sOldData <> sData Then
     cn.Execute Sql, rdExecDirect
     Liberado
 End If
-
-AtualizaIntegrativa
+If frmMdi.frTeste.Visible = False Then
+    AtualizaIntegrativa
+End If
 
 Unload Me
 End Sub
@@ -386,7 +387,7 @@ With RdoAux
                     Set RdoAux5 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     If RdoAux5.RowCount > 0 Then
                         sFone = SubNull(RdoAux5!fone)
-                        sEmail = SubNull(RdoAux5!email)
+                        sEmail = SubNull(RdoAux5!Email)
                     End If
                     RdoAux5.Close
                    '***********************
@@ -474,7 +475,7 @@ With RdoAux
                                         sCPF = SubNull(!CPF)
                                     End If
                                     Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-                                    Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+                                    Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!NomeCidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
                                     Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
                                     Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
                                     cnInt.Execute Sql, rdExecDirect
@@ -497,7 +498,7 @@ With RdoAux
                                         End If
                                         sTipoProp = IIf(!tipoprop = "P", "Principal", "Compromissário")
                                         Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-                                        Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+                                        Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!NomeCidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
                                         Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
                                         Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
                                         cnInt.Execute Sql, rdExecDirect
@@ -516,7 +517,7 @@ With RdoAux
                                         End If
                                         sTipoProp = "Sócio"
                                         Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-                                        Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+                                        Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!NomeCidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
                                         Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
                                         Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
                                         cnInt.Execute Sql, rdExecDirect
@@ -634,12 +635,16 @@ With RdoAux
             Sql = "update debitoparcela set dataajuiza='" & Format(!DtAjuizamento, "mm/dd/yyyy") & "',processocnj='" & !ProcessoCNJ & "' where "
             Sql = Sql & "codreduzido=" & !iddevedor & " and anoexercicio=" & !exercicio & " and codlancamento=" & !lancamento & " and "
             'Sql = Sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela
-            Sql = Sql & " numparcela=" & !nroparcela & " and statuslanc<5"
+            'Sql = Sql & " numparcela=" & !nroparcela & " and (statuslanc<5 or statuslanc=38 or statuslanc=39)"
+            Sql = Sql & " numparcela=" & !nroparcela & " and (statuslanc=38 or statuslanc=39)"
             
             'If !NroCertidao > 0 Then
             '    Sql = Sql & " and  numcertidao=" & !NroCertidao
             'End If
             cn.Execute Sql, rdExecDirect
+'            If cn.RowsAffected > 0 Then
+'                MsgBox "teste"
+ '           End If
             
             Sql = " update ajuizamentoprocessos set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where idajuizamentoprocesso=" & !IdAjuizamentoProcesso & " and dtleitura is null"
             cnInt.Execute Sql, rdExecDirect
