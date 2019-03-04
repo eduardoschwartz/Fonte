@@ -2660,11 +2660,6 @@ If lblAno.Caption = "" Or lblNumProc.Caption = "" Then
     Exit Sub
 End If
 
-'If IsDate(lblDtArquivamento.Caption) Then
-'   MsgBox "Processo Arquivado.", vbExclamation, "Atenção"
-'   Exit Sub
-'End If
-
 If IsDate(lblDtCancelamento.Caption) Then
    MsgBox "Processo Cancelado.", vbExclamation, "Atenção"
    Exit Sub
@@ -2921,7 +2916,7 @@ nSim = 0: nNao = 0
 If Not pnlDoc.Visible Then
     If Evento = "Novo" Then
         If cmbAssunto.ListIndex > -1 Then
-            z = SendMessage(lvDoc.hwnd, LVM_DELETEALLITEMS, 0, 0)
+            z = SendMessage(lvDoc.HWND, LVM_DELETEALLITEMS, 0, 0)
             Sql = "SELECT ASSUNTODOC.CODDOC, DOCUMENTO.NOME FROM DOCUMENTO INNER JOIN "
             Sql = Sql & "ASSUNTODOC ON DOCUMENTO.CODIGO = ASSUNTODOC.CODDOC INNER JOIN ASSUNTO ON "
             Sql = Sql & "ASSUNTODOC.CODASSUNTO = ASSUNTO.CODIGO Where ASSUNTO.Codigo = " & cmbAssunto.ItemData(cmbAssunto.ListIndex)
@@ -3295,10 +3290,10 @@ If chkP1.value = 0 And chkP2.value = 0 And chkP3.value = 0 And chkP4.value = 0 A
 End If
 
 If chkP1.value = 1 Then
-    frmReport.ShowReport "PROTOCOLOENTRADA", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "PROTOCOLOENTRADA", frmMdi.HWND, Me.HWND
 End If
 If chkP2.value = 1 Then
-    frmReport.ShowReport "REQUERIMENTO", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "REQUERIMENTO", frmMdi.HWND, Me.HWND
 End If
 If chkP3.value = 1 Then
     Sql = "SELECT * From PROCESSODOC  Where ANO = " & Val(frmProcesso.lblAno.Caption) & " And Numero = " & Val(Left$(frmProcesso.lblNumProc.Caption, Len(frmProcesso.lblNumProc.Caption) - 2)) & " And Data Is Null"
@@ -3307,7 +3302,7 @@ If chkP3.value = 1 Then
 '        If .RowCount = 0 Then
  '           MsgBox "Este processo não possue documentos pendentes.", vbExclamation, "Atenção"
   '      Else
-            frmReport.ShowReport "COMUNICADODOC", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "COMUNICADODOC", frmMdi.HWND, Me.HWND
    '     End If
        .Close
     End With
@@ -3319,13 +3314,13 @@ If chkP4.value = 1 Then
         If .RowCount = 0 Then
             MsgBox "Este processo não possue documentos entregues.", vbExclamation, "Atenção"
         Else
-            frmReport.ShowReport "COMPROVANTEDOC", frmMdi.hwnd, Me.hwnd
+            frmReport.ShowReport "COMPROVANTEDOC", frmMdi.HWND, Me.HWND
         End If
        .Close
     End With
 End If
 If chkP5.value = 1 Then
-    frmReport.ShowReport "REQUERIMENTOCANCEL", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "REQUERIMENTOCANCEL", frmMdi.HWND, Me.HWND
 End If
 
 End Sub
@@ -3736,7 +3731,7 @@ pnlDoc.Visible = False
 pnlEnd.Visible = False
 lblDoc1.Caption = 0
 lblDoc2.Caption = 0
-z = SendMessage(lvDoc.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvDoc.HWND, LVM_DELETEALLITEMS, 0, 0)
 lblHora.Caption = ""
 End Sub
 
@@ -4329,7 +4324,7 @@ VerificaTramite = True
 'VERIFICA OS TRAMITES CONCLUIDOS
 If Val(frmProcesso.lblNumProc.Caption) > 0 Then
     For x = 1 To UBound(aSeq)
-        Sql = "SELECT CCUSTO,DESCRICAO,DATAHORA,NOMECOMPLETO,DESCDESPACHO FROM VWTRAMITACAO WHERE ANO=" & lblAno.Caption
+        Sql = "SELECT CCUSTO,DESCRICAO,DATAHORA,NOMECOMPLETO,DESCDESPACHO FROM vwTRAMITACAO2 WHERE ANO=" & lblAno.Caption
         Sql = Sql & " AND NUMERO=" & Val(Left$(lblNumProc.Caption, Len(lblNumProc.Caption) - 2))
         Sql = Sql & " AND SEQ=" & aSeq(x)
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)

@@ -597,7 +597,7 @@ End If
 Screen.MousePointer = vbHourglass
 Ocupado
 
-z = SendMessage(lvEmpresa.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvEmpresa.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 bCod = False
 bInsc = False
@@ -660,8 +660,8 @@ If RdoAux.RowCount > 0 Then
    With RdoAux
        Do Until .EOF
           x = x + 1
-          Set itmX = lvEmpresa.ListItems.Add(, "C" & sTr(x) & Format(!codigomob, "0000000"), Format(!codigomob, "0000000") & "-" & CStr(!DVMOB))
-          itmX.SubItems(1) = SubNull(!RazaoSocial)
+          Set itmX = lvEmpresa.ListItems.Add(, "C" & sTr(x) & Format(!codigomob, "0000000"), Format(!codigomob, "0000000"))
+          itmX.SubItems(1) = SubNull(!razaosocial)
           itmX.SubItems(2) = SubNull(!Cnpj)
           itmX.SubItems(3) = SubNull(!INSCESTADUAL)
           itmX.SubItems(4) = SubNull(!nomecidadao)

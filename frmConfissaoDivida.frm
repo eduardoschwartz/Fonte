@@ -671,9 +671,9 @@ If Opt(0).value = True Then
     End If
     
     If frmMdi.frTeste.Visible = True Then
-        frmReport.ShowReport "CONFDIVIDATMP", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "CONFDIVIDATMP", frmMdi.HWND, Me.HWND
     Else
-        frmReport.ShowReport "CONFDIVIDA", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "CONFDIVIDA", frmMdi.HWND, Me.HWND
     End If
 Else
     If lblProp.Caption = "" Then
@@ -692,14 +692,16 @@ Else
         MsgBox "Data de vencimento inválida.", vbExclamation, "Atenção"
         Exit Sub
     End If
-    frmReport.ShowReport2 "CONFDIVIDADAM", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport2 "CONFDIVIDADAM", frmMdi.HWND, Me.HWND
 End If
 
 End Sub
 
 Private Sub cmdSair_Click()
 Dim bBoleto As Boolean
-'frmParcelamento2.cmdPrint_Click
+
+'If bFichaCompensacao Then GoTo fim
+
 bBoleto = False
 If txtNumProc.Locked = True Then
     If lblSid.Caption = "0" Then
@@ -715,15 +717,19 @@ If txtNumProc.Locked = True Then
     Else
         If bBoleto Then
             If frmMdi.frTeste.Visible = False Then
-                frmReport.ShowReport2 "BOLETOGUIA", frmMdi.hwnd, Me.hwnd, lblSid.Caption
+                frmReport.ShowReport2 "BOLETOGUIA", frmMdi.HWND, Me.HWND, lblSid.Caption
             Else
-                frmReport.ShowReport2 "BOLETOGUIATMP", frmMdi.hwnd, Me.hwnd, lblSid.Caption
+                frmReport.ShowReport2 "BOLETOGUIATMP", frmMdi.HWND, Me.HWND, lblSid.Caption
             End If
         Else
             If frmMdi.frTeste.Visible = False Then
-                frmReport.ShowReport2 "BOLETOGUIA_V4", frmMdi.hwnd, Me.hwnd, lblSid.Caption
+'                If bFichaCompensacao Then
+                    frmReport.ShowReport2 "BOLETOGUIA_V5", frmMdi.HWND, Me.HWND, lblSid.Caption
+'                Else
+'                    frmReport.ShowReport2 "BOLETOGUIA_V4", frmMdi.HWND, Me.HWND, lblSid.Caption
+'                End If
             Else
-                frmReport.ShowReport2 "BOLETOGUIA_V4TMP", frmMdi.hwnd, Me.hwnd, lblSid.Caption
+                frmReport.ShowReport2 "BOLETOGUIA_V4TMP", frmMdi.HWND, Me.HWND, lblSid.Caption
             End If
         End If
         Sql = "delete from boletoguiacapa where sid=" & lblSid.Caption
@@ -734,7 +740,9 @@ If txtNumProc.Locked = True Then
     End If
 End If
 
+fim:
 Unload Me
+
 End Sub
 
 
@@ -809,18 +817,18 @@ End If
 End Sub
 
 Private Sub txtNumDoc_LostFocus()
-Dim nNumDoc As Long, nCodReduz As Long, RdoAux2 As rdoResultset, sNome As String, sEnd As String, sDoc As String
+Dim nNumdoc As Long, nCodReduz As Long, RdoAux2 As rdoResultset, sNome As String, sEnd As String, sDoc As String
 Dim qd As New rdoQuery, sExercicio As String, aExercicio() As Integer, x As Integer, bFind As Boolean
 Dim sDataVencto As String, nValorAnistia As Double, nValorTributo As Double, nValorJuros As Double, nValorMulta As Double
 Dim nValorCorrecao As Double, nValorTotal As Double
 
 Set qd.ActiveConnection = cn
-nNumDoc = Val(txtNumDoc.Text)
-If nNumDoc = 0 Then Exit Sub
+nNumdoc = Val(txtNumDoc.Text)
+If nNumdoc = 0 Then Exit Sub
 
 ReDim aExercicio(0)
 
-Sql = "select numdocumento from numdocumento where numdocumento=" & nNumDoc
+Sql = "select numdocumento from numdocumento where numdocumento=" & nNumdoc
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount = 0 Then
@@ -833,7 +841,7 @@ End With
 
 Sql = "SELECT numdocumento.numdocumento, numdocumento.datadocumento,isentomj,percisencao, parceladocumento.codreduzido, parceladocumento.anoexercicio, parceladocumento.codlancamento,"
 Sql = Sql & "parceladocumento.seqlancamento, parceladocumento.numparcela, parceladocumento.codcomplemento "
-Sql = Sql & "FROM numdocumento INNER JOIN parceladocumento ON numdocumento.numdocumento = parceladocumento.numdocumento WHERE numdocumento.numdocumento=" & nNumDoc
+Sql = Sql & "FROM numdocumento INNER JOIN parceladocumento ON numdocumento.numdocumento = parceladocumento.numdocumento WHERE numdocumento.numdocumento=" & nNumdoc
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nCodReduz = !CODREDUZIDO
@@ -868,7 +876,7 @@ With RdoAux
     ElseIf nCodReduz >= 100000 And nCodReduz <= 500000 Then
         Sql = "SELECT razaosocial, LOGRADOURO, numero, descbairro, desccidade, siglauf, cpf, cnpj FROM vwFULLEMPRESA3 where codigomob=" & nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        sNome = SubNull(RdoAux2!RazaoSocial)
+        sNome = SubNull(RdoAux2!razaosocial)
         sEnd = SubNull(RdoAux2!Logradouro) & ", " & SubNull(RdoAux2!Numero) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!descCidade) & "/" & SubNull(RdoAux2!SiglaUF)
         If Not IsNull(RdoAux2!Cnpj) Then
             sDoc = Format(RdoAux2!Cnpj, "00\.000\.000/0000-00")
@@ -902,7 +910,7 @@ With RdoAux
     txtRequerente.Text = sNome
     lblEnd.Caption = sEnd
     txtCPF.Text = sDoc
-    mskVenc.Text = Format(!DATADOCUMENTO, "dd/mm/yyyy")
+    mskVenc.Text = Format(!Datadocumento, "dd/mm/yyyy")
     
     Do Until .EOF
         On Error Resume Next
@@ -923,7 +931,7 @@ With RdoAux
         qd(11) = !CODCOMPLEMENTO
         qd(12) = 1
         qd(13) = 99
-        qd(14) = Format(!DATADOCUMENTO, "mm/dd/yyyy")
+        qd(14) = Format(!Datadocumento, "mm/dd/yyyy")
         qd(15) = NomeDoUsuario
         Set RdoAux2 = qd.OpenResultset(rdOpenKeyset)
         With RdoAux2
@@ -934,7 +942,7 @@ With RdoAux
                 nValorJuros = !ValorJuros
                 nValorCorrecao = !ValorCorrecao
                 
-                sDataVencto = Format(RdoAux!DATADOCUMENTO, "dd/mm/yyyy")
+                sDataVencto = Format(RdoAux!Datadocumento, "dd/mm/yyyy")
                 If CDate(sDataVencto) >= CDate("01/10/2013") And CDate(sDataVencto) <= CDate("31/10/2013") Then
                     If Val(SubNull(RdoAux!isentomj)) = 0 Then
                         nValorAnistia = 0
@@ -1164,7 +1172,7 @@ With RdoAux
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    lblProp.Caption = !RazaoSocial
+                    lblProp.Caption = !razaosocial
                     lblEnd.Caption = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro & " nº " & SubNull(!Numero)
                 End If
             End With

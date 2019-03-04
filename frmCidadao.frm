@@ -6,8 +6,8 @@ Begin VB.Form frmCidadao
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Cidadão"
    ClientHeight    =   7545
-   ClientLeft      =   14985
-   ClientTop       =   4230
+   ClientLeft      =   8550
+   ClientTop       =   4470
    ClientWidth     =   7590
    ControlBox      =   0   'False
    KeyPreview      =   -1  'True
@@ -493,14 +493,22 @@ Begin VB.Form frmCidadao
       EndProperty
       ColorFrom       =   0
       ColorTo         =   0
+      Begin VB.CheckBox chkFone1 
+         Caption         =   "Não possui telefone"
+         Height          =   255
+         Left            =   1050
+         TabIndex        =   82
+         Top             =   2010
+         Width           =   1725
+      End
       Begin prjChameleon.chameleonButton btPais 
          Height          =   270
-         Left            =   3570
+         Left            =   3330
          TabIndex        =   80
          ToolTipText     =   "Selecionar país"
          Top             =   1710
-         Width           =   435
-         _ExtentX        =   767
+         Width           =   405
+         _ExtentX        =   714
          _ExtentY        =   476
          BTYPE           =   9
          TX              =   ""
@@ -542,7 +550,7 @@ Begin VB.Form frmCidadao
          MaxLength       =   50
          TabIndex        =   61
          Top             =   1680
-         Width           =   2475
+         Width           =   2235
       End
       Begin VB.TextBox txtEmail 
          Appearance      =   0  'Flat
@@ -550,17 +558,17 @@ Begin VB.Form frmCidadao
          Left            =   4425
          MaxLength       =   50
          TabIndex        =   60
-         Top             =   2025
-         Width           =   2940
+         Top             =   1665
+         Width           =   3000
       End
       Begin VB.TextBox txtFone 
          Appearance      =   0  'Flat
          Height          =   285
-         Left            =   1065
+         Left            =   4425
          MaxLength       =   30
          TabIndex        =   59
          Top             =   2025
-         Width           =   2475
+         Width           =   2985
       End
       Begin VB.CheckBox chkEtiq 
          Alignment       =   1  'Right Justify
@@ -716,20 +724,19 @@ Begin VB.Form frmCidadao
          Caption         =   "Email...:"
          Height          =   225
          Index           =   10
-         Left            =   3795
+         Left            =   3825
          TabIndex        =   63
-         Top             =   2055
+         Top             =   1725
          Width           =   630
       End
-      Begin VB.Label Label1 
+      Begin VB.Label lblFone 
          BackStyle       =   0  'Transparent
-         Caption         =   "Telefone......:"
+         Caption         =   "Telefone.:"
          Height          =   225
-         Index           =   9
-         Left            =   90
+         Left            =   3660
          TabIndex        =   62
          Top             =   2055
-         Width           =   975
+         Width           =   795
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
@@ -1148,14 +1155,22 @@ Begin VB.Form frmCidadao
       EndProperty
       ColorFrom       =   0
       ColorTo         =   0
+      Begin VB.CheckBox chkFone2 
+         Caption         =   "Não possui telefone"
+         Height          =   255
+         Left            =   1050
+         TabIndex        =   83
+         Top             =   2010
+         Width           =   1725
+      End
       Begin prjChameleon.chameleonButton btPais2 
          Height          =   270
-         Left            =   3570
+         Left            =   3300
          TabIndex        =   81
          ToolTipText     =   "Selecionar pais"
          Top             =   1680
-         Width           =   435
-         _ExtentX        =   767
+         Width           =   405
+         _ExtentX        =   714
          _ExtentY        =   476
          BTYPE           =   9
          TX              =   ""
@@ -1197,7 +1212,7 @@ Begin VB.Form frmCidadao
          MaxLength       =   50
          TabIndex        =   67
          Top             =   1665
-         Width           =   2475
+         Width           =   2175
       End
       Begin VB.TextBox txtEmail2 
          Appearance      =   0  'Flat
@@ -1205,17 +1220,17 @@ Begin VB.Form frmCidadao
          Left            =   4425
          MaxLength       =   50
          TabIndex        =   66
-         Top             =   2025
-         Width           =   2940
+         Top             =   1650
+         Width           =   3000
       End
       Begin VB.TextBox txtFone2 
          Appearance      =   0  'Flat
          Height          =   285
-         Left            =   1065
+         Left            =   4425
          MaxLength       =   30
          TabIndex        =   65
-         Top             =   2025
-         Width           =   2475
+         Top             =   1995
+         Width           =   2985
       End
       Begin VB.CheckBox chkEtiq2 
          Alignment       =   1  'Right Justify
@@ -1371,20 +1386,19 @@ Begin VB.Form frmCidadao
          Caption         =   "Email...:"
          Height          =   225
          Index           =   24
-         Left            =   3795
+         Left            =   3810
          TabIndex        =   69
-         Top             =   2055
-         Width           =   630
+         Top             =   1680
+         Width           =   600
       End
-      Begin VB.Label Label1 
+      Begin VB.Label lblFone2 
          BackStyle       =   0  'Transparent
-         Caption         =   "Telefone......:"
+         Caption         =   "Telefone.:"
          Height          =   225
-         Index           =   23
-         Left            =   90
+         Left            =   3660
          TabIndex        =   68
-         Top             =   2055
-         Width           =   975
+         Top             =   2025
+         Width           =   735
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
@@ -1572,6 +1586,7 @@ Private Type tReg
     sPaisR As String
     sFoneR As String
     sEmailR As String
+    bTemFoneR As Boolean
     sNomeLogC As String
     sNumeroC As String
     sComplC As String
@@ -1582,6 +1597,7 @@ Private Type tReg
     sPaisC As String
     sFoneC As String
     sEmailC As String
+    bTemFoneC As Boolean
 End Type
 
 Public bZOrder As Boolean
@@ -1672,6 +1688,33 @@ Private Sub chkEtiq2_Click()
 HabilitaEndC
 End Sub
 
+Private Sub chkFone1_Click()
+If chkFone1.value = vbChecked Then
+    txtFone.Text = ""
+    txtFone.Enabled = False
+    txtFone.BackColor = Me.BackColor
+    lblFone.Enabled = False
+Else
+    txtFone.Enabled = True
+    txtFone.BackColor = Branco
+    lblFone.Enabled = True
+End If
+End Sub
+
+Private Sub chkFone2_Click()
+If chkFone2.value = vbChecked Then
+    txtFone2.Text = ""
+    txtFone2.Enabled = False
+    txtFone2.BackColor = Me.BackColor
+    lblFone2.Enabled = False
+Else
+    txtFone2.Enabled = True
+    txtFone2.BackColor = Branco
+    lblFone2.Enabled = True
+End If
+
+End Sub
+
 Public Sub cmbCidade_Click()
 If Not bExec Then Exit Sub
 If cmbCidade.ListIndex = -1 Then Exit Sub
@@ -1723,6 +1766,11 @@ If Val(z) > 0 Then
         txtCod.Text = Val(z)
         Limpa
         Le
+        If NomeForm = "frmProcesso" Then
+            Evento = "Alterar"
+            Eventos "INCLUIR"
+        End If
+        
     End If
 End If
 
@@ -1807,7 +1855,7 @@ Private Sub cmdAlterar_Click()
        MsgBox "Não existem Registros.", vbCritical, "Atenção"
        Exit Sub
     End If
-    If NomeDeLogin <> "ROSE" And NomeDeLogin <> "MARAB" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ANGELICA" And NomeDeLogin <> "MARIELA" And NomeDeLogin <> "TICYANNE.OKIMASU" And NomeDeLogin <> "DANIELE.SILVA" And NomeDeLogin <> "MARIELA.CUSTODIO" Then
+    If NomeDeLogin <> "ROSE" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ANGELICA" And NomeDeLogin <> "MARIELA" And NomeDeLogin <> "TICYANNE.OKIMASU" And NomeDeLogin <> "DANIELE.SILVA" And NomeDeLogin <> "MARIELA.CUSTODIO" Then
  '       If Val(txtCod.Text) < 500000 Then
  '          MsgBox "Não é possivel alterar cidadãos antigos.", vbCritical, "Atenção"
  '          Exit Sub
@@ -1815,6 +1863,7 @@ Private Sub cmdAlterar_Click()
     End If
     Eventos "INCLUIR"
     Evento = "Alterar"
+    LeCampos
     txtNome.SetFocus
 End Sub
 
@@ -1991,8 +2040,13 @@ Dim Y As Integer
            Exit Sub
         End If
     
-        If mskCEP.ClipText = "" Then
+        If mskCEP.ClipText = "" And txtPais.Text = "BRASIL" Then
            MsgBox "Favor cadastrar o CEP.", vbExclamation, "Atenção"
+           Exit Sub
+        End If
+        
+        If chkFone1.value = vbUnchecked And Len(txtFone.Text) < 6 Then
+           MsgBox "Informe o nº de telefone ou marque a opção que não possui.", vbExclamation, "Atenção"
            Exit Sub
         End If
 
@@ -2036,13 +2090,21 @@ Dim Y As Integer
            Exit Sub
         End If
 
+        If chkFone2.value = vbUnchecked And Len(txtFone2.Text) < 6 Then
+           MsgBox "Informe o nº de telefone ou marque a opção que não possui.", vbExclamation, "Atenção"
+           Exit Sub
+        End If
+
     End If
        
     If mskCPF.ClipText <> "" Then
-        If Not ValidaCPF(mskCPF.ClipText) Then
+        If Not ValidaCPF(mskCPF.ClipText) Or mskCPF.ClipText = "00000000000" Then
            MsgBox "CPF inválido.", vbExclamation, "Atenção"
            Exit Sub
         End If
+        
+        
+        
         If Evento = "Novo" Then
              Sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO>500000 AND CPF='" & mskCPF.ClipText & "'"
         Else
@@ -2156,6 +2218,12 @@ If CodCidadao > 0 Then
     Limpa
     txtCod.Text = Format(CodCidadao, "00000")
     Le
+    
+    If NomeForm = "frmProcesso" Then
+        Evento = "Alterar"
+        Eventos "INCLUIR"
+    End If
+
 End If
 CodCidadao = 0
 
@@ -2199,8 +2267,11 @@ Loop
 bExec = True
 RdoAux.Close
 
+'If NomeForm = "frmProcesso" Then
+'    Eventos "INCLUIR"
+'Else
 Eventos "INICIAR"
-
+' End If
 End Sub
 
 Private Sub Le()
@@ -2327,11 +2398,11 @@ With RdoAux
        mskCEP2.Text = Format(!Cep2, "00000-000")
     End If
     txtFone.Text = SubNull(!telefone)
-    txtEmail.Text = SubNull(!email)
+    txtEmail.Text = SubNull(!Email)
     txtOrgao.Text = SubNull(!ORGAO)
 '    txtPais.Text = SubNull(!pais)
 '    txtPais2.Text = SubNull(!PAIS2)
-    txtFone2.Text = SubNull(!TELEFONE2)
+    txtFone2.Text = SubNull(!Telefone2)
     txtEmail2.Text = SubNull(!EMAIL2)
     OptP(0).value = True
     If Not IsNull(!juridica) Then
@@ -2366,7 +2437,25 @@ With RdoAux
             chkEtiq2.value = vbUnchecked
         End If
     End If
-   
+    If IsNull(!temfone) Then
+        chkFone1.value = vbUnchecked
+    Else
+        If !temfone = True Then
+            chkFone1.value = vbChecked
+        Else
+            chkFone1.value = vbUnchecked
+        End If
+    End If
+    If IsNull(!temfone2) Then
+        chkFone2.value = vbUnchecked
+    Else
+        If !temfone2 = True Then
+            chkFone2.value = vbChecked
+        Else
+            chkFone2.value = vbUnchecked
+        End If
+    End If
+    
    .Close
 End With
 
@@ -2380,6 +2469,11 @@ Else
 End If
 RdoAux.Close
 
+LeCampos
+
+End Sub
+
+Private Sub LeCampos()
 With aReg(0)
     .sBairroC = cmbBairro2.Text
     .sBairroR = cmbBairro.Text
@@ -2407,8 +2501,9 @@ With aReg(0)
     .sRG = mskRG.Text
     .sUFC = cmbUF2.Text
     .sUFR = cmbUF.Text
+     .bTemFoneR = IIf(chkFone1.value = 1, True, False)
+     .bTemFoneC = IIf(chkFone2.value = 1, True, False)
 End With
-
 
 End Sub
 
@@ -2453,6 +2548,8 @@ If Tipo = "INICIAR" Then
    btProfissao.Enabled = False
    btPais.Enabled = False
    btPais2.Enabled = False
+   chkFone1.Enabled = False
+   chkFone2.Enabled = False
 ElseIf Tipo = "INCLUIR" Then
    cmdNovo.Visible = False
    cmdCopy.Visible = False
@@ -2531,6 +2628,7 @@ txtPais.Enabled = bValue
 txtFone.Enabled = bValue
 txtEmail.Enabled = bValue
 cmdAddBairro.Enabled = bValue
+chkFone1.Enabled = bValue
 
 txtNumLog.BackColor = Cor
 txtNomeLog.BackColor = Cor
@@ -2577,7 +2675,7 @@ txtPais2.Enabled = bValue
 txtFone2.Enabled = bValue
 txtEmail2.Enabled = bValue
 cmdAddBairro2.Enabled = bValue
-
+chkFone2.Enabled = bValue
 txtNumLog2.BackColor = Cor
 txtNomeLog2.BackColor = Cor
 txtNum2.BackColor = Cor
@@ -2623,11 +2721,11 @@ chkEtiq2.value = vbUnchecked
 txtFone.Text = ""
 txtEmail.Text = ""
 txtPais.Text = ""
-
 txtFone2.Text = ""
 txtEmail2.Text = ""
 txtPais2.Text = ""
-
+chkFone1.value = vbUnchecked
+chkFone2.value = vbUnchecked
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
@@ -2884,30 +2982,30 @@ End If
 If Evento = "Novo" Then
     Sql = "INSERT CIDADAO(CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO,NUMIMOVEL,COMPLEMENTO,CODBAIRRO,CODCIDADE,"
     Sql = Sql & "SIGLAUF,CEP,TELEFONE,EMAIL,RG,NOMELOGRADOURO,ORGAO,JURIDICA,CODPAIS,CODLOGRADOURO2,NUMIMOVEL2,COMPLEMENTO2,CODBAIRRO2,CODCIDADE2,"
-    Sql = Sql & "SIGLAUF2,CEP2,NOMELOGRADOURO2,ETIQUETA,CODPAIS2,TELEFONE2,EMAIL2,ETIQUETA2,data_nascimento,codprofissao) VALUES(" & MaxCod & ",'" & Mask(txtNome.Text) & "','"
+    Sql = Sql & "SIGLAUF2,CEP2,NOMELOGRADOURO2,ETIQUETA,CODPAIS2,TELEFONE2,EMAIL2,ETIQUETA2,data_nascimento,codprofissao,temfone,temfone2) VALUES(" & MaxCod & ",'" & Mask(txtNome.Text) & "','"
     Sql = Sql & IIf(mskCPF.ClipText = "", "", mskCPF.ClipText) & "','" & IIf(mskCNPJ.ClipText = "", "", mskCNPJ.ClipText) & "',"
     Sql = Sql & IIf(Val(txtNumLog.Text) > 0, Val(txtNumLog.Text), "Null") & "," & Val(txtNum.Text) & ",'"
     Sql = Sql & Mask(txtCompl.Text) & "'," & IIf(nBairro > 0, nBairro, "Null") & ","
     Sql = Sql & IIf(nCidade > 0, nCidade, "Null") & ",'" & Left$(cmbUF.Text, 2) & "',"
     Sql = Sql & IIf(Trim(mskCEP.ClipText) = "", "Null", "'" & mskCEP.ClipText & "'") & ",'" & Mask(txtFone.Text) & "','"
-    Sql = Sql & Mask(txtEmail.Text) & "','" & IIf(mskRG.ClipText = "", "", mskRG.ClipText) & "'," & IIf(Val(txtNumLog.Text) > 0, "Null", "'" & txtNomeLog.Text & "'") & ",'"
+    Sql = Sql & Mask(txtEmail.Text) & "','" & IIf(mskRG.ClipText = "", "", Mask(mskRG.ClipText)) & "'," & IIf(Val(txtNumLog.Text) > 0, "Null", "'" & txtNomeLog.Text & "'") & ",'"
     Sql = Sql & Mask(txtOrgao.Text) & "'," & nPessoa & "," & IIf(txtPais.Tag = "", 1, Val(txtPais.Tag)) & "," & IIf(Val(txtNumLog2.Text) > 0, Val(txtNumLog2.Text), "Null") & "," & Val(txtNum2.Text) & ",'"
     Sql = Sql & Mask(txtCompl2.Text) & "'," & IIf(nBairro2 > 0, nBairro2, "Null") & "," & IIf(nCidade2 > 0, nCidade2, "Null") & ",'"
     Sql = Sql & Left$(cmbUF2.Text, 2) & "'," & IIf(Trim(mskCEP2.ClipText) = "", "Null", "'" & mskCEP2.ClipText & "'") & "," & IIf(Val(txtNumLog2.Text) > 0, "Null", "'" & txtNomeLog2.Text & "'") & ",'"
     Sql = Sql & IIf(chkEtiq.value = vbChecked, "S", "N") & "'," & IIf(txtPais2.Tag = "", 1, Val(txtPais2.Tag)) & ",'" & Mask(txtFone2.Text) & "','" & Mask(txtEmail2.Text) & "','" & IIf(chkEtiq2.value = vbChecked, "S", "N") & "',"
-    Sql = Sql & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtProfissao.Tag) & ")"
+    Sql = Sql & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtProfissao.Tag) & "," & IIf(chkFone1.value = vbChecked, 1, 0) & "," & IIf(chkFone2.value = vbChecked, 1, 0) & ")"
 Else
     Sql = "UPDATE CIDADAO SET NOMECIDADAO='" & Mask(txtNome.Text) & "',CPF='" & IIf(mskCPF.ClipText = "", "", mskCPF.ClipText) & "',"
     Sql = Sql & "CNPJ='" & IIf(mskCNPJ.ClipText = "", "", mskCNPJ.ClipText) & "',CODLOGRADOURO=" & IIf(Val(txtNumLog.Text) > 0, Val(txtNumLog.Text), "Null") & ","
     Sql = Sql & "NUMIMOVEL=" & Val(txtNum.Text) & ",COMPLEMENTO='" & Mask(txtCompl.Text) & "',CODBAIRRO=" & IIf(nBairro > 0, nBairro, "Null") & ","
     Sql = Sql & "CODCIDADE=" & IIf(nCidade > 0, nCidade, "Null") & ",SIGLAUF='" & Left$(cmbUF.Text, 2) & "',"
     Sql = Sql & "CEP=" & IIf(Trim(mskCEP.ClipText) = "", "Null", "'" & mskCEP.ClipText & "'") & ",TELEFONE='" & Mask(txtFone.Text) & "',"
-    Sql = Sql & "EMAIL='" & Mask(txtEmail.Text) & "',RG='" & IIf(mskRG.ClipText = "", "", mskRG.ClipText) & "',NOMELOGRADOURO=" & IIf(Val(txtNumLog.Text) > 0, "Null", "'" & txtNomeLog.Text & "'") & ","
+    Sql = Sql & "EMAIL='" & Mask(txtEmail.Text) & "',RG='" & IIf(mskRG.ClipText = "", "", Mask(mskRG.ClipText)) & "',NOMELOGRADOURO=" & IIf(Val(txtNumLog.Text) > 0, "Null", "'" & txtNomeLog.Text & "'") & ","
     Sql = Sql & "ORGAO='" & Mask(txtOrgao.Text) & "',JURIDICA=" & nPessoa & ",CODPAIS=" & IIf(txtPais.Tag = "", 1, Val(txtPais.Tag)) & ",CODLOGRADOURO2=" & IIf(Val(txtNumLog2.Text) > 0, Val(txtNumLog2.Text), "Null") & ","
     Sql = Sql & "NUMIMOVEL2=" & Val(txtNum2.Text) & ",COMPLEMENTO2='" & Mask(txtCompl2.Text) & "',CODBAIRRO2=" & IIf(nBairro2 > 0, nBairro2, "Null") & ",CODCIDADE2=" & IIf(nCidade2 > 0, nCidade2, "Null") & ","
     Sql = Sql & "SIGLAUF2='" & Left$(cmbUF2.Text, 2) & "',CEP2=" & IIf(Trim(mskCEP2.ClipText) = "", "Null", "'" & mskCEP2.ClipText & "'") & ",NOMELOGRADOURO2=" & IIf(Val(txtNumLog2.Text) > 0, "Null", "'" & txtNomeLog2.Text & "'") & ","
     Sql = Sql & "ETIQUETA='" & IIf(chkEtiq.value = vbChecked, "S", "N") & "',CODPAIS2=" & IIf(txtPais2.Tag = "", 1, Val(txtPais2.Tag)) & ",TELEFONE2='" & Mask(txtFone2.Text) & "',EMAIL2='" & Mask(txtEmail2.Text) & "',ETIQUETA2='" & IIf(chkEtiq2.value = vbChecked, "S", "N") & "',"
-    Sql = Sql & "data_nascimento=" & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & ",codPROFISSAO='" & IIf(Val(SubNull(txtProfissao.Tag)) = 0, 1, Val(txtProfissao.Tag)) & "'  Where CodCidadao = " & Val(txtCod.Text)
+    Sql = Sql & "data_nascimento=" & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & ",codPROFISSAO=" & IIf(Val(SubNull(txtProfissao.Tag)) = 0, 1, Val(txtProfissao.Tag)) & ",TEMFONE=" & IIf(chkFone1.value = vbChecked, 1, 0) & ",TEMFONE2=" & IIf(chkFone2.value = vbChecked, 1, 0) & " Where CodCidadao = " & Val(txtCod.Text)
 End If
  cn.Execute Sql, rdExecDirect
 
@@ -3027,13 +3125,23 @@ Else
             ReDim Preserve aObs(UBound(aObs) + 1)
             aObs(UBound(aObs)) = "Alterado UF end. residencial de " & .sUFR & " para " & cmbUF.Text
         End If
+        If .bTemFoneR <> IIf(chkFone1.value = 1, 1, 0) Then
+            ReDim Preserve aObs(UBound(aObs) + 1)
+            aObs(UBound(aObs)) = "Alterado opção de tem telefone residencial de " & IIf(.bTemFoneR, "Marcado", "Desmarcado") & " para " & IIf(chkFone1.value = vbChecked, "Marcado", "Desmarcado")
+        End If
+        If .bTemFoneC <> IIf(chkFone2.value = 1, 1, 0) Then
+            ReDim Preserve aObs(UBound(aObs) + 1)
+            aObs(UBound(aObs)) = "Alterado opção de tem telefone comercial de " & IIf(.bTemFoneC, "Marcado", "Desmarcado") & " para " & IIf(chkFone2.value = vbChecked, "Marcado", "Desmarcado")
+        End If
         For x = 1 To UBound(aObs)
             'Sql = "insert historicocidadao(codigo,data,usuario,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "','" & NomeDeLogin & "','" & aObs(x) & "')"
-            Sql = "insert historicocidadao(codigo,data,userid,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & aObs(x) & "')"
+            Sql = "insert historicocidadao(codigo,data,userid,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Mask(aObs(x)) & "')"
             cn.Execute Sql, rdExecDirect
         Next
     End With
 End If
+
+
 
 '*** INTEGRAÇÃO EICON ****
 Sql = "SELECT * FROM mobiliarioproprietario Where mobiliarioproprietario.codcidadao = " & MaxCod

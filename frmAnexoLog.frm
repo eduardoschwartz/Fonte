@@ -263,6 +263,13 @@ If Len(z) > 6 Then
             Sql = Sql & Format(Now, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
             cn.Execute Sql, rdExecDirect
             
+            Sql = "insert anexo_log (ano,numero,ano_anexo,numero_anexo,removido,data,userid) values("
+            Sql = Sql & nAno & "," & nNumero & "," & nAnoAtual & "," & nNumeroAtual & "," & 0 & ",'"
+            Sql = Sql & Format(Now, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+            cn.Execute Sql, rdExecDirect
+            
+            CarregaAnexo nNumeroAtual, nAnoAtual
+            
         End If
     End If
 Else
@@ -298,6 +305,11 @@ If MsgBox("Remover este anexo?", vbQuestion + vbYesNo, "Confirmação") = vbYes Th
     Sql = Sql & Format(Now, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
     cn.Execute Sql, rdExecDirect
 
+    Sql = "insert anexo_log (ano,numero,ano_anexo,numero_anexo,removido,data,userid) values("
+    Sql = Sql & nAnoAnexo & "," & nNumeroAnexo & "," & nAno & "," & nNumero & "," & 1 & ",'"
+    Sql = Sql & Format(Now, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+    cn.Execute Sql, rdExecDirect
+
     Set itmX = lvHist.ListItems.Add(, , nAnoAnexo)
     itmX.SubItems(1) = CStr(nNumeroAnexo)
     itmX.SubItems(2) = Format(Now, "dd/mm/yyyy")
@@ -305,6 +317,7 @@ If MsgBox("Remover este anexo?", vbQuestion + vbYesNo, "Confirmação") = vbYes Th
     itmX.SubItems(4) = "Removido"
     itmX.SubItems(5) = RetornaUsuarioFullName
     
+    CarregaAnexo nNumero, nAno
 End If
 
 End Sub
@@ -326,6 +339,7 @@ Private Sub CarregaAnexo(Numero As Integer, Ano As Integer)
 
 Dim Sql As String, RdoAux As rdoResultset
 
+lvAnexos.ListItems.Clear
 Sql = "SELECT anexo.ano, anexo.numero, anexo.anoanexo, anexo.numeroanexo, vwFULLPROCESSO.nomecidadao,vwFULLPROCESSO.descricao, "
 Sql = Sql & "vwFULLPROCESSO.Complemento FROM anexo INNER JOIN vwFULLPROCESSO ON anexo.anoanexo = vwFULLPROCESSO.ANO AND anexo.numeroanexo = vwFULLPROCESSO.NUMERO where anexo.ano=" & Ano & " and anexo.numero=" & Numero
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -357,5 +371,11 @@ With RdoAux
     Loop
    .Close
 End With
+
+If lvAnexos.ListItems.Count > 0 Then
+    frmProcesso.lblAnexo.Caption = lvAnexos.ListItems.Count & " Anexo(s)."
+Else
+    frmProcesso.lblAnexo.Caption = "Nenhum"
+End If
 
 End Sub

@@ -613,7 +613,7 @@ With RdoAcordo
                 Sql = "select * from vwfullempresa3 where codigomob=" & nCodReduz
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
-                    sRazaoSocial = !RazaoSocial
+                    sRazaoSocial = !razaosocial
                     sNome = sRazaoSocial
                     sInscricao = nCodReduz
                     sRG = SubNull(!INSCESTADUAL)
@@ -1016,7 +1016,7 @@ With RdoDebito
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
                     If RdoAux.RowCount = 0 Then GoTo PROXIMO2
-                    sRazaoSocial = !RazaoSocial
+                    sRazaoSocial = !razaosocial
                     sNome = sRazaoSocial
                     sInscricao = nCodReduz
                     sRG = SubNull(!INSCESTADUAL)
@@ -1318,7 +1318,7 @@ With RdoAcordo
             Sql = "select * from vwfullempresa3 where codigomob=" & nCodReduz
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
-                sNome = !RazaoSocial
+                sNome = !razaosocial
                 sInscricao = nCodReduz
                 sRG = SubNull(!INSCESTADUAL)
                 If Trim(sRG) = "" Then
@@ -1752,6 +1752,7 @@ Sql = "delete from partes"
 
 Sql = "delete from cdas"
 'cnInt.Execute Sql, rdExecDirect
+
 cmdExec.Enabled = False
 Set qd.ActiveConnection = cn
 qd.QueryTimeout = 0
@@ -1760,18 +1761,19 @@ If cmbCadastro.ListIndex = 0 Then
     MsgBox "selecione um cadastro"
     Exit Sub
 End If
-Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND STATUSLANC =3 AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL "
+Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND (STATUSLANC =3 or statuslanc=38) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL "
 If cmbCadastro.ListIndex = 1 Then
     'Sql = Sql & " AND CODREDUZIDO BETWEEN 1 AND 1000 "
+    '    Sql = Sql & " AND CODREDUZIDO = 10508 "
     Sql = Sql & " AND CODREDUZIDO < 40000 "
-    Sql = Sql & " AND CODLANCAMENTO <>5 AND CODLANCAMENTO<>20 AND CODLANCAMENTO<>11 "
+    Sql = Sql & " AND CODLANCAMENTO<>20 "
 ElseIf cmbCadastro.ListIndex = 2 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 100000 AND 300000 "
-    Sql = Sql & " AND CODLANCAMENTO<>20 AND CODLANCAMENTO<>11 "
+    Sql = Sql & " AND CODLANCAMENTO<>20 "
 ElseIf cmbCadastro.ListIndex = 3 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 500000 AND 699999 "
-    Sql = Sql & " AND CODLANCAMENTO in(50,65,49,16,62,27,71,48,74) "
-   ' Sql = Sql & " AND CODLANCAMENTO in(74) "
+    'Sql = Sql & " AND CODLANCAMENTO in(50,65,49,16,62,27,71,48,74) "
+   Sql = Sql & " AND CODLANCAMENTO <>20 "
 End If
 Sql = Sql & " ORDER BY CODREDUZIDO"
 
@@ -1832,9 +1834,12 @@ With RdoAux
         Set RdoDebito = qd.OpenResultset(rdOpenKeyset)
         With RdoDebito
             Do Until .EOF
-                If Year(!DataVencimento) < 2015 Then
-                    GoTo proximo
-                End If
+'                If Year(!DataVencimento) < 2015 Then
+'                    GoTo proximo
+'                End If
+              '  If !ValorJuros = 0 Then
+                    'MsgBox "teste"
+               ' End If
                 U = UBound(aCda)
                 Achou = False
                 For x = 1 To U
@@ -1932,7 +1937,7 @@ PROXIMODEBITO:
                 sFoneCom = ""
                 sCelular = ""
                 sFoneContato = ""
-                sEmail = Left(SubNull(!email), 100)
+                sEmail = Left(SubNull(!Email), 100)
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
@@ -2010,7 +2015,7 @@ PROXIMODEBITO:
             With RdoAux2
                 If .RowCount = 0 Then GoTo proximo
                 sInscricao = ""
-                sNome = !RazaoSocial
+                sNome = !razaosocial
                 sFoneRes = ""
                 sFoneCom = ""
                 sCelular = ""
@@ -2092,7 +2097,7 @@ PROXIMODEBITO:
                 sFoneCom = ""
                 sCelular = ""
                 sFoneContato = ""
-                sEmail = Left(SubNull(!email), 100)
+                sEmail = Left(SubNull(!Email), 100)
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
@@ -2149,7 +2154,7 @@ PROXIMODEBITO:
                 Sql = Sql & .nCDA & ",'" & SetorDevedor & "'," & nCodReduz & ",'" & Mask(Left(SubNull(sNome), 80)) & "','" & sInscricao & "','" & sCPFCNPJ & "','" & sRGIE & "','"
                 Sql = Sql & sCEPLocal & "','" & sEnderecoLocal & "'," & nNumeroLocal & ",'" & Mask(Left(sComplementoLocal, 50)) & "','" & sBairroLocal & "','" & sCidadeLocal & "','" & sUFLocal & "','"
                 Sql = Sql & sQuadra & "','" & sLote & "','" & sCep & "','" & sEndereco & "'," & nNumero & ",'" & Mask(Left(sComplemento, 50)) & "','"
-                Sql = Sql & sBairro & "','" & sCidade & "','" & sUF & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
+                Sql = Sql & sBairro & "','" & Mask(sCidade) & "','" & sUF & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
                 cnInt.Execute Sql, rdExecDirect
             End With
         Next
@@ -2192,7 +2197,7 @@ PROXIMODEBITO:
                     aParte(U).sFoneCom = ""
                     aParte(U).sCelular = ""
                     aParte(U).sFoneContato = ""
-                    aParte(U).sEmail = Left(SubNull(RdoAux2!email), 100)
+                    aParte(U).sEmail = Left(SubNull(RdoAux2!Email), 100)
                    .MoveNext
                 Loop
                .Close
@@ -2232,7 +2237,7 @@ PROXIMODEBITO:
                     aParte(U).sFoneCom = ""
                     aParte(U).sCelular = ""
                     aParte(U).sFoneContato = ""
-                    aParte(U).sEmail = Left(SubNull(RdoAux2!email), 100)
+                    aParte(U).sEmail = Left(SubNull(RdoAux2!Email), 100)
                    .MoveNext
                 Loop
                 RdoAux2.Close
@@ -2374,7 +2379,7 @@ With RdoAux
                 aReg00(t).sFoneCom = ""
                 aReg00(t).sCelular = ""
                 aReg00(t).sFoneContato = ""
-                aReg00(t).sEmail = Left(SubNull(!email), 100)
+                aReg00(t).sEmail = Left(SubNull(!Email), 100)
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
@@ -2450,7 +2455,7 @@ With RdoAux
             With RdoAux2
                 If .RowCount = 0 Then GoTo proximo
                 aReg00(t).sCadastroImob = ""
-                aReg00(t).sNome = !RazaoSocial
+                aReg00(t).sNome = !razaosocial
                 aReg00(t).sFoneRes = ""
                 aReg00(t).sFoneCom = ""
                 aReg00(t).sCelular = ""
@@ -2528,7 +2533,7 @@ With RdoAux
                 aReg00(t).sFoneCom = ""
                 aReg00(t).sCelular = ""
                 aReg00(t).sFoneContato = ""
-                aReg00(t).sEmail = Left(SubNull(!email), 100)
+                aReg00(t).sEmail = Left(SubNull(!Email), 100)
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
@@ -2624,7 +2629,7 @@ With RdoAux
                 aReg01(s).sFoneCom = ""
                 aReg01(s).sCelular = ""
                 aReg01(s).sFoneContato = ""
-                aReg01(s).sEmail = Left(SubNull(RdoAux2!email), 100)
+                aReg01(s).sEmail = Left(SubNull(RdoAux2!Email), 100)
                 RdoAux2.Close
             End If
         ElseIf nCodReduz >= 100000 And nCodReduz < 500000 Then
@@ -2667,7 +2672,7 @@ With RdoAux
                 aReg01(s).sFoneCom = ""
                 aReg01(s).sCelular = ""
                 aReg01(s).sFoneContato = ""
-                aReg01(s).sEmail = Left(SubNull(RdoAux2!email), 100)
+                aReg01(s).sEmail = Left(SubNull(RdoAux2!Email), 100)
                 RdoAux2.Close
             End If
         End If
@@ -3001,7 +3006,7 @@ Dim nCDA As Long, sDataAjuiza As String, nCodReduz As Long, sNumProc As String, 
 If MsgBox("Deseja importar o arquivo de débitos ajuizados ?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then Exit Sub
 
 Set cc = New cCommonDlg
-cc.VBGetOpenFileName fName, , , False, , , "Documento de Texto|*.txt", , App.Path & "\Bin", "Selecione o arquivo do simples nacional", , Me.hwnd, OFN_HIDEREADONLY, False
+cc.VBGetOpenFileName fName, , , False, , , "Documento de Texto|*.txt", , App.Path & "\Bin", "Selecione o arquivo do simples nacional", , Me.HWND, OFN_HIDEREADONLY, False
 
 
 If fName = "" Then Exit Sub
@@ -3105,7 +3110,7 @@ With RdoAux
                 aReg00(t).sFoneCom = ""
                 aReg00(t).sCelular = ""
                 aReg00(t).sFoneContato = ""
-                aReg00(t).sEmail = Left(SubNull(!email), 100)
+                aReg00(t).sEmail = Left(SubNull(!Email), 100)
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
@@ -3181,7 +3186,7 @@ With RdoAux
             With RdoAux2
                 If .RowCount = 0 Then GoTo proximo
                 aReg00(t).sCadastroImob = ""
-                aReg00(t).sNome = !RazaoSocial
+                aReg00(t).sNome = !razaosocial
                 aReg00(t).sFoneRes = ""
                 aReg00(t).sFoneCom = ""
                 aReg00(t).sCelular = ""
@@ -3259,7 +3264,7 @@ With RdoAux
                 aReg00(t).sFoneCom = ""
                 aReg00(t).sCelular = ""
                 aReg00(t).sFoneContato = ""
-                aReg00(t).sEmail = Left(SubNull(!email), 100)
+                aReg00(t).sEmail = Left(SubNull(!Email), 100)
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
@@ -3710,16 +3715,16 @@ Dim aCda() As typeCDA, aCdaDebito() As typeCDADebito, aParte() As Reg01
 Ocupado
 ConectaIntegrativa
 Sql = "delete from cdadebitos_protesto"
-cnInt.Execute Sql, rdExecDirect
+'cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from cadastro_protesto"
-cnInt.Execute Sql, rdExecDirect
+'cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from partes_protesto"
-cnInt.Execute Sql, rdExecDirect
+'cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from cdas_protesto"
-cnInt.Execute Sql, rdExecDirect
+'cnInt.Execute Sql, rdExecDirect
 
 cmdExec.Enabled = False
 Set qd.ActiveConnection = cn
@@ -3729,12 +3734,13 @@ If cmbCadastro.ListIndex = 0 Then
     MsgBox "selecione um cadastro"
     Exit Sub
 End If
-Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND STATUSLANC =3 AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
+'Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND STATUSLANC =3 AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
+Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE (anoexercicio =2016) AND (STATUSLANC =3 or STATUSLANC =42 or STATUSLANC =43  ) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
 If cmbCadastro.ListIndex = 1 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 1 AND 40000 "
    ' Sql = Sql & " AND CODREDUZIDO = 12984 "
     'Sql = Sql & " AND CODLANCAMENTO <>5 AND CODLANCAMENTO<>20 AND CODLANCAMENTO<>11 "
-    Sql = Sql & " AND CODLANCAMENTO=79 "
+'    Sql = Sql & " AND CODLANCAMENTO=79 "
 ElseIf cmbCadastro.ListIndex = 2 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 100000 AND 300000 "
     Sql = Sql & " AND CODLANCAMENTO not in (11,20)  "
@@ -3782,8 +3788,8 @@ With RdoAux
         End If
         qd(0) = nCodReduz
         qd(1) = nCodReduz
-        qd(2) = 2010
-        qd(3) = 2017
+        qd(2) = 2016
+        qd(3) = 2016
         qd(4) = 1
         qd(5) = 999
         qd(4) = 1
@@ -3796,18 +3802,18 @@ With RdoAux
         qd(11) = 99
         qd(12) = 3
         qd(13) = 3
-        qd(14) = Format("30/05/2018", "mm/dd/yyyy")
+        qd(14) = Format("29/03/2019", "mm/dd/yyyy")
         qd(15) = "Protesto"
         qd(16) = 0
         Set RdoDebito = qd.OpenResultset(rdOpenKeyset)
         With RdoDebito
             Do Until .EOF
-                If Year(!DataVencimento) < 2015 Then
-                    GoTo PROXIMODEBITO
-                End If
-                If !CodLancamento <> 79 Then
-                    GoTo PROXIMODEBITO
-                End If
+'                If Year(!DataVencimento) < 2015 Then
+'                    GoTo PROXIMODEBITO
+'                End If
+'                If !CodLancamento <> 79 Then
+'                    GoTo PROXIMODEBITO
+'                End If
                 U = UBound(aCda)
                 Achou = False
                 For x = 1 To U
@@ -3905,7 +3911,7 @@ PROXIMODEBITO:
                 sFoneCom = ""
                 sCelular = ""
                 sFoneContato = ""
-                sEmail = Left(SubNull(!email), 100)
+                sEmail = Left(SubNull(!Email), 100)
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
@@ -3983,7 +3989,7 @@ PROXIMODEBITO:
             With RdoAux2
                 If .RowCount = 0 Then GoTo proximo
                 sInscricao = ""
-                sNome = !RazaoSocial
+                sNome = !razaosocial
                 sFoneRes = ""
                 sFoneCom = ""
                 sCelular = ""
@@ -4065,7 +4071,7 @@ PROXIMODEBITO:
                 sFoneCom = ""
                 sCelular = ""
                 sFoneContato = ""
-                sEmail = Left(SubNull(!email), 100)
+                sEmail = Left(SubNull(!Email), 100)
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
@@ -4165,7 +4171,7 @@ PROXIMODEBITO:
                     aParte(U).sFoneCom = ""
                     aParte(U).sCelular = ""
                     aParte(U).sFoneContato = ""
-                    aParte(U).sEmail = Left(SubNull(RdoAux2!email), 100)
+                    aParte(U).sEmail = Left(SubNull(RdoAux2!Email), 100)
                    .MoveNext
                 Loop
                .Close
@@ -4205,7 +4211,7 @@ PROXIMODEBITO:
                     aParte(U).sFoneCom = ""
                     aParte(U).sCelular = ""
                     aParte(U).sFoneContato = ""
-                    aParte(U).sEmail = Left(SubNull(RdoAux2!email), 100)
+                    aParte(U).sEmail = Left(SubNull(RdoAux2!Email), 100)
                    .MoveNext
                 Loop
                 RdoAux2.Close

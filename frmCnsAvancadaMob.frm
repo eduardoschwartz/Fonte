@@ -3520,7 +3520,7 @@ With grdMain
     Next
 End With
 Liberado
-frmReport.ShowReport "MMG", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "MMG", frmMdi.HWND, Me.HWND
 Sql = "DELETE FROM MMGREGISTRO WHERE USUARIO='" & NomeDoUsuario & "'"
 cn.Execute Sql, rdExecDirect
 
@@ -3538,7 +3538,7 @@ Private Sub cmdOpen_Click()
 Dim fName As String, cc As cCommonDlg
 
 Set cc = New cCommonDlg
-cc.VBGetOpenFileName fName, , , , , , "Documento de Texto|*.txt;*.csv|Todos os Arquivos|*.*", , App.Path & "\Bin", "Selecione um arquivo texto", , Me.hwnd, OFN_HIDEREADONLY, False
+cc.VBGetOpenFileName fName, , , , , , "Documento de Texto|*.txt;*.csv|Todos os Arquivos|*.*", , App.Path & "\Bin", "Selecione um arquivo texto", , Me.HWND, OFN_HIDEREADONLY, False
 txtArq.Text = fName
 
 End Sub
@@ -3591,7 +3591,7 @@ With grdMain
     Next
 End With
 
-frmReport.ShowReport "CADMOBILIARIO", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "CADMOBILIARIO", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM TBDADOSEMPRESA WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
@@ -3625,7 +3625,7 @@ With grdMain
 End With
 Liberado
 If cGetInputState() <> 0 Then DoEvents
-frmReport.ShowReport "ETIQUETACONSIST", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
 Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
@@ -3659,7 +3659,7 @@ For x = 1 To grdMain.Rows
     nCont = 0
     For Y = 1 To grdMain.Columns
         If grdMain.ColumnVisible(Y) = True Then
-            Rs.Fields(nCont).value = grdMain.cell(x, Y).Text
+            Rs.Fields(nCont).value = Left(grdMain.cell(x, Y).Text, 100)
             nCont = nCont + 1
         End If
         
@@ -3720,7 +3720,7 @@ Next
 
 
 'EXIBE RELATORIO
-frmReport.ShowReport "Extrato3", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "Extrato3", frmMdi.HWND, Me.HWND
 'MORREK ZMANI
 Sql = "DELETE FROM EXTRATOTMP WHERE COMPUTER='" & NomeDoUsuario & "'"
 cn.Execute Sql, rdExecDirect
@@ -3747,7 +3747,7 @@ With grdMain
         
     Next
 End With
-frmReport.ShowReport2 "EMPRESA_QTDEATIVIDADE", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "EMPRESA_QTDEATIVIDADE", frmMdi.HWND, Me.HWND
 Sql = "delete from rel_empresa_qtde_por_atividade where usuario='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
@@ -4153,6 +4153,7 @@ If Val(lblTotImp.Caption) = 0 Then
 Else
     Sql = Sql & "CODIGOMOB in (" & strCodigos & ")"
 End If
+
 'If cmbMEI.Text = "Sim" Then
 '    Sql = Sql & " AND MEI=1"
 'ElseIf cmbMEI.Text = "Não" Then
@@ -4224,18 +4225,18 @@ If chkAtividade.value = vbUnchecked Then
 'Else
 End If
 
-'   If chkTipoAtiv(1).value = vbChecked Then
+   If chkTipoAtiv(1).value = vbChecked Then
 '        Sql = Sql & " AND (CODATIVIDADE >=10000 AND CODATIVIDADE<20000) "
-'    End If
-'    If chkTipoAtiv(2).value = vbChecked Then
+    End If
+    If chkTipoAtiv(2).value = vbChecked Then
 '        Sql = Sql & " AND (CODATIVIDADE >=20000 AND CODATIVIDADE<30000) "
-'    End If
-'    If chkTipoAtiv(3).value = vbChecked Then
+    End If
+    If chkTipoAtiv(3).value = vbChecked Then
 '        Sql = Sql & " AND (CODATIVIDADE >=30000 AND CODATIVIDADE<40000) "
-'    End If
-'    If chkTipoAtiv(4).value = vbChecked Then
+    End If
+    If chkTipoAtiv(4).value = vbChecked Then
 '        Sql = Sql & " AND (CODATIVIDADE >=40000 AND CODATIVIDADE<50000) "
-'    End If
+    End If
 
 If cmbVistoria.Text = "Sim" Then
     Sql = Sql & " AND VISTORIA=1"
@@ -4253,10 +4254,10 @@ With RdoAux
             CallPb nPos, nTot
         End If
         
- '       If (!codatividade >= 10000 And !codatividade < 20000) And chkTipoAtiv(1).Value = vbUnchecked Then GoTo Proximo
- '       If (!codatividade >= 20000 And !codatividade < 30000) And chkTipoAtiv(2).Value = vbUnchecked Then GoTo Proximo
- '       If (!codatividade >= 30000 And !codatividade < 40000) And chkTipoAtiv(3).Value = vbUnchecked Then GoTo Proximo
- '       If (!codatividade >= 40000 And !codatividade < 50000) And chkTipoAtiv(4).Value = vbUnchecked Then GoTo Proximo
+    '    If (!codatividade >= 10000 And !codatividade < 20000) And chkTipoAtiv(1).value = vbUnchecked Then GoTo proximo
+    '    If (!codatividade >= 20000 And !codatividade < 30000) And chkTipoAtiv(2).value = vbUnchecked Then GoTo proximo
+    '    If (!codatividade >= 30000 And !codatividade < 40000) And chkTipoAtiv(3).value = vbUnchecked Then GoTo proximo
+     '   If (!codatividade >= 40000 And !codatividade < 50000) And chkTipoAtiv(4).value = vbUnchecked Then GoTo proximo
         
   '      If Val(!codatividade) = 0 And (chkTipoAtiv(1) = vbChecked Or chkTipoAtiv(2) = vbChecked Or chkTipoAtiv(3) = vbChecked Or chkTipoAtiv(4) = vbChecked) Then
   '          GoTo Proximo
@@ -4271,7 +4272,7 @@ With RdoAux
         If cmbVSanit.ListIndex = 2 And sVig = "N" Then GoTo proximo
         
         bMei = False
-        
+        'If !codigomob = 100671 Then MsgBox "teste"
         If cmbMEI.Text = "Sim" Then
             bMei = IsMEI(!codigomob)
             If Not bMei Then GoTo proximo
@@ -4279,12 +4280,13 @@ With RdoAux
             bMei = IsMEI(!codigomob)
             If bMei Then GoTo proximo
         End If
+        bMei = IsMEI(!codigomob)
         
         sSimples = "N"
         On Error Resume Next
         RdoAux2.Close
         On Error GoTo 0
-        Sql = "SELECT " & NomeBaseDados & ".dbo.RETORNASN2(" & Format(Val(!codigomob), "000000") & ",'" & Format(Now, "mm/dd/yyyy") & "') AS RETORNO"
+        Sql = "SELECT " & NomeBaseDados & ".dbo.RETORNASN(" & Format(Val(!codigomob), "000000") & ",'" & Format(Now, "mm/dd/yyyy") & "') AS RETORNO"
         Set RdoAux2 = cn2.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
         If RdoAux2!RETORNO = 1 And cmbSimples.Text = "Não" Then
             GoTo proximo
@@ -4425,7 +4427,7 @@ With RdoAux
         
         ReDim Preserve aCodigos(UBound(aCodigos) + 1)
         aCodigos(UBound(aCodigos)).nCodigo = !codigomob
-        aCodigos(UBound(aCodigos)).sRazao = !RazaoSocial
+        aCodigos(UBound(aCodigos)).sRazao = !razaosocial
         aCodigos(UBound(aCodigos)).sNomeFantasia = SubNull(!NOMEFANTASIA)
         aCodigos(UBound(aCodigos)).sCNPJ = SubNull(!Cnpj)
         aCodigos(UBound(aCodigos)).sCPF = SubNull(!CPF)
@@ -4814,7 +4816,7 @@ cmbFonte.ListIndex = x
 cmbTam.ListIndex = 0
 
 ReDim aSuspenso(0): ReDim aSuspensoCod(0)
-Sql = "SELECT codmobiliario, DataEv, codtipoevento From vwMOBILIARIOSUSPENSO Where (codtipoevento = 2)"
+Sql = "SELECT codmobiliario, DataEv, codtipoevento From vwMOBILIARIOSUSPENSO Where (codtipoevento = 2) order by codmobiliario"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
@@ -4829,12 +4831,14 @@ With RdoAux
 End With
 
 ReDim aVigilancia(0)
-Sql = "SELECT DISTINCT codmobiliario From mobiliarioatividadevs2 ORDER BY codmobiliario"
+'Sql = "SELECT DISTINCT codmobiliario From mobiliarioatividadevs2 ORDER BY codmobiliario"
+Sql = "SELECT DISTINCT codigo From mobiliariovs ORDER BY codigo"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
         ReDim Preserve aVigilancia(UBound(aVigilancia) + 1)
-        aVigilancia(UBound(aVigilancia)) = !codmobiliario
+        'aVigilancia(UBound(aVigilancia)) = !codmobiliario
+        aVigilancia(UBound(aVigilancia)) = !Codigo
        .MoveNext
     Loop
    .Close
@@ -5418,7 +5422,7 @@ Private Function IsMEI(nCodigo As Long) As Boolean
 Dim nRet As Boolean, Sql As String, RdoAux As rdoResultset
 nRet = False
 
-Sql = "select * from mei where codigo=" & nCodigo & " order by datainicio desc"
+Sql = "select * from periodomei where codigo=" & nCodigo & " order by datainicio desc"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
@@ -5432,4 +5436,5 @@ End With
 IsMEI = nRet
 
 End Function
+
 

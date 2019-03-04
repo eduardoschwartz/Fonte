@@ -937,7 +937,7 @@ With RdoAux
 End With
 Liberado
 
-frmReport.ShowReport2 "MAIORPAGADOR", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "MAIORPAGADOR", frmMdi.HWND, Me.HWND
 Sql = "delete from maiorpagador where usuario='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
@@ -1076,7 +1076,7 @@ Sql = "SELECT debitoparcela.codreduzido, ROUND(SUM(debitotributo.valortributo), 
 Sql = Sql & "debitotributo ON debitoparcela.codreduzido = debitotributo.codreduzido AND debitoparcela.anoexercicio = debitotributo.anoexercicio AND "
 Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND "
 Sql = Sql & "debitoparcela.NumParcela = debitotributo.NumParcela And debitoparcela.CODCOMPLEMENTO = debitotributo.CODCOMPLEMENTO "
-Sql = Sql & "WHERE (debitoparcela.statuslanc = 3) AND (debitotributo.codtributo <> 3) AND (debitoparcela.datavencimento < GETDATE()) AND "
+Sql = Sql & "WHERE (debitoparcela.statuslanc = 3 or debitoparcela.statuslanc = 42 or debitoparcela.statuslanc = 43) AND (debitotributo.codtributo <> 3) AND (debitoparcela.datavencimento < GETDATE()) AND "
 Sql = Sql & "(debitoparcela.numparcela > 0) AND debitoparcela.CODLANCAMENTO in (" & sLanc & ") AND debitoparcela.ANOEXERCICIO in (" & sAno & ") GROUP BY debitoparcela.codreduzido Having (debitoparcela.CODREDUZIDO between " & Val(txtCod1.Text) & " and " & Val(txtCod2.Text) & ") ORDER BY Soma DESC"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
 With RdoAux
@@ -1120,7 +1120,7 @@ For p = 1 To UBound(aM)
     ReDim Preserve aPrint(UBound(aPrint) + 1)
     aPrint(UBound(aPrint)).nTipo = 2
     aPrint(UBound(aPrint)).nCodReduz = aM(p).nCodReduz
-    aPrint(UBound(aPrint)).sNome = SubNull(RdoAux!RazaoSocial)
+    aPrint(UBound(aPrint)).sNome = SubNull(RdoAux!razaosocial)
     RdoAux.Close
 Next
 
@@ -1152,7 +1152,7 @@ For p = 1 To UBound(aPrint)
     qd(6) = 0: qd(7) = 9999 'seq
     qd(8) = 1: qd(9) = 99 'parc
     qd(10) = 0: qd(11) = 99 'compl
-    qd(12) = 3: qd(13) = 3 'stat
+    qd(12) = 0: qd(13) = 99 'stat
     qd(14) = Format(Now, "mm/dd/yyyy")
     qd(15) = NomeDoUsuario
     Set RdoAux = qd.OpenResultset(rdOpenKeyset)
@@ -1160,7 +1160,7 @@ For p = 1 To UBound(aPrint)
         
         If RdoAux.RowCount > 0 Then
             Do Until .EOF
-          
+                If !statuslanc <> 3 And !statuslanc <> 42 And !statuslanc <> 43 Then GoTo proximo
             
                 z = BinarySearchLong(aAno(), CLng(!AnoExercicio))
                 If z = -1 Then GoTo proximo
@@ -1263,7 +1263,7 @@ For x = 1 To UBound(aMat)
 PROXIMO2:
 Next
 
-frmReport.ShowReport2 "MAIORDEVEDOR", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "MAIORDEVEDOR", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM EXTRATOTMP WHERE COMPUTER='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
@@ -1386,7 +1386,7 @@ With RdoAux
         For x = 1 To UBound(aAno)
             bAchou = True
             Sql = "SELECT CODREDUZIDO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & aAno(x)
-            Sql = Sql & " AND (STATUSLANC=3 or STATUSLANC=19) AND CODLANCAMENTO in (" & sLanc & ")"
+            Sql = Sql & " AND (STATUSLANC=3 or STATUSLANC=19 or STATUSLANC=42 or STATUSLANC=43) AND CODLANCAMENTO in (" & sLanc & ")"
             If cmbDA.ListIndex = 1 Then
                 Sql = Sql & " AND DATAINSCRICAO IS NOT NULL"
             ElseIf cmbDA.ListIndex = 2 Then
@@ -1425,7 +1425,7 @@ With RdoAux
                 If chkAtivo.value = vbChecked Then
                     If Not IsNull(!dataencerramento) Then: .Close: GoTo proximo
                 End If
-                sNome = !RazaoSocial
+                sNome = !razaosocial
                .Close
             End With
         Else
@@ -1442,7 +1442,7 @@ With RdoAux
         End If
     
         Sql = "SELECT * FROM vwCNSLANCAMENTO WHERE CODREDUZIDO=" & !CODREDUZIDO
-        Sql = Sql & " AND (STATUSLANC=3 OR STATUSLANC=19) and NUMPARCELA>0 AND CODTRIBUTO<>3 AND CODLANCAMENTO in (" & sLanc & ")"
+        Sql = Sql & " AND (STATUSLANC=3 OR STATUSLANC=19 or STATUSLANC=42 or STATUSLANC=43) and NUMPARCELA>0 AND CODTRIBUTO<>3 AND CODLANCAMENTO in (" & sLanc & ")"
         If chkAno.value = 0 Then
             Sql = Sql & " AND ANOEXERCICIO in (" & sAno & ")"
         End If
@@ -1484,9 +1484,9 @@ Pb.value = 100
 
 'EXIBE RELATORIO
 If Option1(0).value = True Then
-    frmReport.ShowReport "DEVEDORES", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "DEVEDORES", frmMdi.HWND, Me.HWND
 Else
-    frmReport.ShowReport "DEVEDORES2", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "DEVEDORES2", frmMdi.HWND, Me.HWND
 End If
 
 Sql = "DELETE FROM DAM WHERE COMPUTER='" & NomeDoUsuario & "'"
@@ -1552,7 +1552,7 @@ For nCodImovel = nCodReduz1 To nCodReduz2
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    If Val(SubNull(!mei)) = 0 Then
+                    If Val(SubNull(!Mei)) = 0 Then
                         GoTo proximo
                     End If
                 End If
@@ -1572,7 +1572,7 @@ For nCodImovel = nCodReduz1 To nCodReduz2
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    If Val(SubNull(!mei)) = 1 Then
+                    If Val(SubNull(!Mei)) = 1 Then
                         GoTo proximo
                     End If
                 End If
@@ -1613,11 +1613,11 @@ RdoAux.Close
 
 'EXIBE RELATORIO
 If Option1(0).value = True Then
-    frmReport.ShowReport "DEVEDORES", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "DEVEDORES", frmMdi.HWND, Me.HWND
 ElseIf Option1(1).value = True Then
-    frmReport.ShowReport "DEVEDORES3", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "DEVEDORES3", frmMdi.HWND, Me.HWND
 Else
-    frmReport.ShowReport "DEVEDORES2", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "DEVEDORES2", frmMdi.HWND, Me.HWND
 End If
 
 Sql = "DELETE FROM DAM WHERE COMPUTER='" & NomeDeLogin & "'"
@@ -1665,7 +1665,7 @@ ElseIf nCodImovel > 100000 And nCodImovel < 500000 Then
             Else
                 If chkCNPJ.value = vbChecked Then: .Close: Exit Sub
             End If
-            sNome = !RazaoSocial
+            sNome = !razaosocial
         End If
        .Close
     End With
@@ -1701,8 +1701,8 @@ qd(8) = 1 'parc
 qd(9) = 999
 qd(10) = 0 'compl
 qd(11) = 99
-qd(12) = 3 'status
-qd(13) = 3
+qd(12) = 0 'status
+qd(13) = 99
 qd(14) = Format(Now, "mm/dd/yyyy")
 qd(15) = NomeDoUsuario
 Set RdoAux = qd.OpenResultset(rdOpenKeyset)
@@ -1725,7 +1725,7 @@ With RdoAux
             If cmbDA.ListIndex = 2 Then
                 If Not IsNull(!datainscricao) Then GoTo proximo
             End If
-            If !statuslanc <> 3 And !statuslanc <> 19 Then GoTo proximo
+            If !statuslanc <> 3 And !statuslanc <> 18 And !statuslanc <> 19 And !statuslanc <> 38 And !statuslanc <> 39 And !statuslanc <> 42 And !statuslanc <> 43 And !statuslanc <> 40 And !statuslanc <> 31 Then GoTo proximo
             If !CodTributo = 3 Then GoTo proximo
             
             'If !AnoExercicio = 2007 Then
@@ -1929,7 +1929,7 @@ With RdoAux
         
         Sql = "SELECT distinct debitoparcela.anoexercicio,debitoparcela.codlancamento,debitoparcela.seqlancamento,debitoparcela.numparcela,debitoparcela.codcomplemento FROM debitoparcela INNER JOIN debitotributo ON debitoparcela.codreduzido = debitotributo.codreduzido AND debitoparcela.anoexercicio = debitotributo.anoexercicio AND "
         Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND debitoparcela.NumParcela = debitotributo.NumParcela And debitoparcela.CODCOMPLEMENTO = debitotributo.CODCOMPLEMENTO "
-        Sql = Sql & "Where (debitoparcela.CODREDUZIDO = " & nCodReduz & ") And (debitoparcela.codlancamento <> 20) And (debitoparcela.datavencimento < '" & Format(Now, "mm/dd/yyyy") & "') And (debitoparcela.numparcela >0) And (debitoparcela.statuslanc = 3) And (debitotributo.ValorTributo > 0) "
+        Sql = Sql & "Where (debitoparcela.CODREDUZIDO = " & nCodReduz & ") And (debitoparcela.codlancamento <> 20) And (debitoparcela.datavencimento < '" & Format(Now, "mm/dd/yyyy") & "') And (debitoparcela.numparcela >0) And (debitoparcela.statuslanc = 3 or debitoparcela.statuslanc = 42 or debitoparcela.statuslanc = 43 ) And (debitotributo.ValorTributo > 0) "
         'Sql = Sql & " and debitoparcela.codlancamento in (2,3,5,14,65)"
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         Do Until RdoAux2.EOF
@@ -1951,14 +1951,16 @@ With RdoAux
             qd(9) = RdoAux2!NumParcela
             qd(10) = RdoAux2!CODCOMPLEMENTO
             qd(11) = RdoAux2!CODCOMPLEMENTO
-            qd(12) = 3
-            qd(13) = 3
+            qd(12) = 0
+            qd(13) = 99
             qd(14) = Format(Now, "mm/dd/yyyy")
             qd(15) = NomeDeLogin
             Set RdoAux3 = qd.OpenResultset(rdOpenKeyset)
            ' If nCodReduz = 100076 Then MsgBox "teste"
             Do Until RdoAux3.EOF
-                nTotal = nTotal + RdoAux3!ValorTotal
+                If !statuslanc = 3 Or !statuslanc = 42 Or !statuslanc = 43 Then
+                    nTotal = nTotal + RdoAux3!ValorTotal
+                End If
                 RdoAux3.MoveNext
             Loop
             RdoAux3.Close
@@ -1980,7 +1982,7 @@ End With
 
 Liberado
 
-frmReport.ShowReport2 "mobiliariodevedor", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "mobiliariodevedor", frmMdi.HWND, Me.HWND
 
 Sql = "delete from mobiliariodevedor where usuario='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
